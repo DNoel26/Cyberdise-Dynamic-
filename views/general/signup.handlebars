@@ -1,0 +1,131 @@
+<nav>
+    <div id="logo_div">
+        <a href="/"><img src="/img/cyberdise_logo_no_bg.png" alt="Cyberdise Logo"></a>
+    </div>
+    <div>
+        <h2>
+            Your #1 Online Store
+        </h2>    
+    </div>  
+    <div>
+        <a href="/"><img class="floating_icons" src="/img/icons/home.png" alt="Home Icon">Home</a>    
+    </div>  
+</nav>
+<h1>
+    <span class="white_words">Hello,</span> Signup <span class="white_words">or Login Below</span>
+</h1>
+<section id="signup_login_form_section" class="width_container">
+    <section class="animate__animated animate__backInLeft" id="signup_form_section_left">
+        <div>
+            <div>
+                <h2>
+                    Not a Member? 
+                </h2> 
+                <h2>
+                    Signup to Create an Account!
+                </h2>   
+            </div>
+            <div>
+                <form id="signup_form" action="" method="POST" novalidate="novalidate" autocomplete="off"> 
+                    <div class="form_error_msg">
+                        <p>Please Enter All Details Correctly into the Form Below</p>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label class="required" for="first_name">First Name</label>
+                            <input  type="text" name="first_name" id="first_name" placeholder="Your First Name Here...">
+                            <span class="form_error_msg">Please enter your first name</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <label class="required" for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" placeholder="Your Last Name Here...">
+                            <span class="form_error_msg">Please enter your last name</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label class="required">Gender</label>  
+                        </div>
+                        <div>
+                            <label class="gender_label" for="male">Male</label>
+                            <input type="radio" name="gender" id="male" value="gender">
+                            <label class="gender_label" for="female">Female</label>
+                            <input type="radio" name="gender" id="female" value="gender">
+                            <span class="form_error_msg">Please select a gender</span>     
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="required" for="location">Country</label>
+                        <select name="location" id="location">
+                            <option value="">Click Here to Select Your Location...</option>
+                        </select>
+                        <span class="form_error_msg">Please select a location</span>   
+                    </div>
+                    
+                    <div>
+                        <label class="required" for="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Your Email Here...">
+                        <span class="form_error_msg">Please enter a valid email</span>     
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <label class="required" for="password">Password</label>
+                            <input type="password" name="password" id="password" placeholder="Your Password Here...">
+                            <span class="form_error_msg">Entered password does not meet requirements</span>    
+                            <span id="password_msg">Password must contain at least 6 characters, one uppercase letter (A-Z) 
+                                and one number (0-9)</span> 
+                        </div>
+                        <div>
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password Here...">  
+                            <span class="form_error_msg">Passwords do not match</span>       
+                        </div>
+                    </div>
+
+                    <a href="/">Return to Home Page</a>
+                    <button class="button_class" type="submit">Create Your Account</button>
+                </form>
+            </div>    
+        </div>
+    </section>
+    <section class="animate__animated animate__backInRight" id="login_form_section_right">
+        <div>
+            <div>
+                <h2>
+                    Already a Member? 
+                </h2>    
+                <h2>
+                    Login and Start Shopping Now!    
+                </h2>
+            </div>             
+            <div>
+                <form id="login_form" action="" method="POST" novalidate="novalidate" autocomplete="off">
+                    <div class="form_error_msg">
+                        <p>Entered Email and/or Password is Invalid</p>
+                    </div>
+
+                    <div>
+                        <label for="email">Your Email</label>
+                        <input type="email" name="email" id="email" placeholder="Enter a Valid Email...">
+                    </div>
+                    
+                    <div>
+                        <label for="password">Your Password</label>
+                        <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
+                    </div>
+                    
+                    <a href="">Forgot Your Password?</a>
+                    <button class="button_class" type="submit">Login Now</button>
+                </form>
+            </div>
+        </div>
+    </section>    
+</section>
+

@@ -1,0 +1,77 @@
+<nav id="top_nav">
+    <div>
+        <ul id="left_nav_list">
+            <div>
+                <li><a class="{{home_active_link}}" href="/"><img class="floating_icons" src="/img/icons/home.png" alt="Home Icon">Home</a></li>
+                <li><a class="{{best_sellers_active_link}}" href="/#home_page_main"><img class="floating_icons" src="/img/icons/medal.png" alt="Medal Icon">Best Sellers</a></li>
+                <li><a class="{{deals_active_link}}" href="/#home_page_deals"><img class="floating_icons" src="/img/icons/box.png" alt="Home Icon">Deals</a></li>    
+                <li><a class="{{shop_now_active_link}}" href="/all-products"><img class="floating_icons" src="/img/icons/shopping_bag.png" alt="Shopping Bag Icon">Shop Now</a></li>
+            </div>
+        </ul>
+        <div id="logo_div">
+            <a href=""><img src="/img/cyberdise_logo_no_bg.png" alt="Cyberdise Logo"></a>
+        </div>
+        <ul id="right_nav_list">
+            <div>
+                <li class="welcome_msg"><p>Hello, Darnell{{user.first_name}}</p></li>
+                <li><a class="{{signup_active_link}}" href="/signup" target="_blank"><img class="floating_icons" src="/img/icons/compose.png" alt="Pen Icon">Signup</a></li>
+                <!--<li><a href="/front_end_preview/html/login.html"><img class="floating_icons" src="/front_end_preview/img/icons/key.png" alt="Key Icon">Login</a></li>-->
+                <li><button class="button_class" type="button"><img class="floating_icons" src="/img/icons/key.png" alt="Key Icon">Login</button></li>
+                <li><a class="{{my_cart_active_link}}" href="/customer/my-cart"><img class="floating_icons" src="/img/icons/cart.png" alt="Cart Icon">My Cart</a></li>
+                <li><a class="{{my_account_active_link}}" href="/customer/my-account"><img class="floating_icons" src="/img/icons/person.png" alt="Home Icon">My Account</a></li>    
+            </div>
+        </ul>
+    </div>
+</nav>
+<nav id="bottom_nav">
+    <div>
+        <form class="header_form_class" action="" method="GET">
+            <div>
+                <label class="label" for="category_list">Select a Product Category</label>
+                <select class="" name="category_list" id="category_list">
+                    <option value="electronics">Electronics</option>
+                    <option value="supplements">Supplements</option>
+                    <option value="toys">Toys</option>
+                </select>
+            </div>
+            <div>
+                <input type="search" name="search" id="search_bar" placeholder="Search Products...">
+                <button class="button_class" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>   
+            </div>     
+        </form>
+    </div> 
+</nav>
+<div id="signup_login_form_section" class="modal">
+    <div id="login_form_section_right" class="modal_content">
+        <div>
+            <form id="login_form" action="" method="POST" novalidate="novalidate" autocomplete="off">
+                <div class="form_error_msg">
+                    <p>Entered Email and/or Password is Invalid</p>
+                </div>
+
+                <div>
+                    <label for="email">Your Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter a Valid Email...">
+                </div>
+                
+                <div>
+                    <label for="password">Your Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
+                </div>
+                
+                <a href="">Forgot Your Password?</a>
+                <button class="button_class" type="submit">Login Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="floating_icons shopping_cart_icons">
+    <div>
+        <h3>
+            300
+        </h3>
+        <img src="/img/icons/cart_solid.png" alt="Shopping Cart Icon">    
+    </div>
+</div>

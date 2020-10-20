@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html id="{{html_id}}" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cyberdise | {{title}}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> <!--Roboto-->
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;669;700;800;900&display=swap" rel="stylesheet"> <!--Orbitron-->
+        <script src="https://kit.fontawesome.com/3ad7481254.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <!--PUT ALT AND TITLE IN IMAGES, ALT WOULD BE DESCRIPTION AND TITLE WOULD BE PRODUCT NAME IN HANDLEBARS-->
+    <!--RATING WIDGET SCRIPT BELOW-->
+    <script type="text/javascript">(function(d, t, e, m){
+        
+        // Async Rating-Widget initialization.
+        window.RW_Async_Init = function(){
+                    
+            RW.init({
+                huid: "464745",
+                uid: "bc03b6e85707475618c9b652bff0dd87",
+                options: { "style": "oxygen" } 
+            });
+            RW.render();
+        };
+            // Append Rating-Widget JavaScript library.
+        var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() + 
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+        if (d.getElementById(id)) return;              
+        rw = d.createElement(e);
+        rw.id = id; rw.async = true; rw.type = "text/javascript";
+        rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+        s.parentNode.insertBefore(rw, s);
+        }(document, new Date(), "script", "rating-widget.com/"));
+    </script>
+    <!--RATING WIDGET SCRIPT ABOVE-->
+    <body id="{{body_id}}">
+        <!--HEADER BELOW-->
+        <header id="page_start" class="scroll_snap_start_pos">
+            {{> header}}
+        </header>
+        <!--HEADER ABOVE-->
+        {{> home_hero}}
+        <main id="{{main_id}}" class="{{#each main_class}}{{this}}{{/each}}"> <!--This section to become dynamic-->
+            {{{body}}}
+        </main>
+        <!--FOOTER BELOW-->
+        {{> home_above_footer}}
+        <footer id="page_end">
+            <div>
+                FOOTER
+                <a href="#page_start"><i class="fas fa-angle-up" style="font-size: 6rem;"></i></a>
+            </div>
+        </footer>
+        <!--FOOTER ABOVE-->
+        <script src="/js/client_app.js" type="module"></script>
+    </body>
+</html>
