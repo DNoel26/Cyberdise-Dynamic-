@@ -3,7 +3,7 @@ const router = express.Router();
 
 //*****MY CUSTOMER ACCOUNT CONTROLS
 
-router.get("/customer/my-account",function(req,res){
+router.get("/my-account",function(req,res){
 
     res.render("customer/my_customer_account",{
 
@@ -18,7 +18,7 @@ router.get("/customer/my-account",function(req,res){
 
 //*****MY CART CONTROLS
 
-router.get("/customer/my-cart",function(req,res){
+router.get("/my-cart",function(req,res){
 
     res.render("customer/my_cart",{
 

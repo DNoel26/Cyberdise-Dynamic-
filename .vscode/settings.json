@@ -2,5 +2,10 @@
     "cSpell.words": [
         "cyberdise",
         "exphbs"
+    ],
+    "cSpell.ignoreWords": [
+        "signup",
+        "user",
+        "user signup"
     ]
 }

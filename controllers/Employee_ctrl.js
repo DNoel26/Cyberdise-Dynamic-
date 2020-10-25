@@ -3,7 +3,7 @@ const router = express.Router();
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
 
-router.get("/employee/my-account",function(req,res){
+router.get("/my-account",function(req,res){
 
     res.render("employee/my_employee_account",{
 
@@ -18,7 +18,7 @@ router.get("/employee/my-account",function(req,res){
 
 //*****EDIT STOCK CONTROLS
 
-router.get("/employee/edit-stock",function(req,res){
+router.get("/edit-stock",function(req,res){
 
     res.render("employee/edit_stock",{
 

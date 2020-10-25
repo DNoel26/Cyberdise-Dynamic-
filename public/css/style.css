@@ -222,7 +222,7 @@ img
 
 .form_error_msg
 {
-    display: block;
+    display: block !important;
     color: red;
     font-weight: 900;
     font-size: 0.7rem;
