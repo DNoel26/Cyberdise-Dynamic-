@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bcryptjs = require("bcryptjs");
 
 const db = require("../config/MySQL_DAO.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
@@ -8,7 +7,7 @@ const User = require("../models/POJO/User.js");
 const Customer = require("../models/POJO/Customer.js");
 const Employee = require("../models/POJO/Employee.js");
 
-const {customer_register_form} = require("../middleware/Validate_mw.js");
+const {customer_register_form,customer_login_form} = require("../middleware/Validate_mw.js");
 
 //*****HOME CONTROLS
 
@@ -32,18 +31,7 @@ router.get("/",function(req,res){
 
 //*****SIGNUP AND LOGIN CONTROLS
 
-router.post("/signup",function(req,res){
-
-    console.log(req.body.data[3]);
-    res.locals.country_list = req.body.data;
-    console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);
-})
-
 router.get("/signup",function(req,res){
-
-    //console.log(res.locals);
-    //console.log((req));
-    console.log("GET SIGNUP",req.body,req.query,req.params)
 
     res.render("general/signup",{
 
@@ -55,8 +43,6 @@ router.get("/signup",function(req,res){
 });
 
 router.post("/signup/create-account",customer_register_form,function(req,res){
-
-    //console.log("JSON OBJECT",req.body.country_json);
 
     const catch_rollback = function(){
 
@@ -72,51 +58,38 @@ router.post("/signup/create-account",customer_register_form,function(req,res){
     .then(()=>{return User_model.create_user(req.created_customer)}) //FIRST THEN
     .then(()=>{
         
-        console.log("ON CUSTOMER CREATION",req.created_customer);
+        console.log(req.created_customer);
         const time_stamp = "2020-10-24T08:28:53";
 
         return User_model.mysql_current_timestamp()
     }) //SECOND THEN
     .then((curr_time)=>{
 
-        console.log("MYSQL CURRENT TIMESTAMP RESULT OBJ",curr_time);
-        console.log("CURRENT TIMESTAMP ON CREATION",curr_time[0][0]['CURRENT_TIMESTAMP()']);
+        console.log(curr_time);
+        console.log(curr_time[0][0]['CURRENT_TIMESTAMP()']);
 
         const curr_time_to_string = JSON.stringify(curr_time[0][0]['CURRENT_TIMESTAMP()']);
-        console.log("CURRENT TIMESTAMP TO STRING",curr_time_to_string);
+        console.log(curr_time_to_string);
         const mysql_curr_time = curr_time_to_string.substring(1,20);
-        console.log("CURRENT TIMESTAMP COMPATIBLE WITH MYSQL",mysql_curr_time);
+        console.log(mysql_curr_time);
 
         return User_model.mysql_last_insert_id()    
-    }) //THIRD THEN
+    })//THIRD THEN
     .then((last_ins_id)=>{
         
-        console.log("MYSQL LAST INSERT ID RESULT OBJ",last_ins_id);
-        console.log("LAST INSERT ID ON CREATION",last_ins_id[0][0]['LAST_INSERT_ID()']);
-
-        /*curr_time[0].forEach(element => {
-            console.log(element);
-            console.log("ARRAY INDEX");
-        });*/
-        
-        /*let normalObj = Object.assign({}, curr_time[0]);
-        let stringify = JSON.stringify(normalObj[0]);*/
-        //console.log("OBJECT ASSIGN");
-        //console.log(JSON.parse(stringify));
-        //console.log(curr_time[0][0]['CURRENT_TIMESTAMP()']);
-        //console.log(curr_time[0][0]);
-        //const time_stamp = curr_time[0][0];
+        console.log(last_ins_id);
+        console.log(last_ins_id[0][0]['LAST_INSERT_ID()']);
 
         return User_model.mysql_commit()
     }) //FOURTH THEN        
-    .then((test)=>{ 
+    .then((sss)=>{ //FIFTH THEN
 
-        console.log("Fifth and final then before acc creation redirect",test);
+        console.log(sss);
         res.redirect("/"); 
-    }) //FIFTH THEN       
+    })       
     .catch((err)=>{
 
-        console.log(`Error in General Controller, Customer Signup (on POST): ${err}`);
+        console.log(`Error on Testing Controller, Customer Signup (on POST): First catch: ${err}`);
         catch_rollback();
     });
 });

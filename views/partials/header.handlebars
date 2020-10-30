@@ -13,10 +13,10 @@
         </div>
         <ul id="right_nav_list">
             <div>
-                <li class="welcome_msg"><p>Hello, Darnell{{user.first_name}}</p></li>
+                <li class="welcome_msg"><p>Hi, Darnell{{user.first_name}}</p></li>
                 <li><a class="{{signup_active_link}}" href="/signup" target="_blank"><img class="floating_icons" src="/img/icons/compose.png" alt="Pen Icon">Signup</a></li>
                 <!--<li><a href="/front_end_preview/html/login.html"><img class="floating_icons" src="/front_end_preview/img/icons/key.png" alt="Key Icon">Login</a></li>-->
-                <li><button class="button_class" type="button"><img class="floating_icons" src="/img/icons/key.png" alt="Key Icon">Login</button></li>
+                <li><button id="header_login_btn" class="button_class" type="button"><img class="floating_icons" src="/img/icons/key.png" alt="Key Icon">Login</button></li>
                 <li><a class="{{my_cart_active_link}}" href="/customer/my-cart"><img class="floating_icons" src="/img/icons/cart.png" alt="Cart Icon">My Cart</a></li>
                 <li><a class="{{my_account_active_link}}" href="/customer/my-account"><img class="floating_icons" src="/img/icons/person.png" alt="Home Icon">My Account</a></li>    
             </div>
@@ -25,6 +25,7 @@
 </nav>
 <nav id="bottom_nav">
     <div>
+        
         <form class="header_form_class" action="" method="GET">
             <div>
                 <label class="label" for="category_list">Select a Product Category</label>
@@ -38,15 +39,16 @@
                 <input type="search" name="search" id="search_bar" placeholder="Search Products...">
                 <button class="button_class" type="submit">
                     <i class="fas fa-search"></i>
-                </button>   
-            </div>     
+                </button>  
+            </div>
+     
         </form>
     </div> 
 </nav>
-<div id="signup_login_form_section" class="modal">
+<div id="signup_login_form_section" class="modal remove_element">
     <div id="login_form_section_right" class="modal_content">
         <div>
-            <form id="login_form" action="" method="POST" novalidate="novalidate" autocomplete="off">
+            <form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
                 <div class="form_error_msg">
                     <p>Entered Email, Username and/or Password is Invalid</p>
                 </div>
@@ -63,6 +65,7 @@
                 
                 <a href="">Forgot Your Password?</a>
                 <button class="button_class" type="submit">Login Now</button>
+                <button class="modal_close_btn button_class" type="button"><i class="far fa-times-circle "></i></button>
             </form>
         </div>
     </div>

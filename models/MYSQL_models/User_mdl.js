@@ -1,5 +1,8 @@
 const mysql = require("mysql2/promise");
 const db = require("../../config/MySQL_DAO.js");
+const Customer = require("../POJO/Customer.js");
+const Employee = require("../POJO/Employee.js");
+const User = require("../POJO/User.js");
 
 const User_model = {
 
@@ -176,18 +179,55 @@ const User_model = {
             });
         })
     },
-
-    get_customer_by_email(customer)
+    
+    get_customer_by_username_email(customer_email,customer_username)//customer_email,customer_username)
     {
         return new Promise((resolve,reject)=>{
             
-            this.SQL = 'SELECT * FROM user WHERE email = ? OR username = ?';
-            db.connection.query(this.SQL, [customer.email,customer.username])
+            this.SQL = 'SELECT * FROM customer INNER JOIN user ON customer.customer_id_fk = user.user_id WHERE email = ? OR username = ?;';
+            db.connection.query(this.SQL, [customer_email,customer_username])//customer_email,customer_username])
             .then(([rows,fields])=>{
 
-                resolve();
+                let selected_customer = null;
+
+                if(rows.length > 0)
+                {
+                    selected_customer = new Customer;
+                    
+                    selected_customer.user_id = rows[0].user_id;
+                    selected_customer.first_name = rows[0].first_name;
+                    selected_customer.last_name = rows[0].last_name;
+                    selected_customer.full_name = rows[0].full_name;
+                    selected_customer.gender = rows[0].gender;
+                    selected_customer.country = rows[0].country;
+                    selected_customer.username = rows[0].username;
+                    selected_customer.email = rows[0].email;
+                    selected_customer.password = rows[0].password;
+                    selected_customer.logged_in = rows[0].logged_in;
+                    selected_customer.last_login_date = rows[0].last_login_date;
+                    selected_customer.last_login_IP = rows[0].last_login_IP;
+                    selected_customer.customer_id_fk = rows[0].customer_id_fk;
+                    selected_customer.address = rows[0].address;
+                    selected_customer.town_city = rows[0].town_city;
+                    selected_customer.state = rows[0].state;
+                    selected_customer.credit_card_num = rows[0].credit_card_num;
+                    selected_customer.role = rows[0].role;
+                    selected_customer.date_created = rows[0].date_created;
+                    selected_customer.last_modified = rows[0].last_modified;
+
+                    //console.log("The data for login customer",selected_customer,"The fields for login customer",fields);
+                    
+                    resolve(selected_customer);
+                }
+
+                else
+                {
+                    selected_customer = null;
+                    resolve(selected_customer);
+                }
+                
             })
-            .catch(err=>reject(`Error in User_mdl.js: user_signup(): ${err}`));
+            .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err}`));
         })
     }
 }

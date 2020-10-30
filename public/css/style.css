@@ -144,7 +144,6 @@ body
 
 img
 {
-    width: 100%;
     max-width: 100%;
 }
 
@@ -189,16 +188,16 @@ img
     color: var(--font_color_2);
 }
 
-.welcome_msg
-{
-    display: inline-block;                  /* DISPLAYS WHEN USER LOGS IN ONLY */
+.welcome_msg /* DISPLAYS WHEN USER LOGS IN ONLY */
+{  
+    display: inline-block;                 
     text-decoration: none;
     color: var(--font_color_2);
     font-size: 0.7rem;
     font-weight: 900;
     padding: 0;
     margin: 0;
-    line-height: 26px;
+    line-height: 18px;
 }
 
 .welcome_msg > p
@@ -206,6 +205,21 @@ img
     border-bottom: 2px solid var(--font_color_2);
     padding: 0;
     margin: 0;
+}
+
+/*#header_login_btn
+{
+    background-color: red;
+}*/
+
+.hide_element
+{
+    visibility: hidden !important;
+}
+
+.remove_element
+{
+    display: none !important;
 }
 
 .button_class
@@ -222,7 +236,7 @@ img
 
 .form_error_msg
 {
-    display: block !important;
+    display: block;
     color: red;
     font-weight: 900;
     font-size: 0.7rem;
@@ -351,18 +365,19 @@ a
     text-decoration: none;
 }
 
-.modal
+.modal /*#signup_login_form_section*/
 {
-    display: none !important;
     position: fixed;
+    display: grid;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
     overflow: auto;
+    z-index: 1000;
     background-color: rgba(0, 0, 0, 0.7);
     align-items: center;
+    justify-items: center;
 }
 
 .modal #login_form_section_right > div
@@ -378,11 +393,28 @@ a
 
 .modal_content
 {
-    display: block;
-    height: max-content;
-    width: 60%;
+    position: relative;
+    width: 100%;
     margin: auto;
     /*background-color: red;*/
+}
+
+.modal_content .modal_close_btn
+{
+    position: absolute;
+    width: max-content;
+    padding: 0 !important;
+    top: -4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    background-color: unset !important;
+}
+
+.modal_content .modal_close_btn i
+{
+    font-size: 1.4rem;
+    color: red;
 }
 
                     /* SPECIFIC CLASSES AND IDS ABOVE */
@@ -481,7 +513,7 @@ nav
 #top_nav > div
 {
     display: grid;
-    grid-template-columns: 1fr 360px 1fr;     
+    grid-template-columns: 1fr 240px 1fr;     
     height: 100%;
 }
 
@@ -622,7 +654,7 @@ nav a, #top_nav .button_class
     font-size: 0.7rem;
     font-weight: 900;
     transition: 0.6s;
-    padding: 8px;
+    padding: 8px 4px;
     border: 1px solid transparent;
 }
 
@@ -1646,18 +1678,22 @@ footer
     display: none;
 }
 
+#signup_page_body
+{
+    background-image: url("/img/sign_up_bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center 85%;
+    background-size: cover;
+}
+
 #signup_page_main
 {
     display: grid;
     grid-template-rows: 80px auto 1fr;
     max-width: 100%;
     width: 100%;
-    max-height: 100vh;
-    height: 100vh;
-    background-image: url("/img/sign_up_bg.jpg");
-    background-repeat: no-repeat;
-    background-position: center 85%;
-    background-size: cover;
+    height: max-content;
+    padding-bottom: 128px;
 }
 
 #signup_page_main nav
@@ -1756,10 +1792,10 @@ footer
     column-gap: 32px;
 }
 
-#signup_login_form_section .form_error_msg
+/*#signup_login_form_section .form_error_msg
 {
     display: none;
-}
+}*/
 
 #signup_login_form_section #password_msg
 {
@@ -1864,6 +1900,11 @@ footer
     color: var(--font_color);
 }
 
+#login_form
+{
+    position: relative;
+}
+
 #login_form a:hover
 {
     color: var(--font_color_2);
@@ -1896,7 +1937,8 @@ footer
 {
     background-color: var(--bg_color_2);
     color: var(--font_color_2);   
-    font-weight: 800;
+    font-weight: 600;
+    letter-spacing: 0.12rem;
 }
 
 #login_form input, #login_form select, #login_form button
@@ -1940,7 +1982,7 @@ input:focus, select:focus
     margin-top: 8px;
 }
 
-#signup_form span
+#signup_form span, #login_form span
 {
     display: block;
     font-weight: 600;

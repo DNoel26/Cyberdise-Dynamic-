@@ -4,10 +4,10 @@ class Customer extends User
 {
     customer_id_fk;
     address;
-    city;
-    town;
+    town_city;
+    state;
     credit_card_num;
-    role = "customer";
+    role;// = "customer"
 };
 
 module.exports = Customer;

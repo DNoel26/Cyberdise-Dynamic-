@@ -25,7 +25,7 @@ const MySQL = {
 
     end()
     {
-        this.connection.end();
+        return this.connection.end();
     }
 }
 

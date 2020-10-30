@@ -26,7 +26,7 @@
                 </h2>   
             </div>
             <div>
-                <form id="signup_form" action="" method="POST" novalidate="novalidate" autocomplete="off"> 
+                <form id="signup_form" action="/signup/create-account" method="POST" novalidate="novalidate" autocomplete="off"> 
                     <div class="form_error_msg">
                         <p>Please Enter All Details Correctly into the Form Below</p>
                     </div>
@@ -34,16 +34,16 @@
                     <div>
                         <div>
                             <label class="required" for="first_name">First Name</label>
-                            <input  type="text" name="first_name" id="first_name" placeholder="Your First Name Here...">
-                            <span class="form_error_msg">Please enter your first name</span>
+                            <input value="{{created_customer.first_name}}" type="text" name="first_name" id="first_name" placeholder="Your First Name Here...">
+                            <span class="form_error_msg">{{errors.first_name}}</span>
                         </div>
                     </div>
                     
                     <div>
                         <div>
                             <label class="required" for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" placeholder="Your Last Name Here...">
-                            <span class="form_error_msg">Please enter your last name</span>
+                            <input value="{{created_customer.last_name}}" type="text" name="last_name" id="last_name" placeholder="Your Last Name Here...">
+                            <span class="form_error_msg">{{errors.last_name}}</span>
                         </div>
                     </div>
 
@@ -53,52 +53,57 @@
                         </div>
                         <div>
                             <label class="gender_label" for="male">Male</label>
-                            <input type="radio" name="gender" id="male" value="male">
+                            <input {{#if_eq created_customer.gender "male"}} checked {{/if_eq}} type="radio" name="gender" id="male" value="male">
                             <label class="gender_label" for="female">Female</label>
-                            <input type="radio" name="gender" id="female" value="female">
-                            <span class="form_error_msg">Please select a gender</span>     
+                            <input {{#if_eq created_customer.gender "female"}} checked {{/if_eq}} type="radio" name="gender" id="female" value="female">
+                            <span class="form_error_msg">{{errors.gender}}</span>     
                         </div>
                     </div>
                     
                     <div>
                         <label class="required" for="country">Country</label>
                         <select name="country" id="country">
-                            <option value="">Click Here to Select Your Location...</option>
-                            <option value="Trinidad">Trinidad</option>
-                            <option value="Scotland">Scotland</option>
+                            {{#if created_customer.country}} <option id="top_selection" value="{{created_customer.country}}">{{created_customer.country}}</option> {{else}} <option id="top_selection" value="">Click Here to Select Your Location...</option> {{/if}}
+                            <div></div>
+                            <!--<option></option> 
+                            <option #if_eq created_customer.country "Albania" selected /if_eq value="Trinidad" >Trinidad</option>
+                            <option value="Scotland">Scotland</option>-->
                         </select>
-                        <span class="form_error_msg">Please select a location</span>   
+                        <input type="hidden" id="testtt" name="testtt" value=""> <!--TO TEST SENDING JSON FROM CLIENT TO SERVER-->
+                        <input type="hidden" id="country_flag_src" name="country_flag_src" value="">
+                        <span><img id="country_flag" {{#if created_customer.country_flag_src}} src="{{created_customer.country_flag_src}}" {{else}} src="" {{/if}} alt="" width="122" height="64"></span>
+                        <span class="form_error_msg">{{errors.country}}</span>   
                     </div>
                     
                     <div>
                         <label class="required" for="username">Username</label>
-                        <input name="username" id="username" placeholder="Your Username Here...">
-                        <span class="form_error_msg">Please enter another username</span>     
+                        <input value="{{created_customer.username}}" name="username" id="username" placeholder="Your Username Here...">
+                        <span class="form_error_msg">{{errors.username}}</span>     
                     </div>
                     
                     <div>
                         <label class="required" for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Your Email Here...">
-                        <span class="form_error_msg">Please enter another email</span>     
+                        <input value="{{created_customer.email}}" type="email" name="email" id="email" placeholder="Your Email Here...">
+                        <span class="form_error_msg">{{errors.email}}</span>     
                     </div>
                     
                     <div>
                         <div>
                             <label class="required" for="password">Password</label>
                             <input type="password" name="password" id="password" placeholder="Your Password Here...">
-                            {{#if errors.password}}<span class="form_error_msg">{{this}}</span>{{/if}}    
+                            <span class="form_error_msg">{{errors.password}}</span>
                             <span id="password_msg">Password must contain at least 6 characters, one uppercase letter (A-Z) 
                                 and one number (0-9)</span> 
                         </div>
                         <div>
                             <label for="confirm_password">Confirm Password</label>
                             <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password Here...">  
-                            <span class="form_error_msg">Passwords do not match</span>       
+                            <span class="form_error_msg">{{errors.confirm_password}}</span>       
                         </div>
                     </div>
 
                     <a href="/">Return to Home Page</a>
-                    <button class="button_class" type="submit">Create Your Account</button>
+                    <button id="signup_btn"class="button_class" type="submit">Create Your Account</button>
                 </form>
             </div>    
         </div>
@@ -114,23 +119,25 @@
                 </h2>
             </div>             
             <div>
-                <form id="login_form" action="" method="POST" novalidate="novalidate" autocomplete="off">
+                <form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
                     <div class="form_error_msg">
-                        <p>Entered Email and/or Password is Invalid</p>
+                        <span class="form_error_msg">{{exists_errors.result}}{{authenticated_errors.result}}</span>
                     </div>
 
                     <div>
                         <label for="username_email">Email/Username</label>
-                        <input name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
+                        <input value="{{login_customer.username_email}}" name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
+                        <span class="form_error_msg">{{errors.username_email_login}}</span>  
                     </div>
                     
                     <div>
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
+                        <span class="form_error_msg">{{errors.password_login}}</span>  
                     </div>
                     
                     <a href="">Forgot Your Password?</a>
-                    <button class="button_class" type="submit">Login Now</button>
+                    <button id="login_btn" class="button_class" type="submit">Login Now</button>
                 </form>
             </div>
         </div>
