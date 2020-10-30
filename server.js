@@ -92,9 +92,9 @@ User1.first_name = "John";
 const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT || 3000, function(){
 
-    console.log(`Server is connected and running`,this.address().port, app.settings.env);
+    console.log("Server is connected and running",this.address().port, app.settings.env);
     MySQL_DB.init();
 });
 
