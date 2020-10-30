@@ -22,6 +22,7 @@
     "express-session": "^1.17.1",
     "live-server": "^1.2.1",
     "mysql2": "^2.2.5",
+    "node-forge": "^0.10.0",
     "passport": "^0.4.1",
     "reload": "^3.1.1",
     "request-ip": "^2.1.3"
