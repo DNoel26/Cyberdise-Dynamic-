@@ -1,5 +1,7 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+//require('dotenv').config();
+require("dotenv").config({path: "config/keys.env"});
 const mysql = require("mysql2/promise");
 const session = require("express-session");
 const body_parser = require("body-parser");
@@ -7,7 +9,7 @@ const bcryptjs = require("bcryptjs");
 const flash = require("connect-flash");
 const file_upload = require("express-fileupload");
 const MySQLStore = require("express-mysql-session")(session);
-require("dotenv").config({path: "config/keys.env"});
+
 const helper = require("./config/helpers.js");
 
 const MySQL_DB = require("./config/MySQL_DAO.js");
@@ -90,9 +92,13 @@ User1.first_name = "John";
 const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
-app.listen(process.env.PORT,()=>{
+/*app.listen(process.env.PORT,()=>{
 
     console.log(`Server is connected and running`);
     MySQL_DB.init();
-});
+});*/
+
+app.listen(process.env.PORT || 3000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
 
