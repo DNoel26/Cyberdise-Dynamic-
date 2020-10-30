@@ -92,13 +92,13 @@ User1.first_name = "John";
 const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
-/*app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT,()=>{
 
-    console.log(`Server is connected and running`);
+    console.log(`Server is connected and running`,this.address().port, app.settings.env);
     MySQL_DB.init();
-});*/
+});
 
-app.listen(process.env.PORT || 3000, function(){
+/*app.listen(process.env.PORT || 3000, function(){
     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-  });
+  });*/
 
