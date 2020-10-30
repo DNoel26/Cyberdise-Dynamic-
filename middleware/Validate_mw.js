@@ -103,6 +103,7 @@ exports.customer_register_form = (req,res,next)=>
     //console.log("TESTTT",created_customer.testtt);
     //let data = JSON.parse(decodeURIComponent(created_customer.testtt));
     //console.log("JSON OBJECT",req.body.country_json,"REQ BODY!!!",req.body);
+    console.log(req.body);
 
     if(is_error)
     {
@@ -165,12 +166,16 @@ exports.customer_register_form = (req,res,next)=>
                     created_customer.password = hash;
                     next();
                 }) 
-                .catch(err=>console.log(`Error in Validate Middleware: Customer Registration Form 
-                (bcrypt encryption process): ${err}`));
+                .catch(err=>{console.log(`Error in Validate Middleware: Customer Registration Form 
+                    (bcrypt encryption process): ${err}`);
+                    return;
+                });
             };
         })
-        .catch(err=>console.log(`Error in Validate Middleware: Customer Registration Form 
-        (get customer by username_email): ${err}`))
+        .catch(err=>{console.log(`Error in Validate Middleware: Customer Registration Form 
+            (get customer by username_email): ${err}`);
+            return;
+        });
     };
 };
 
@@ -287,7 +292,11 @@ exports.customer_login_form = (req,res,next)=>{
                             });
                         };
                     })
-                    .catch(err=>console.log(`Error in Validate Middleware: Customer Login Form: ${err}`)); 
+                    .catch(err=>{
+                        
+                        console.log(`Error in Validate Middleware: Customer Login Form: ${err}`);
+                        return;
+                    }); 
                 }          
             }
 
@@ -307,8 +316,11 @@ exports.customer_login_form = (req,res,next)=>{
                 });
             };
         })
-        .catch(err=>console.log(`Error in Validate Middleware: Customer Login Form 
-        (get customer by username_email): ${err}`));
+        .catch(err=>{
+            
+            console.log(`Error in Validate Middleware: Customer Login Form (get customer by username_email): ${err}`);
+            return;
+        });
 
         //let login_error = false;
 
