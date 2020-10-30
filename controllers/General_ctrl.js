@@ -34,9 +34,9 @@ router.get("/",function(req,res){
 
 router.post("/signup",function(req,res){
 
-    console.log(req.body.data[3]);
-    res.locals.country_list = req.body.data;
-    console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);
+    /*console.log(req.body.data[3]);
+    console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);*/
+    //res.locals.country_list = req.body.data;
 })
 
 router.get("/signup",function(req,res){

@@ -116,12 +116,12 @@ exports.customer_register_form = (req,res,next)=>
             created_customer
         });
 
-        console.log("Customer Gender REQ BODY",created_customer.gender,
+        /*console.log("Customer Gender REQ BODY",created_customer.gender,
         "Customer Country REQ BODY",created_customer.country);
 
         let tryer = req.body;//.country_arr[0].location_name;
 
-        console.log("TRYINGGGGGG",tryer);
+        console.log("TRYINGGGGGG",tryer);*/
     }
 
     else
@@ -169,6 +169,8 @@ exports.customer_register_form = (req,res,next)=>
                 (bcrypt encryption process): ${err}`));
             };
         })
+        .catch(err=>console.log(`Error in Validate Middleware: Customer Registration Form 
+        (get customer by username_email): ${err}`))
     };
 };
 
@@ -305,11 +307,11 @@ exports.customer_login_form = (req,res,next)=>{
                 });
             };
         })
+        .catch(err=>console.log(`Error in Validate Middleware: Customer Login Form 
+        (get customer by username_email): ${err}`));
 
         //let login_error = false;
 
         //if(login_customer.password === )
-
-        
     }
 }

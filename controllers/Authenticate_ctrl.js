@@ -7,9 +7,9 @@ const {customer_login_form} = require("../middleware/Validate_mw.js");
 
 router.post("/auth/login",customer_login_form,function(req,res){
 
-    console.log(req.login_customer.email,req.login_customer.username,req.login_customer.username_email);
+    /*console.log(req.login_customer.email,req.login_customer.username,req.login_customer.username_email);
 
-    console.log("SUCCESSFULLY LOGGED IN");
+    console.log("SUCCESSFULLY LOGGED IN");*/
 
     res.redirect("/products/all-products"); 
 });
