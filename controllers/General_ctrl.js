@@ -54,7 +54,7 @@ router.get("/signup",function(req,res){
     });
 });
 
-router.post("/signup/create-account",function(req,res){//customer_register_form,
+router.post("/signup/create-account",customer_register_form,function(req,res){//
 
     //console.log("JSON OBJECT",req.body.country_json);
 

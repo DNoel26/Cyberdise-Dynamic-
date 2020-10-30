@@ -8,10 +8,10 @@ const MySQL = {
     {
         mysql.createConnection({
 
-            host: process.env.MYSQL_HOST,
-            user: process.env.MYSQL_USER,
-            database: process.env.MYSQL_DATABASE,
-            password: process.env.MYSQL_PASSWORD,
+            host: process.env.HOST,
+            user: process.env.USER,
+            database: process.env.DATABASE,
+            password: process.env.PASSWORD,
             multipleStatements: true
         })
         .then((con) => {
