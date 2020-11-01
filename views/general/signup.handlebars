@@ -119,28 +119,31 @@
                 </h2>
             </div>             
             <div>
-                <form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
-                    <div class="form_error_msg">
-                        <span class="form_error_msg">{{exists_errors.result}}{{authenticated_errors.result}}</span>
-                    </div>
-
-                    <div>
-                        <label for="username_email">Email/Username</label>
-                        <input value="{{login_customer.username_email}}" name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
-                        <span class="form_error_msg">{{errors.username_email_login}}</span>  
-                    </div>
-                    
-                    <div>
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
-                        <span class="form_error_msg">{{errors.password_login}}</span>  
-                    </div>
-                    
-                    <a href="">Forgot Your Password?</a>
-                    <button id="login_btn" class="button_class" type="submit">Login Now</button>
-                </form>
+                {{> login_form}}
             </div>
         </div>
     </section>    
 </section>
 
+<!--
+<form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
+    <div class="form_error_msg">
+        <span class="form_error_msg">{{exists_errors.result}}{{authenticated_errors.result}}</span>
+    </div>
+
+    <div>
+        <label for="username_email">Email/Username</label>
+        <input value="{{login_customer.username_email}}" name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
+        <span class="form_error_msg">{{errors.username_email_login}}</span>  
+    </div>
+    
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
+        <span class="form_error_msg">{{errors.password_login}}</span>  
+    </div>
+    
+    <a href="">Forgot Your Password?</a>
+    <button id="login_btn" class="button_class" type="submit">Login Now</button>
+</form>
+-->

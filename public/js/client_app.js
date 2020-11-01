@@ -1,6 +1,8 @@
 //import Test from "../js/newFile.js";
 //import Rating_Widget from "../js/rating_widget.js"
 
+//const { response } = require("express");
+
 console.log("Client side js working!");
 //Test.trying();
 
@@ -18,13 +20,17 @@ const App =
         const special_div = document.querySelector("#spec");
 
         const header_login_btn = document.querySelector("#header_login_btn");
+        const header_login_submit_btn = document.querySelector("#header_login_submit_btn");
         //const header_login_btn = document.getElementById("header_login_btn");
         const country_select = document.querySelector("#signup_login_form_section select#country");
         const top_country_option = document.querySelector("#signup_login_form_section select#country option#top_selection");
         const country_flag_img = document.querySelector("#country_flag");
         const country_flag_src = document.querySelector("#country_flag_src");
         const modal = document.querySelectorAll(".modal");
-        const modal_btn = document.querySelectorAll(".modal_close_btn");
+        const modal_btns = document.querySelectorAll(".modal_close_btn");
+        const username_email_login = document.querySelector("#username_email");
+        const password_login = document.querySelector("#password");
+        const form_error_msg = document.querySelectorAll(".form_error_msg");
 
         const testtt = document.querySelector("#testtt"); //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
@@ -47,39 +53,60 @@ const App =
         function go_to_top()
         {
             page_top.click();
-        }
+        };
 
         function go_to_main()
         {
             home_page_main.scrollIntoView(true, {behavior: "smooth"});
-        }
-          
+        };
+
+        function is_obj_keys_null(obj) 
+        {
+            return Object.values(obj).some(key => key !== null);
+        };
+
         document.addEventListener("DOMContentLoaded",()=>{
 
             console.log("Client side js working!");
             //home_page_main.innerHTML += `<div><br><br>HELLO YOU {{test}}</div>`;
-
+            //username_email_login.value = "test";
+            
+            const username_email_login_info = JSON.parse(localStorage.getItem("username_email_login"));
+            //alert(username_email_login_info);
+            username_email_login.value = username_email_login_info;
+            
             class API 
             {
                 endpoint;
+                method;
+                head = {};
+                body = {};
 
-                constructor(ep)
+                constructor(ep,mtd,head,bod)
                 {
                     this.endpoint = ep;
-                };
+                    this.method = mtd;
+                    this.head = head;
+                    this.body = bod;
+                }
 
                 fetch_API()
                 {
                     return new Promise((resolve,reject)=>{
 
-                        fetch("https://restcountries.eu/rest/v2/all")
+                        fetch(this.endpoint,{
+
+                            method: this.method,
+                            headers: this.head,
+                            body: this.body
+                        })
                         .then((response)=>response.json())
                         .then((data)=>{
 
-                            console.log("API data before resolve",data)
+                            console.log("API data before resolve",data);
                             resolve(data);
                         }) 
-                        .catch(()=>console.log("Failed to fetch API",reject()));   
+                        .catch(()=>console.log(`Failed to fetch API @ ${this.endpoint}`,reject()));   
                     });    
                 };
             };
@@ -214,13 +241,12 @@ const App =
                     })
                     .then(function(response) {
                         
-                        console.log(response);
-                        console.log("FETCH THEN 1");
+                        console.log("RESPONSE ON SIGNUP PAGE LOAD",response);
                         return response.json();
                     })
                     .then(function(data) {
                         
-                        console.log("FETCH THEN 2");
+                        console.log("DATA ON SIGNUP PAGE LOAD");
                         return console.log(data);
                     })
                     .catch(err=>console.log(`ERROR IN SENDING JSON: ${err}`));
@@ -237,15 +263,72 @@ const App =
             header_login_btn.addEventListener("click",()=>{
 
                 alert("YOU CLICKED!");
-                console.log("clicked");
+                console.log("header login btn clicked");
                 modal[0].classList.toggle("remove_element");
                 //modal[0].setAttribute("class","modal");
             });
 
-            modal_btn[0].addEventListener("click",()=>{
+            modal_btns[0].addEventListener("click",()=>{
 
-                alert("MODAL CLOSE BUTTON CLICKED")
+                alert("MODAL CLOSE BUTTON CLICKED");
                 modal[0].classList.toggle("remove_element");
+            });
+
+            header_login_submit_btn.addEventListener("click",(event)=>{
+
+                alert("HEADER LOGIN SUBMITTED");
+                event.preventDefault();
+
+                localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
+
+                let is_header_login = 
+                {
+                    data: true,
+                    username_email: username_email_login.value,
+                    password: password_login.value
+                };
+
+                const url = 'http://localhost:3000/auth/login';
+                fetch(url,{
+                    method: 'POST',
+                    headers : {'Content-Type': 'application/json',
+                                    'Accept': 'application/json'},
+                    body: JSON.stringify(is_header_login) 
+                })
+                .then(function(response){
+
+                    console.log("HEADER LOGIN BUTTON - RESPONSE - ON SUBMIT");
+                    return response.json();
+                })
+                .then(function(data){
+
+                    alert("LOGIN API DATA");
+                    console.log("HEADER LOGIN BUTTON - DATA - ON SUBMIT");
+
+                    console.log(data.username_email_login);
+                    console.log(data);
+
+                    let error_msg = is_obj_keys_null(data);
+                    console.log(is_obj_keys_null(data));
+
+                    if(error_msg === false)
+                    {
+                        form_error_msg[0].innerHTML = "";
+                        form_error_msg[1].innerHTML = "";
+                        form_error_msg[2].innerHTML = "";
+                        console.log("LOGIN USING HEADER SUCCESSFUL");
+                        localStorage.removeItem("username_email_login");
+                        location.reload();
+                    }
+
+                    else
+                    {
+                        form_error_msg[0].innerHTML = data.result;
+                        form_error_msg[1].innerHTML = data.username_email_login;
+                        form_error_msg[2].innerHTML = data.password_login;
+                    };
+                })
+                .catch((err)=>`Failed to fulfil promise: ${err}`);
             });
         });
     },

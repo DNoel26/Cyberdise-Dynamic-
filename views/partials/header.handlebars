@@ -48,25 +48,7 @@
 <div id="signup_login_form_section" class="modal remove_element">
     <div id="login_form_section_right" class="modal_content">
         <div>
-            <form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
-                <div class="form_error_msg">
-                    <p>Entered Email, Username and/or Password is Invalid</p>
-                </div>
-
-                <div>
-                    <label for="username_email">Email/Username</label>
-                    <input name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
-                </div>
-                
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
-                </div>
-                
-                <a href="">Forgot Your Password?</a>
-                <button class="button_class" type="submit">Login Now</button>
-                <button class="modal_close_btn button_class" type="button"><i class="far fa-times-circle "></i></button>
-            </form>
+            {{> login_form}}
         </div>
     </div>
 </div>
@@ -78,3 +60,25 @@
         <img src="/img/icons/cart_solid.png" alt="Shopping Cart Icon">    
     </div>
 </div>
+
+<!--
+<form id="login_form" action="/auth/fast-login" method="POST" novalidate="novalidate" autocomplete="off">
+    <div class="form_error_msg">
+        <p></p>
+    </div>
+
+    <div>
+        <label for="username_email">Email/Username</label>
+        <input name="username_email" id="username_email" placeholder="Enter a Valid Email or Username...">
+    </div>
+    
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter a Valid Password...">
+    </div>
+    
+    <a href="">Forgot Your Password?</a>
+    <button id="header_login_submit_btn" class="button_class" type="submit">Login Now</button>
+    <button class="modal_close_btn button_class" type="button"><i class="far fa-times-circle "></i></button>
+</form>
+-->

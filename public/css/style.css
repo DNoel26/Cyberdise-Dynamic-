@@ -239,8 +239,8 @@ img
     display: block;
     color: red;
     font-weight: 900;
-    font-size: 0.7rem;
-    letter-spacing: 0.05rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1rem;
     margin-bottom: 10px;                                    /* FORM ERROR MESSAGE TOGGLE */
 }
 
@@ -380,10 +380,10 @@ a
     justify-items: center;
 }
 
-.modal #login_form_section_right > div
+/*.modal #login_form_section_right > div
 {
-    background-color:var(--bg_color_2);
-}
+    background-color:var(--bg_color_2) !important;
+}*/
 
 .modal #login_form_section_right > div button:hover
 {
@@ -1938,7 +1938,7 @@ footer
     background-color: var(--bg_color_2);
     color: var(--font_color_2);   
     font-weight: 600;
-    letter-spacing: 0.12rem;
+    letter-spacing: 0.1rem;
 }
 
 #login_form input, #login_form select, #login_form button
@@ -1985,8 +1985,9 @@ input:focus, select:focus
 #signup_form span, #login_form span
 {
     display: block;
-    font-weight: 600;
+    font-weight: 900;
     margin-bottom: 4px;
+    letter-spacing: 0.1rem;
 }
 
                     /* SIGNUP AND LOGIN PAGE ABOVE */

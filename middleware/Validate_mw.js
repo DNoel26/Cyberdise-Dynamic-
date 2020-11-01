@@ -1,6 +1,7 @@
 const bcryptjs = require("bcryptjs");
 const express = require("express");
-const User_model = require("../models/MYSQL_models/User_mdl.js")
+const {home_render_obj} = require("../middleware/Render_obj_mw.js");
+const User_model = require("../models/MYSQL_models/User_mdl.js");
 const Customer = require("../models/POJO/Customer.js");
 const Employee = require("../models/POJO/Employee.js");
 const User = require("../models/POJO/User.js");
@@ -109,10 +110,11 @@ exports.customer_register_form = (req,res,next)=>
     {
         res.render("general/signup",{
 
-            title: "Signup now to create your account or login to your existing account",
-            html_id: "signup_page_html",
-            body_id: "signup_page_body",
-            main_id: "signup_page_main",
+            title: home_render_obj.title, 
+            html_id: home_render_obj.html_id, 
+            body_id: home_render_obj.body_id, 
+            main_id: home_render_obj.main_id, 
+            no_modal: home_render_obj.no_modal,
             errors,
             created_customer
         });
@@ -144,10 +146,11 @@ exports.customer_register_form = (req,res,next)=>
 
                 res.render("general/signup",{
 
-                    title: "Signup now to create your account or login to your existing account",
-                    html_id: "signup_page_html",
-                    body_id: "signup_page_body",
-                    main_id: "signup_page_main",
+                    title: home_render_obj.title, 
+                    html_id: home_render_obj.html_id, 
+                    body_id: home_render_obj.body_id, 
+                    main_id: home_render_obj.main_id, 
+                    no_modal: home_render_obj.no_modal,
                     errors,
                     created_customer
                 });
@@ -181,6 +184,9 @@ exports.customer_register_form = (req,res,next)=>
 
 exports.customer_login_form = (req,res,next)=>{
 
+    console.log("REQ BODY IS HEADER LOGIN",req.body.data);
+    console.log("LOGIN USER FORM DATA INPUT",req.body);
+
     const login_customer = new Customer;
 
     login_customer.email = req.body.username_email;
@@ -194,10 +200,20 @@ exports.customer_login_form = (req,res,next)=>{
     let is_exists = false;
     let is_authenticated = false;
 
+    let is_header_login = req.body.data;
+    if(is_header_login === undefined || is_header_login === null)
+    {
+        is_header_login = false;
+    };
+
+    console.log("IS HEADER LOGIN REQ CHECKER - TRUE OR FALSE",is_header_login);
+    req.is_header_login = is_header_login;
+
     const errors = 
     {
         username_email_login: null,
-        password_login: null
+        password_login: null,
+        result: null
     };
 
     const exists_errors = 
@@ -209,7 +225,7 @@ exports.customer_login_form = (req,res,next)=>{
     {
         result: null
     };
-    
+
     //Checks for empty username/email input before db lookup
 
     if(login_customer.username_email === "" && login_customer.password === "")
@@ -227,15 +243,25 @@ exports.customer_login_form = (req,res,next)=>{
 
     if(is_error)
     {
-        res.render("general/signup",{
+        if(is_header_login === false)
+        {
+            res.render("general/signup",{
 
-            title: "Signup now to create your account or login to your existing account",
-            html_id: "signup_page_html",
-            body_id: "signup_page_body",
-            main_id: "signup_page_main",
-            errors,
-            login_customer
-        });
+                title: home_render_obj.title, 
+                html_id: home_render_obj.html_id, 
+                body_id: home_render_obj.body_id, 
+                main_id: home_render_obj.main_id, 
+                no_modal: home_render_obj.no_modal,
+                errors,
+                login_customer
+            });
+        }
+
+        else
+        {
+            res.json(errors);
+            console.log("HEADER LOGIN - IS_ERROR = TRUE");
+        };
     }
 
     //Checks for non-empty username/email in database
@@ -253,43 +279,67 @@ exports.customer_login_form = (req,res,next)=>{
                 if(login_customer.password === "")
                 {
                     errors.password_login = "You must enter password";
-                    res.render("general/signup",{
 
-                        title: "Signup now to create your account or login to your existing account",
-                        html_id: "signup_page_html",
-                        body_id: "signup_page_body",
-                        main_id: "signup_page_main",
-                        errors,
-                        login_customer
-                    });
+                    if(is_header_login === false)
+                    {
+                        res.render("general/signup",{
+
+                            title: home_render_obj.title, 
+                            html_id: home_render_obj.html_id, 
+                            body_id: home_render_obj.body_id, 
+                            main_id: home_render_obj.main_id, 
+                            no_modal: home_render_obj.no_modal,
+                            errors,
+                            login_customer
+                        });
+                    }
+                    
+                    else
+                    {
+                        res.json(errors);
+                        console.log("HEADER LOGIN - USER SELECTED BUT NO PASSWORD ENTERED = TRUE");
+                    };
                 }
 
                 else
                 {
                     bcryptjs.compare(login_customer.password,selected_customer.password)
                     .then((auth_result)=>{
-                        console.log(auth_result)
+
+                        console.log(auth_result);
                         if(auth_result) //i.e. login_customer.password === selected_customer.password
                         {
                             is_authenticated = true;
-                            console.log("CORRECT PASSWORD!!!");
+                            console.log("CORRECT USER AND PASSWORD!!!");
+                            res.json(errors);
                             next();  
                         }
 
                         else
                         {
-                            authenticated_errors.result = "Invalid Email/Username and Password combination";    
+                            authenticated_errors.result = "Invalid Email/Username and Password combination";  
+                            errors.result = authenticated_errors.result;  
                             console.log("WRONG PASSWORD!!!");
                             
-                            res.render("general/signup",{
+                            if(is_header_login === false)
+                            {
+                                res.render("general/signup",{
 
-                                title: "Signup now to create your account or login to your existing account",
-                                html_id: "signup_page_html",
-                                body_id: "signup_page_body",
-                                main_id: "signup_page_main",
-                                authenticated_errors,
-                                login_customer
-                            });
+                                    title: home_render_obj.title, 
+                                    html_id: home_render_obj.html_id, 
+                                    body_id: home_render_obj.body_id, 
+                                    main_id: home_render_obj.main_id, 
+                                    no_modal: home_render_obj.no_modal,
+                                    authenticated_errors,
+                                    login_customer
+                                });
+                            }
+
+                            else
+                            {
+                                res.json(errors);
+                                console.log("HEADER LOGIN - USER SELECTED BUT WRONG PASSWORD = TRUE");
+                            }
                         };
                     })
                     .catch(err=>{
@@ -304,16 +354,27 @@ exports.customer_login_form = (req,res,next)=>{
             {
                 is_exists = false;
                 exists_errors.result = "Entered Email or Username does not exist";
+                errors.result = exists_errors.result;
                 console.log("SORRY CUSTOMER DOESN'T EXIST",selected_customer);
 
-                res.render("general/signup",{
+                if(is_header_login === false)
+                {
+                    res.render("general/signup",{
 
-                    title: "Signup now to create your account or login to your existing account",
-                    html_id: "signup_page_html",
-                    body_id: "signup_page_body",
-                    main_id: "signup_page_main",
-                    exists_errors
-                });
+                        title: home_render_obj.title, 
+                        html_id: home_render_obj.html_id, 
+                        body_id: home_render_obj.body_id, 
+                        main_id: home_render_obj.main_id, 
+                        no_modal: home_render_obj.no_modal,
+                        exists_errors
+                    });
+                }
+
+                else
+                {
+                    res.json(errors);
+                    console.log("HEADER LOGIN - USER NOT FOUND IN DB = TRUE");    
+                }   
             };
         })
         .catch(err=>{

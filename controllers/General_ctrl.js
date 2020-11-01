@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
+const {home_render_obj} = require("../middleware/Render_obj_mw.js");
 
 const db = require("../config/MySQL_DAO.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
@@ -34,8 +35,8 @@ router.get("/",function(req,res){
 
 router.post("/signup",function(req,res){
 
-    /*console.log(req.body.data[3]);
-    console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);*/
+    console.log(req.body.data[3]);
+    //console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);
     //res.locals.country_list = req.body.data;
 })
 
@@ -43,14 +44,15 @@ router.get("/signup",function(req,res){
 
     //console.log(res.locals);
     //console.log((req));
-    console.log("GET SIGNUP",req.body,req.query,req.params)
+    console.log("GET SIGNUP",req.body,req.query,req.params);
 
     res.render("general/signup",{
 
-        title: "Signup now to create your account or login to your existing account",
-        html_id: "signup_page_html",
-        body_id: "signup_page_body",
-        main_id: "signup_page_main",
+        title: home_render_obj.title, //"Signup now to create your account or login to your existing account",
+        html_id: home_render_obj.html_id, //"signup_page_html",
+        body_id: home_render_obj.body_id, //"signup_page_body",
+        main_id: home_render_obj.main_id, //"signup_page_main",
+        no_modal: home_render_obj.no_modal, //true
     });
 });
 
