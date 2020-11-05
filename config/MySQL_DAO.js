@@ -20,7 +20,7 @@ const MySQL = {
             this.connection = con;
             console.log("MySQL connection to database successful");
         })
-        .catch(err => console.log(`Error in File MySQL_DAO.js, MySQL.init(): ${err}`));
+        .catch(err => console.log(`Error in MySQL_DAO.js: MySQL.init(): ${err}`));
     },
 
     end()

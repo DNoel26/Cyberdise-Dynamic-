@@ -1,13 +1,13 @@
 const bcryptjs = require("bcryptjs");
 const express = require("express");
-const {home_render_obj} = require("../middleware/Render_obj_mw.js");
+const {signup_render_obj} = require("../config/Render_obj_mw.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
 const Customer = require("../models/POJO/Customer.js");
 const Employee = require("../models/POJO/Employee.js");
 const User = require("../models/POJO/User.js");
 
-exports.customer_register_form = (req,res,next)=>
-{
+exports.customer_register_form = (req,res,next)=>{
+
     const created_customer = new Customer();
 
     created_customer.first_name = req.body.first_name;
@@ -110,13 +110,13 @@ exports.customer_register_form = (req,res,next)=>
     {
         res.render("general/signup",{
 
-            title: home_render_obj.title, 
-            html_id: home_render_obj.html_id, 
-            body_id: home_render_obj.body_id, 
-            main_id: home_render_obj.main_id, 
-            no_modal: home_render_obj.no_modal,
+            title: signup_render_obj.title, 
+            html_id: signup_render_obj.html_id, 
+            body_id: signup_render_obj.body_id, 
+            main_id: signup_render_obj.main_id, 
+            no_modal: signup_render_obj.no_modal,
             errors,
-            created_customer
+            created_customer,
         });
 
         /*console.log("Customer Gender REQ BODY",created_customer.gender,
@@ -129,7 +129,7 @@ exports.customer_register_form = (req,res,next)=>
 
     else
     {
-        User_model.get_customer_by_username_email(created_customer.email,created_customer.username)
+        User_model.get_user_by_username_email(created_customer.email,created_customer.username)
         .then((selected_customer)=>{
 
             if(selected_customer !== null)
@@ -146,13 +146,13 @@ exports.customer_register_form = (req,res,next)=>
 
                 res.render("general/signup",{
 
-                    title: home_render_obj.title, 
-                    html_id: home_render_obj.html_id, 
-                    body_id: home_render_obj.body_id, 
-                    main_id: home_render_obj.main_id, 
-                    no_modal: home_render_obj.no_modal,
+                    title: signup_render_obj.title, 
+                    html_id: signup_render_obj.html_id, 
+                    body_id: signup_render_obj.body_id, 
+                    main_id: signup_render_obj.main_id, 
+                    no_modal: signup_render_obj.no_modal,
                     errors,
-                    created_customer
+                    created_customer,
                 });
             }
         
@@ -169,32 +169,32 @@ exports.customer_register_form = (req,res,next)=>
                     created_customer.password = hash;
                     next();
                 }) 
-                .catch(err=>{console.log(`Error in Validate Middleware: Customer Registration Form 
+                .catch(err=>{console.log(`Error in Validate_mw.js: Customer Registration Form 
                     (bcrypt encryption process): ${err}`);
                     return;
                 });
             };
         })
-        .catch(err=>{console.log(`Error in Validate Middleware: Customer Registration Form 
+        .catch(err=>{console.log(`Error in Validate_mw.js: Customer Registration Form 
             (get customer by username_email): ${err}`);
             return;
         });
     };
 };
 
-exports.customer_login_form = (req,res,next)=>{
+exports.user_login_form = (req,res,next)=>{
 
     console.log("REQ BODY IS HEADER LOGIN",req.body.data);
     console.log("LOGIN USER FORM DATA INPUT",req.body);
 
-    const login_customer = new Customer;
+    const login_user = new User;
 
-    login_customer.email = req.body.username_email;
-    login_customer.username = req.body.username_email;
-    login_customer.username_email = req.body.username_email;
-    login_customer.password = req.body.password;
+    login_user.email = req.body.username_email;
+    login_user.username = req.body.username_email;
+    login_user.username_email = req.body.username_email;
+    login_user.password = req.body.password;
     
-    req.login_customer = login_customer;
+    req.login_user = login_user;
 
     let is_error = false;
     let is_exists = false;
@@ -228,14 +228,14 @@ exports.customer_login_form = (req,res,next)=>{
 
     //Checks for empty username/email input before db lookup
 
-    if(login_customer.username_email === "" && login_customer.password === "")
+    if(login_user.username_email === "" && login_user.password === "")
     {
         is_error = true;
         errors.username_email_login = "You must enter an email or username";
         errors.password_login = "You must enter a password";
     };
 
-    if(login_customer.username_email === "" && login_customer.password !== "")
+    if(login_user.username_email === "" && login_user.password !== "")
     {
         is_error = true;
         errors.username_email_login = "You must enter an email or username as well";
@@ -247,20 +247,25 @@ exports.customer_login_form = (req,res,next)=>{
         {
             res.render("general/signup",{
 
-                title: home_render_obj.title, 
-                html_id: home_render_obj.html_id, 
-                body_id: home_render_obj.body_id, 
-                main_id: home_render_obj.main_id, 
-                no_modal: home_render_obj.no_modal,
+                title: signup_render_obj.title, 
+                html_id: signup_render_obj.html_id, 
+                body_id: signup_render_obj.body_id, 
+                main_id: signup_render_obj.main_id, 
+                no_modal: signup_render_obj.no_modal,
                 errors,
-                login_customer
+                login_user,
             });
         }
 
         else
         {
-            res.json(errors);
             console.log("HEADER LOGIN - IS_ERROR = TRUE");
+
+            res.status(200).json({
+
+               errors: errors,
+               message: "Error message when no email or username is entered",
+            }); 
         };
     }
 
@@ -268,15 +273,15 @@ exports.customer_login_form = (req,res,next)=>{
 
     else
     {
-        User_model.get_customer_by_username_email(login_customer.email,login_customer.username)
-        .then((selected_customer)=>{
+        User_model.get_user_by_username_email(login_user.email,login_user.username)
+        .then((selected_user)=>{
 
-            if(selected_customer !== null)
+            if(selected_user !== null)
             {
                 is_exists = true;
-                console.log("THIS CUSTOMER WAS SELECTED",selected_customer);
+                console.log("THIS USER WAS SELECTED",selected_user,"USER ROLE",selected_user.role);
 
-                if(login_customer.password === "")
+                if(login_user.password === "")
                 {
                     errors.password_login = "You must enter password";
 
@@ -284,35 +289,55 @@ exports.customer_login_form = (req,res,next)=>{
                     {
                         res.render("general/signup",{
 
-                            title: home_render_obj.title, 
-                            html_id: home_render_obj.html_id, 
-                            body_id: home_render_obj.body_id, 
-                            main_id: home_render_obj.main_id, 
-                            no_modal: home_render_obj.no_modal,
+                            title: signup_render_obj.title, 
+                            html_id: signup_render_obj.html_id, 
+                            body_id: signup_render_obj.body_id, 
+                            main_id: signup_render_obj.main_id, 
+                            no_modal: signup_render_obj.no_modal,
                             errors,
-                            login_customer
+                            login_user,
                         });
                     }
                     
                     else
                     {
-                        res.json(errors);
                         console.log("HEADER LOGIN - USER SELECTED BUT NO PASSWORD ENTERED = TRUE");
+
+                        res.status(200).json({
+
+                            errors: errors,
+                            message: "Error message when user exists but no password is entered", 
+                        }); 
                     };
                 }
 
                 else
                 {
-                    bcryptjs.compare(login_customer.password,selected_customer.password)
+                    bcryptjs.compare(login_user.password,selected_user.password)
                     .then((auth_result)=>{
 
                         console.log(auth_result);
                         if(auth_result) //i.e. login_customer.password === selected_customer.password
                         {
                             is_authenticated = true;
+                            req.selected_user = selected_user;
                             console.log("CORRECT USER AND PASSWORD!!!");
-                            res.json(errors);
-                            next();  
+
+                            if(is_header_login === false)
+                            {
+                                next();  
+                            }
+
+                            else
+                            {
+                                res.status(200).json({
+
+                                    errors: errors,
+                                    message: "Correct email and password was entered, error message is null", 
+                                });
+
+                                next();
+                            };
                         }
 
                         else
@@ -325,26 +350,31 @@ exports.customer_login_form = (req,res,next)=>{
                             {
                                 res.render("general/signup",{
 
-                                    title: home_render_obj.title, 
-                                    html_id: home_render_obj.html_id, 
-                                    body_id: home_render_obj.body_id, 
-                                    main_id: home_render_obj.main_id, 
-                                    no_modal: home_render_obj.no_modal,
+                                    title: signup_render_obj.title, 
+                                    html_id: signup_render_obj.html_id, 
+                                    body_id: signup_render_obj.body_id, 
+                                    main_id: signup_render_obj.main_id, 
+                                    no_modal: signup_render_obj.no_modal,
                                     authenticated_errors,
-                                    login_customer
+                                    login_user,
                                 });
                             }
 
                             else
                             {
-                                res.json(errors);
                                 console.log("HEADER LOGIN - USER SELECTED BUT WRONG PASSWORD = TRUE");
-                            }
+
+                                res.status(200).json({
+
+                                    errors: errors,
+                                    message: "Error message when incorrect username/email and password combination is entered", 
+                                }); 
+                            };
                         };
                     })
                     .catch(err=>{
                         
-                        console.log(`Error in Validate Middleware: Customer Login Form: ${err}`);
+                        console.log(`Error in Validate_mw.js: User Login Form: ${err}`);
                         return;
                     }); 
                 }          
@@ -355,31 +385,36 @@ exports.customer_login_form = (req,res,next)=>{
                 is_exists = false;
                 exists_errors.result = "Entered Email or Username does not exist";
                 errors.result = exists_errors.result;
-                console.log("SORRY CUSTOMER DOESN'T EXIST",selected_customer);
+                console.log("SORRY USER DOESN'T EXIST",selected_user);
 
                 if(is_header_login === false)
                 {
                     res.render("general/signup",{
 
-                        title: home_render_obj.title, 
-                        html_id: home_render_obj.html_id, 
-                        body_id: home_render_obj.body_id, 
-                        main_id: home_render_obj.main_id, 
-                        no_modal: home_render_obj.no_modal,
-                        exists_errors
+                        title: signup_render_obj.title, 
+                        html_id: signup_render_obj.html_id, 
+                        body_id: signup_render_obj.body_id, 
+                        main_id: signup_render_obj.main_id, 
+                        no_modal: signup_render_obj.no_modal,
+                        exists_errors,
                     });
                 }
 
                 else
                 {
-                    res.json(errors);
                     console.log("HEADER LOGIN - USER NOT FOUND IN DB = TRUE");    
+
+                    res.status(200).json({
+
+                        errors: errors,
+                        message: "Error message when email or username does not exist in database", 
+                    }); 
                 }   
             };
         })
         .catch(err=>{
             
-            console.log(`Error in Validate Middleware: Customer Login Form (get customer by username_email): ${err}`);
+            console.log(`Error in Validate_mw.js: User Login Form (get User by username_email): ${err}`);
             return;
         });
 

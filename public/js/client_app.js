@@ -305,11 +305,11 @@ const App =
                     alert("LOGIN API DATA");
                     console.log("HEADER LOGIN BUTTON - DATA - ON SUBMIT");
 
-                    console.log(data.username_email_login);
+                    console.log(data.errors.username_email_login);
                     console.log(data);
 
-                    let error_msg = is_obj_keys_null(data);
-                    console.log(is_obj_keys_null(data));
+                    let error_msg = is_obj_keys_null(data.errors);
+                    console.log(is_obj_keys_null(data.errors));
 
                     if(error_msg === false)
                     {
@@ -318,14 +318,16 @@ const App =
                         form_error_msg[2].innerHTML = "";
                         console.log("LOGIN USING HEADER SUCCESSFUL");
                         localStorage.removeItem("username_email_login");
-                        location.reload();
+                        password_login.value = "";
+                        modal[0].classList.toggle("remove_element");
+                        //location.reload();
                     }
 
                     else
                     {
-                        form_error_msg[0].innerHTML = data.result;
-                        form_error_msg[1].innerHTML = data.username_email_login;
-                        form_error_msg[2].innerHTML = data.password_login;
+                        form_error_msg[0].innerHTML = data.errors.result;
+                        form_error_msg[1].innerHTML = data.errors.username_email_login;
+                        form_error_msg[2].innerHTML = data.errors.password_login;
                     };
                 })
                 .catch((err)=>`Failed to fulfil promise: ${err}`);

@@ -20,6 +20,19 @@ const helper  = exphbs.create({
             };
         },
 
+        if_true(a,b, options)
+        {
+            if(a === b) 
+            {
+                return options.fn(this);
+            }
+
+            else
+            {
+                return options.inverse(this);
+            };
+        },
+
         if_not(a,options)
         {
             if(a === null || a === undefined || a === "" || a === false) 

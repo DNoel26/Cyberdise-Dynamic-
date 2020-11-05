@@ -46,13 +46,20 @@ app.use(express.static("public"));
 //app.use(body_parser.urlencoded({limit: '50mb', extended: true }));
 app.use(body_parser.urlencoded({extended: true}));
 app.use(body_parser.json({extended: true}));//{limit: '50mb', extended: true}));
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+app.use(flash());
 
 //app.use("/",Testing_Controller); //FOR TESTING ONLY!
 app.use("/",General_Controller);
 app.use("/customer",Customer_Controller);
 app.use("/employee",Employee_Controller);
 app.use("/products",Product_Controller);
-app.use(Authentication_Controller);
+app.use("/auth",Authentication_Controller);
 app.use(Authorization_Controller);
 
 /*app.get("/",function(req,res){

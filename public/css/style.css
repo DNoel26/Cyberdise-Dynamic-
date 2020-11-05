@@ -375,7 +375,7 @@ a
     height: 100%;
     overflow: auto;
     z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.9);
     align-items: center;
     justify-items: center;
 }

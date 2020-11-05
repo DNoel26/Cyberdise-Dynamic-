@@ -180,52 +180,86 @@ const User_model = {
         })
     },
     
-    get_customer_by_username_email(customer_email,customer_username)//customer_email,customer_username)
+    get_user_by_username_email(email,username)//customer_email,customer_username)
     {
         return new Promise((resolve,reject)=>{
             
-            this.SQL = 'SELECT * FROM customer INNER JOIN user ON customer.customer_id_fk = user.user_id WHERE email = ? OR username = ?;';
-            db.connection.query(this.SQL, [customer_email,customer_username])//customer_email,customer_username])
+            this.SQL = 
+            `SELECT *, c.role AS customer_role, ic.role AS inventory_clerk_role, 
+            c.date_created AS customer_date_created, c.last_modified AS customer_last_modified,
+            ic.date_created AS inventory_clerk_date_created, ic.last_modified AS inventory_clerk_last_modified
+            FROM user u
+            LEFT JOIN customer c ON u.user_id = c.customer_id_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_fk
+            WHERE email = ? OR username = ?;`;
+            db.connection.query(this.SQL, [email,username]) //customer_email,customer_username])
             .then(([rows,fields])=>{
 
-                let selected_customer = null;
+                let selected_user = null;
+                console.log("SELECTED ROWS IN QUERY",rows)
 
                 if(rows.length > 0)
                 {
-                    selected_customer = new Customer;
+                    if(rows[0].customer_role === "customer")
+                    {
+                        selected_user = new Customer;
                     
-                    selected_customer.user_id = rows[0].user_id;
-                    selected_customer.first_name = rows[0].first_name;
-                    selected_customer.last_name = rows[0].last_name;
-                    selected_customer.full_name = rows[0].full_name;
-                    selected_customer.gender = rows[0].gender;
-                    selected_customer.country = rows[0].country;
-                    selected_customer.username = rows[0].username;
-                    selected_customer.email = rows[0].email;
-                    selected_customer.password = rows[0].password;
-                    selected_customer.logged_in = rows[0].logged_in;
-                    selected_customer.last_login_date = rows[0].last_login_date;
-                    selected_customer.last_login_IP = rows[0].last_login_IP;
-                    selected_customer.customer_id_fk = rows[0].customer_id_fk;
-                    selected_customer.address = rows[0].address;
-                    selected_customer.town_city = rows[0].town_city;
-                    selected_customer.state = rows[0].state;
-                    selected_customer.credit_card_num = rows[0].credit_card_num;
-                    selected_customer.role = rows[0].role;
-                    selected_customer.date_created = rows[0].date_created;
-                    selected_customer.last_modified = rows[0].last_modified;
+                        selected_user.user_id = rows[0].user_id;
+                        selected_user.first_name = rows[0].first_name;
+                        selected_user.last_name = rows[0].last_name;
+                        selected_user.full_name = rows[0].full_name;
+                        selected_user.gender = rows[0].gender;
+                        selected_user.country = rows[0].country;
+                        selected_user.username = rows[0].username;
+                        selected_user.email = rows[0].email;
+                        selected_user.password = rows[0].password;
+                        selected_user.logged_in = rows[0].logged_in;
+                        selected_user.last_login_date = rows[0].last_login_date;
+                        selected_user.last_login_IP = rows[0].last_login_IP;
+                        //customer specific
+                        selected_user.customer_id_fk = rows[0].customer_id_fk;
+                        selected_user.address = rows[0].address;
+                        selected_user.town_city = rows[0].town_city;
+                        selected_user.state = rows[0].state;
+                        selected_user.credit_card_num = rows[0].credit_card_num;
+                        selected_user.role = rows[0].customer_role;
+                        selected_user.date_created = rows[0].customer_date_created;
+                        selected_user.last_modified = rows[0].customer_last_modified;
 
+                        resolve(selected_user);
+                    }
+
+                    else if(rows[0].inventory_clerk_role === "employee")
+                    {
+                        selected_user = new Employee;
+
+                        selected_user.user_id = rows[0].user_id;
+                        selected_user.first_name = rows[0].first_name;
+                        selected_user.last_name = rows[0].last_name;
+                        selected_user.full_name = rows[0].full_name;
+                        selected_user.gender = rows[0].gender;
+                        selected_user.country = rows[0].country;
+                        selected_user.username = rows[0].username;
+                        selected_user.email = rows[0].email;
+                        selected_user.password = rows[0].password;
+                        selected_user.logged_in = rows[0].logged_in;
+                        selected_user.last_login_date = rows[0].last_login_date;
+                        selected_user.last_login_IP = rows[0].last_login_IP;
+                        //employee specific
+                        selected_user.inventory_clerk_id_fk = rows[0].inventory_clerk_id_fk;
+                        selected_user.role = rows[0].inventory_clerk_role;
+                        selected_user.date_created = rows[0].inventory_clerk_date_created;
+                        selected_user.last_modified = rows[0].inventory_clerk_last_modified;
+
+                        resolve(selected_user);
+                    }
                     //console.log("The data for login customer",selected_customer,"The fields for login customer",fields);
-                    
-                    resolve(selected_customer);
                 }
 
                 else
                 {
-                    selected_customer = null;
-                    resolve(selected_customer);
+                    resolve(selected_user);
                 }
-                
+                console.log("SELECTED USER QUERY RESULTS",selected_user)
             })
             .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err}`));
         })

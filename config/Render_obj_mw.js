@@ -1,4 +1,4 @@
-exports.home_render_obj =
+exports.signup_render_obj =
 {
     title: "Signup now to create your account or login to your existing account",
     html_id: "signup_page_html",

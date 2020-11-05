@@ -1,23 +1,20 @@
 const express = require("express");
 const router = express.Router();
-
-const send_email = require("../middleware/Nodemailer_mw.js");
-const {customer_login_form} = require("../middleware/Validate_mw.js");
+const {user_login_form} = require("../middleware/Validate_mw.js");
+const {send_nodemail_on_login} = require("../middleware/Nodemailer_mw.js");
+const {telesign_sms} = require("../middleware/Telesign_api_mw.js");
 
 //*****AUTHENTICATION CONTROLS
 
-router.post("/auth/login",customer_login_form,function(req,res){
+router.post("/login",user_login_form,send_nodemail_on_login,function(req,res){
 
-    send_email
-    .catch(console.error);
-
-    console.log(req.is_header_login);
+    req.session.user_info = req.selected_user;
+    //console.log("REQ IS HEADER LOGIN AUTH LOGIN",req.is_header_login,"RES LOCALS LOGGED IN STATUS",logged_in);
     //console.log(req.login_customer.email,req.login_customer.username,req.login_customer.username_email);
+
     if(req.is_header_login)
     {
         console.log("SUCCESSFULLY LOGGED IN FROM HEADER LOGIN");
-        
-        
 
         //res.redirect("/products/all-products");
         /*let login_error = 
@@ -34,7 +31,18 @@ router.post("/auth/login",customer_login_form,function(req,res){
     {
         console.log("SUCCESSFULLY LOGGED IN FROM SIGNUP/LOGIN PAGE");
 
-        res.redirect("/products/all-products"); 
+        if(req.session.user_info.role === "employee")
+        {
+            res.redirect("/employee/my-account");
+        }
+
+        else if(req.session.user_info.role === "customer")
+        {
+            res.redirect("/products/all-products"); 
+        }
+
+        req.flash("message","Logged In Successfully!");
+        //req.session.destroy();
     };
 });
 

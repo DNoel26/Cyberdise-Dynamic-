@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
-const {home_render_obj} = require("../middleware/Render_obj_mw.js");
+const {signup_render_obj} = require("../config/Render_obj_mw.js");
 
 const db = require("../config/MySQL_DAO.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
@@ -25,6 +25,7 @@ router.get("/",function(req,res){
         home: true,
         home_active_link: "active_link",
         best_sellers: ["Electronics","Food"],
+        message: req.flash("message"),
         trial: "<h1>LETS GO</h1>"
     });
     
@@ -48,11 +49,11 @@ router.get("/signup",function(req,res){
 
     res.render("general/signup",{
 
-        title: home_render_obj.title, //"Signup now to create your account or login to your existing account",
-        html_id: home_render_obj.html_id, //"signup_page_html",
-        body_id: home_render_obj.body_id, //"signup_page_body",
-        main_id: home_render_obj.main_id, //"signup_page_main",
-        no_modal: home_render_obj.no_modal, //true
+        title: signup_render_obj.title, //"Signup now to create your account or login to your existing account",
+        html_id: signup_render_obj.html_id, //"signup_page_html",
+        body_id: signup_render_obj.body_id, //"signup_page_body",
+        main_id: signup_render_obj.main_id, //"signup_page_main",
+        no_modal: signup_render_obj.no_modal, //true
     });
 });
 
@@ -61,13 +62,13 @@ router.post("/signup/create-account",customer_register_form,function(req,res){//
     //console.log("JSON OBJECT",req.body.country_json);
 
     const catch_rollback = function(){
-
+        
         User_model.mysql_rollback()
         .then(()=>{
 
             res.redirect("/signup");     
         })
-        .catch(err=>{console.log(`Error in catch rollback function: ${err}`)}); 
+        .catch(err=>{console.log(`Error in General_ctrl.js: Catch rollback function: ${err}`)}); 
     };
     
     User_model.create_trigger_test()
@@ -118,7 +119,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){//
     }) //FIFTH THEN       
     .catch((err)=>{
 
-        console.log(`Error in General Controller, Customer Signup (on POST): ${err}`);
+        console.log(`Error in General_ctrl.js: Customer Signup (on POST): ${err}`);
         catch_rollback();
     });
 });

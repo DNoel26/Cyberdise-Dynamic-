@@ -1,51 +1,29 @@
 const nodemailer = require("nodemailer");
 
-async function test_email()
-{
-    try 
-    {
-        //let test_acc = await nodemailer.createTestAccount();
+exports.send_nodemail_on_login = (req,res,next)=>{
+
+    console.log("ABOUT TO SEND EMAIL");
+
+    return new Promise((resolve,reject)=>{
 
         let transporter = nodemailer.createTransport({
 
-            host: "smtp.ethereal.email",
+            /*host: "smtp-mail.outlook.com", //"smtp.ethereal.email",
+            secureConnection: false,
             port: 587,
-            secure: false,
+            tls: {ciphers: "SSLv3"},
+            //secure: false,
             auth: {
 
-                user: 'kiera.roberts45@ethereal.email', //test_acc.user,
-                pass: '3d5UM8VgE2mE5R8fch', //test_acc.pass, 
+                user: //'kiera.roberts45@ethereal.email',
+                pass: //'3d5UM8VgE2mE5R8fch', 
             },
-        });
-
-        let info = await transporter.sendMail({
-
-            from: '"Kiera Roberts" <kiera.roberts45@ethereal.email>',
-            to: "kiera.roberts45@ethereal.email, dnoel_26@hotmail.com",
-            subject: "Hello",
-            text: "Hello from Cyberdise",
-            html: "<b>Hello from Cyberdise</b>",
-        })
-        
-        console.log("EMAIL SENT",info);
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));    
-    } 
-    catch(err) 
-    {
-        console.log(`Error in email: ${err}`);
-    }
-};
-
-async function signup_email()
-{
-    try 
-    {
-        let transporter = nodemailer.createTransport({
+            debug: true,
+            logger: true,*/
 
             host: "smtp.mailtrap.io",
             port: 2525,
-            //secure: false,
+            secure: false,
             auth: {
 
                 user: 'f2f8f4259fa351', //test_acc.user,
@@ -53,23 +31,28 @@ async function signup_email()
             },
         });
 
-        let info = await transporter.sendMail({
+        return transporter.sendMail({
 
-            from: '"Kiera Roberts" <kiera.roberts45@ethereal.email>',
-            to: "kiera.roberts45@ethereal.email, dnoel_26@hotmail.com",
+            from: '"Darnell Noel" <dnoel_26@hotmail.com>',
+            to: "dnoel_26@hotmail.com, darnellnoel.webdev@gmail.com",
             subject: "Hello There From Cyberdise",
-            text: "Hello from Cyberdise",
-            html: "<b>Hello from Cyberdise</b>",
+            text: "Hello from Cyberdise - Sent using Nodemailer",
+            html: "<b>Hello from Cyberdise - Sent using Nodemailer</b>",
         })
-        
-        console.log("EMAIL SENT",info);
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));    
-    } 
-    catch(err) 
-    {
-        console.log(`Error in email: ${err}`);
-    }
-};
+        .then((info)=>{
 
-module.exports = signup_email();
+            console.log("EMAIL SENT",info);
+            console.log("Message sent: %s", info.messageId);
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info)); 
+            resolve(info);
+
+            next();
+        })
+        .catch(err=>{
+
+            reject(`Error in Nodemailer_mw.js: send_nodemail_on_login: ${err}`);
+
+            next();
+        });
+    })
+};
