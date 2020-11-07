@@ -6,3 +6,4 @@ exports.signup_render_obj =
     main_id: "signup_page_main",
     no_modal: true
 }   
+

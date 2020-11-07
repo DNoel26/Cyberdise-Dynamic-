@@ -1,7 +1,6 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
 //require('dotenv').config();
-require("dotenv").config({path: "config/keys.env"});
 const mysql = require("mysql2/promise");
 const session = require("express-session");
 const body_parser = require("body-parser");
@@ -9,6 +8,8 @@ const bcryptjs = require("bcryptjs");
 const flash = require("connect-flash");
 const file_upload = require("express-fileupload");
 const MySQLStore = require("express-mysql-session")(session);
+const request_ip = require("request-ip");
+require("dotenv").config({path: "config/keys.env"});
 
 const helper = require("./config/helpers.js");
 
@@ -23,7 +24,9 @@ const Customer_Controller = require("./controllers/Customer_ctrl.js");
 const Employee_Controller = require("./controllers/Employee_ctrl.js");
 const Product_Controller = require("./controllers/Product_ctrl.js");
 const Authentication_Controller = require("./controllers/Authenticate_ctrl.js");
-const Authorization_Controller = require("./controllers/Authorize_ctrl.js");
+const {is_authorized_customer,is_authorized_employee} = require("./middleware/Authorize_mw.js");
+const is_auth = require("./middleware/Authenticate_mw.js");
+const User_model = require("./models/MYSQL_models/User_mdl.js");
 
 const app = express();
 
@@ -50,17 +53,25 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    //cookie: { secure: false }
 }));
 app.use(flash());
+app.use(request_ip.mw());
+//For Handlebar access
+app.use((req,res,next)=>{
+
+    res.locals.user_info = req.session.user_info;
+    res.locals.message = req.flash("message");
+
+    next();
+})
 
 //app.use("/",Testing_Controller); //FOR TESTING ONLY!
 app.use("/",General_Controller);
-app.use("/customer",Customer_Controller);
-app.use("/employee",Employee_Controller);
+app.use("/customer",is_auth,is_authorized_customer,Customer_Controller);
+app.use("/employee",is_auth,is_authorized_employee,Employee_Controller);
 app.use("/products",Product_Controller);
 app.use("/auth",Authentication_Controller);
-app.use(Authorization_Controller);
 
 /*app.get("/",function(req,res){
 
@@ -99,9 +110,9 @@ User1.first_name = "John";
 const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT, function(){
 
-    console.log("Server is connected and running",this.address().port, app.settings.env);
+    console.log("Server is connected and running", this.address().port, app.settings.env);
     MySQL_DB.init();
 });
 

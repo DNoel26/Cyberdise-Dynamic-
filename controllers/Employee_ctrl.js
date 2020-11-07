@@ -18,7 +18,7 @@ router.get("/my-account",function(req,res){
 
 //*****EDIT STOCK CONTROLS
 
-router.get("/edit-stock",function(req,res){
+router.get("/edit-stock",function(req,res){ 
 
     res.render("employee/edit_stock",{
 
@@ -26,7 +26,7 @@ router.get("/edit-stock",function(req,res){
         html_id: "edit_stock_html",
         body_id: "edit_stock_body",
         main_id: "edit_stock_main",
-        my_account_active_link: "active_link",
+        my_stock_active_link: "active_link",
     });
 });
 

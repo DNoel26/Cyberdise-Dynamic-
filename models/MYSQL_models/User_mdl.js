@@ -180,7 +180,7 @@ const User_model = {
         })
     },
     
-    get_user_by_username_email(email,username)//customer_email,customer_username)
+    get_user_by_username_email(user_email,user_username)//customer_email,customer_username)
     {
         return new Promise((resolve,reject)=>{
             
@@ -191,79 +191,131 @@ const User_model = {
             FROM user u
             LEFT JOIN customer c ON u.user_id = c.customer_id_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_fk
             WHERE email = ? OR username = ?;`;
-            db.connection.query(this.SQL, [email,username]) //customer_email,customer_username])
+            db.connection.query(this.SQL, [user_email,user_username]) //customer_email,customer_username])
             .then(([rows,fields])=>{
 
-                let selected_user = null;
-                console.log("SELECTED ROWS IN QUERY",rows)
+                let selected_users = [];
+                //console.log("SELECTED ROWS IN QUERY",rows)
 
                 if(rows.length > 0)
                 {
-                    if(rows[0].customer_role === "customer")
-                    {
-                        selected_user = new Customer;
+                    rows.forEach((row,index) => {
+                        
+                        if(row.customer_role === "customer")
+                        {
+                            const selected_user = new Customer;
+                        
+                            selected_user.user_id = row.user_id;
+                            selected_user.first_name = row.first_name;
+                            selected_user.last_name = row.last_name;
+                            selected_user.full_name = row.full_name;
+                            selected_user.gender = row.gender;
+                            selected_user.country = row.country;
+                            selected_user.username = row.username;
+                            selected_user.email = row.email;
+                            selected_user.password = row.password;
+                            selected_user.logged_in = row.logged_in;
+                            selected_user.last_login_date = row.last_login_date;
+                            selected_user.last_login_IP = row.last_login_IP;
+                            //customer specific
+                            selected_user.customer_id_fk = row.customer_id_fk;
+                            selected_user.address = row.address;
+                            selected_user.town_city = row.town_city;
+                            selected_user.state = row.state;
+                            selected_user.credit_card_num = row.credit_card_num;
+                            selected_user.role = row.customer_role;
+                            selected_user.date_created = row.customer_date_created;
+                            selected_user.last_modified = row.customer_last_modified;
+
+                            selected_users.push(selected_user);
+                        }
+
+                        else if(row.inventory_clerk_role === "employee")
+                        {
+                            const selected_user = new Employee;
+
+                            selected_user.user_id = row.user_id;
+                            selected_user.first_name = row.first_name;
+                            selected_user.last_name = row.last_name;
+                            selected_user.full_name = row.full_name;
+                            selected_user.gender = row.gender;
+                            selected_user.country = row.country;
+                            selected_user.username = row.username;
+                            selected_user.email = row.email;
+                            selected_user.password = row.password;
+                            selected_user.logged_in = row.logged_in;
+                            selected_user.last_login_date = row.last_login_date;
+                            selected_user.last_login_IP = row.last_login_IP;
+                            //employee specific
+                            selected_user.inventory_clerk_id_fk = row.inventory_clerk_id_fk;
+                            selected_user.role = row.inventory_clerk_role;
+                            selected_user.date_created = row.inventory_clerk_date_created;
+                            selected_user.last_modified = row.inventory_clerk_last_modified;
+
+                            selected_users.push(selected_user);
+                        }    
+                    });
                     
-                        selected_user.user_id = rows[0].user_id;
-                        selected_user.first_name = rows[0].first_name;
-                        selected_user.last_name = rows[0].last_name;
-                        selected_user.full_name = rows[0].full_name;
-                        selected_user.gender = rows[0].gender;
-                        selected_user.country = rows[0].country;
-                        selected_user.username = rows[0].username;
-                        selected_user.email = rows[0].email;
-                        selected_user.password = rows[0].password;
-                        selected_user.logged_in = rows[0].logged_in;
-                        selected_user.last_login_date = rows[0].last_login_date;
-                        selected_user.last_login_IP = rows[0].last_login_IP;
-                        //customer specific
-                        selected_user.customer_id_fk = rows[0].customer_id_fk;
-                        selected_user.address = rows[0].address;
-                        selected_user.town_city = rows[0].town_city;
-                        selected_user.state = rows[0].state;
-                        selected_user.credit_card_num = rows[0].credit_card_num;
-                        selected_user.role = rows[0].customer_role;
-                        selected_user.date_created = rows[0].customer_date_created;
-                        selected_user.last_modified = rows[0].customer_last_modified;
+                    selected_users.forEach(user => {
+                        
+                        console.log("SELECTED USER ARRAY -",user.username,"-",user.email);
+                    });
 
-                        resolve(selected_user);
-                    }
-
-                    else if(rows[0].inventory_clerk_role === "employee")
-                    {
-                        selected_user = new Employee;
-
-                        selected_user.user_id = rows[0].user_id;
-                        selected_user.first_name = rows[0].first_name;
-                        selected_user.last_name = rows[0].last_name;
-                        selected_user.full_name = rows[0].full_name;
-                        selected_user.gender = rows[0].gender;
-                        selected_user.country = rows[0].country;
-                        selected_user.username = rows[0].username;
-                        selected_user.email = rows[0].email;
-                        selected_user.password = rows[0].password;
-                        selected_user.logged_in = rows[0].logged_in;
-                        selected_user.last_login_date = rows[0].last_login_date;
-                        selected_user.last_login_IP = rows[0].last_login_IP;
-                        //employee specific
-                        selected_user.inventory_clerk_id_fk = rows[0].inventory_clerk_id_fk;
-                        selected_user.role = rows[0].inventory_clerk_role;
-                        selected_user.date_created = rows[0].inventory_clerk_date_created;
-                        selected_user.last_modified = rows[0].inventory_clerk_last_modified;
-
-                        resolve(selected_user);
-                    }
+                    resolve(selected_users);
                     //console.log("The data for login customer",selected_customer,"The fields for login customer",fields);
                 }
 
                 else
                 {
-                    resolve(selected_user);
+                    selected_users = null;
+                    console.log("SELECTED USER ARRAY",selected_users)
+                    resolve(selected_users);
                 }
-                console.log("SELECTED USER QUERY RESULTS",selected_user)
+                //console.log("SELECTED USER QUERY RESULTS",selected_user)
             })
             .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err}`));
         })
-    }
+    },
+
+    update_user_on_login(user)
+    {
+        return new Promise((resolve,reject)=>{
+            
+            this.SQL = 
+            `UPDATE user
+            SET logged_in = ?, last_login_date = ?, last_login_IP = ?
+            WHERE user_id = ?;`;
+            db.connection.query(this.SQL, [user.logged_in, user.last_login_date, user.last_login_IP, user.user_id])
+            .then(()=>{
+                
+                resolve();
+            })
+            .catch((err)=>{
+
+                reject(`Error in User_mdl.js: update_user_on_login(): ${err}`);
+            });
+        })
+    },
+
+    update_user_on_logout(user)
+    {
+        return new Promise((resolve,reject)=>{
+            
+            this.SQL = 
+            `UPDATE user
+            SET logged_in = ?
+            WHERE user_id = ?;`;
+            db.connection.query(this.SQL, [user.logged_in, user.user_id])
+            .then(()=>{
+                
+                resolve();
+            })
+            .catch((err)=>{
+
+                reject(`Error in User_mdl.js: update_user_on_logout(): ${err}`);
+            });
+        })
+    },
 }
 
 module.exports = User_model;

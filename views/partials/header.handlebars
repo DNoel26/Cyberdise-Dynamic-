@@ -13,12 +13,26 @@
         </div>
         <ul id="right_nav_list">
             <div>
-                <li class="welcome_msg"><p>Hi, Darnell{{user.first_name}}</p></li>
-                <li><a class="{{signup_active_link}}" href="/signup" target="_blank"><img class="floating_icons" src="/img/icons/compose.png" alt="Pen Icon">Signup</a></li>
+                <li class="welcome_msg"><p>Hello, {{#if user_info}}{{user_info.first_name}}{{message}}{{else}}Sign In to Start Shopping{{/if}}</p></li>
+                {{#if_not user_info}} 
+                    <li><a class="{{signup_active_link}}" href="/signup" target="_blank"><img class="floating_icons" src="/img/icons/compose.png" alt="Pen Icon">Signup</a></li> 
+                {{/if_not}}
                 <!--<li><a href="/front_end_preview/html/login.html"><img class="floating_icons" src="/front_end_preview/img/icons/key.png" alt="Key Icon">Login</a></li>-->
-                <li><button id="header_login_btn" class="button_class" type="button"><img class="floating_icons" src="/img/icons/key.png" alt="Key Icon">Login</button></li>
-                <li><a class="{{my_cart_active_link}}" href="/customer/my-cart"><img class="floating_icons" src="/img/icons/cart.png" alt="Cart Icon">My Cart</a></li>
-                <li><a class="{{my_account_active_link}}" href="/customer/my-account"><img class="floating_icons" src="/img/icons/person.png" alt="Home Icon">My Account</a></li>    
+                {{#if_not user_info}} 
+                    <li><button id="header_login_btn" class="button_class" type="button"><img class="floating_icons" src="/img/icons/key.png" alt="Key Icon">Login</button></li>
+                {{else}}
+                    <li>
+                        <a id="header_logout_btn" class="button_class" href="/auth/logout">Logout</a> 
+                    </li>
+                {{/if_not}}
+                {{#if_eq user_info.role "customer"}}
+                    <li><a class="{{my_cart_active_link}}" href="/customer/my-cart"><img class="floating_icons" src="/img/icons/cart.png" alt="Cart Icon">My Cart</a></li>
+                    <li><a class="{{my_account_active_link}}" href="/customer/my-account"><img class="floating_icons" src="/img/icons/person.png" alt="Home Icon">My Account</a></li>    
+                {{/if_eq}}
+                {{#if_eq user_info.role "employee"}}
+                    <li><a class="{{my_stock_active_link}}" href="/employee/edit-stock"><img class="floating_icons" src="/img/icons/cart.png" alt="Cart Icon">Stock</a></li>
+                    <li><a class="{{my_account_active_link}}" href="/employee/my-account"><img class="floating_icons" src="/img/icons/person.png" alt="Home Icon">My Account</a></li>    
+                {{/if_eq}}
             </div>
         </ul>
     </div>

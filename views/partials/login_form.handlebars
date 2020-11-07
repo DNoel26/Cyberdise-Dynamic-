@@ -1,13 +1,15 @@
 <form id="login_form" action="/auth/login" method="POST" novalidate="novalidate" autocomplete="off">
     <div>
+
         {{#if_not no_modal}}
-        <div>
-            <h2>
-                Login and Start Shopping Now! 
-            </h2>
-            <br>    
-        </div>
+            <div>
+                <h2>
+                    Login and Start Shopping Now! 
+                </h2>
+                <br>    
+            </div>
         {{/if_not}}   
+
         <span class="form_error_msg">{{exists_errors.result}}{{authenticated_errors.result}}</span>
     </div>
 
@@ -23,8 +25,20 @@
         <span class="form_error_msg">{{errors.password_login}}</span>  
     </div>
     
+    {{#if login_animate}}
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> 
+    {{/if}}
+    <div class="lds-ellipsis hide_element"><div></div><div></div><div></div><div></div></div> 
+
     <a href="">Forgot Your Password?</a>
-    <button {{#if no_modal}} id="login_btn" {{else}} id="header_login_submit_btn" {{/if}}class="button_class" type="submit">{{#if_eq logged_in undefined}}Login Now{{else}}Logout{{/if_eq}}</button>
-    {{#if_not no_modal}}<button class="modal_close_btn button_class" type="button"><i class="far fa-times-circle "></i></button>{{/if_not}}
+
+    <button {{#if no_modal}}id="login_submit_btn"{{else}}id="header_login_submit_btn"{{/if}} class="button_class" type="submit">
+        {{#if_eq logged_in undefined}}Login Now{{else}}Logout{{/if_eq}}
+    </button>
+
+    {{#if_not no_modal}}
+        <button class="modal_close_btn button_class" type="button"><i class="far fa-times-circle "></i></button>
+    {{/if_not}}
+    
 </form>
 

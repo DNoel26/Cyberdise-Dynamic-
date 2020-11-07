@@ -17,10 +17,12 @@ const App =
         const home_page_hero = document.querySelector("#home_page_hero");
         const home_page_main = document.querySelector("#home_page_main");
         const page_top = document.querySelector("#go_to_top");
+        const signup_page_html = document.querySelector("#signup_page_html");
         const special_div = document.querySelector("#spec");
 
         const header_login_btn = document.querySelector("#header_login_btn");
         const header_login_submit_btn = document.querySelector("#header_login_submit_btn");
+        const login_submit_btn = document.querySelector("#login_submit_btn");
         //const header_login_btn = document.getElementById("header_login_btn");
         const country_select = document.querySelector("#signup_login_form_section select#country");
         const top_country_option = document.querySelector("#signup_login_form_section select#country option#top_selection");
@@ -28,9 +30,10 @@ const App =
         const country_flag_src = document.querySelector("#country_flag_src");
         const modal = document.querySelectorAll(".modal");
         const modal_btns = document.querySelectorAll(".modal_close_btn");
-        const username_email_login = document.querySelector("#username_email");
-        const password_login = document.querySelector("#password");
+        const username_email_login = document.querySelector(".modal #username_email");
+        const password_login = document.querySelector(".modal #password");
         const form_error_msg = document.querySelectorAll(".form_error_msg");
+        const login_animation = document.querySelector(".lds-ellipsis");
 
         const testtt = document.querySelector("#testtt"); //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
@@ -73,7 +76,10 @@ const App =
             
             const username_email_login_info = JSON.parse(localStorage.getItem("username_email_login"));
             //alert(username_email_login_info);
-            username_email_login.value = username_email_login_info;
+            if(signup_page_html === null)
+            {
+                username_email_login.value = username_email_login_info;
+            }
             
             class API 
             {
@@ -237,7 +243,8 @@ const App =
                         method: 'POST',
                         headers : {'Content-Type': 'application/json',
                                     'Accept': 'application/json'},
-                        body: country_json_str//country_json_str
+                        body: country_json_str, //country_json_str
+                        credentials: "same-origin"
                     })
                     .then(function(response) {
                         
@@ -260,78 +267,133 @@ const App =
             //doc_body.style.backgroundColor = "red";
             //header_login_btn.style.backgroundColor = "red";
 
-            header_login_btn.addEventListener("click",()=>{
+            if(signup_page_html !== null)
+            {
+                login_submit_btn.addEventListener("click",()=>{
+                    
+                    //alert("PRESSED");
+                    login_animation.classList.toggle("hide_element");
+                });  
+            }
 
-                alert("YOU CLICKED!");
-                console.log("header login btn clicked");
-                modal[0].classList.toggle("remove_element");
-                //modal[0].setAttribute("class","modal");
-            });
-
-            modal_btns[0].addEventListener("click",()=>{
-
-                alert("MODAL CLOSE BUTTON CLICKED");
-                modal[0].classList.toggle("remove_element");
-            });
-
-            header_login_submit_btn.addEventListener("click",(event)=>{
-
-                alert("HEADER LOGIN SUBMITTED");
-                event.preventDefault();
-
-                localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
-
-                let is_header_login = 
+            else
+            {
+                if(header_login_btn)
                 {
-                    data: true,
-                    username_email: username_email_login.value,
-                    password: password_login.value
-                };
+                    header_login_btn.addEventListener("click",()=>{
 
-                const url = 'http://localhost:3000/auth/login';
-                fetch(url,{
-                    method: 'POST',
-                    headers : {'Content-Type': 'application/json',
-                                    'Accept': 'application/json'},
-                    body: JSON.stringify(is_header_login) 
-                })
-                .then(function(response){
-
-                    console.log("HEADER LOGIN BUTTON - RESPONSE - ON SUBMIT");
-                    return response.json();
-                })
-                .then(function(data){
-
-                    alert("LOGIN API DATA");
-                    console.log("HEADER LOGIN BUTTON - DATA - ON SUBMIT");
-
-                    console.log(data.errors.username_email_login);
-                    console.log(data);
-
-                    let error_msg = is_obj_keys_null(data.errors);
-                    console.log(is_obj_keys_null(data.errors));
-
-                    if(error_msg === false)
-                    {
-                        form_error_msg[0].innerHTML = "";
-                        form_error_msg[1].innerHTML = "";
-                        form_error_msg[2].innerHTML = "";
-                        console.log("LOGIN USING HEADER SUCCESSFUL");
-                        localStorage.removeItem("username_email_login");
-                        password_login.value = "";
+                        //alert("YOU CLICKED!");
+                        console.log("header login btn clicked");
                         modal[0].classList.toggle("remove_element");
-                        //location.reload();
-                    }
+                        //login_animation.classList.toggle("hide_element");
+                        //modal[0].setAttribute("class","modal");
+                    });
+                }
+                
+    
+                modal_btns[0].addEventListener("click",()=>{
+    
+                    //alert("MODAL CLOSE BUTTON CLICKED");
+                    modal[0].classList.toggle("remove_element");
+                });
 
-                    else
+                //document.querySelector("body").addEventListener("click",()=>{alert("YES")})
+
+                header_login_submit_btn.addEventListener("click",(event)=>{
+
+                    //alert("HEADER LOGIN SUBMITTED");
+                    event.preventDefault();
+                    const load_time = setTimeout(() => {
+                        
+                        login_animation.classList.toggle("hide_element");
+                    }, 200);
+    
+                    localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
+    
+                    let is_header_login = 
                     {
-                        form_error_msg[0].innerHTML = data.errors.result;
-                        form_error_msg[1].innerHTML = data.errors.username_email_login;
-                        form_error_msg[2].innerHTML = data.errors.password_login;
+                        data: true,
+                        username_email: username_email_login.value,
+                        password: password_login.value
                     };
-                })
-                .catch((err)=>`Failed to fulfil promise: ${err}`);
-            });
+    
+                    const url = 'http://localhost:3000/auth/login';
+                    fetch(url,{
+                        method: 'POST',
+                        headers : {'Content-Type': 'application/json',
+                                        'Accept': 'application/json'},
+                        body: JSON.stringify(is_header_login),
+                        credentials: "include" 
+                    })
+                    .then(function(response){
+    
+                        console.log("HEADER LOGIN BUTTON - RESPONSE - ON SUBMIT");
+                        
+                        return response.json();
+                    })
+                    .then(function(data){
+                        
+                        //alert("LOGIN API DATA");
+                        console.log("HEADER LOGIN BUTTON - LOGIN API DATA - ON SUBMIT");
+    
+                            console.log(data.errors.username_email_login);
+                            console.log(data);
+                            clearInterval(load_time);
+    
+                            let error_msg = is_obj_keys_null(data.errors);
+                            console.log(is_obj_keys_null(data.errors));
+    
+                        if(error_msg === false)
+                        {
+                            form_error_msg[0].innerHTML = "";
+                            form_error_msg[1].innerHTML = "";
+                            form_error_msg[2].innerHTML = "";
+                            console.log("LOGIN USING HEADER SUCCESSFUL");
+                            localStorage.removeItem("username_email_login");
+                            password_login.value = "";
+                            let load_dots = "";
+    
+                            const redirect_timer = setInterval(() => {
+                                
+                                modal[0].innerHTML = 
+                                `
+                                <div id="login_form_section_right" class="modal_content">
+                                    
+                                    <div id="login_success">
+                                        <h2>${data.message}<br><br>Redirecting${load_dots}</h2>
+                                    </div>
+                                </div>
+                                `
+                                load_dots += ".";
+    
+                                if(load_dots === "....")
+                                {
+                                    clearInterval(redirect_timer);
+                                }
+                            }, 200);
+                            
+                            setTimeout(() => {
+                                
+                                location.reload();
+                            }, 1500);
+                            //modal[0].classList.toggle("remove_element");
+                            //location.reload();
+                        }
+    
+                        else
+                        {
+                            form_error_msg[0].innerHTML = data.errors.result;
+                            form_error_msg[1].innerHTML = data.errors.username_email_login;
+                            form_error_msg[2].innerHTML = data.errors.password_login;
+                            if(!login_animation.classList.contains("hide_element"))
+                            {
+                                login_animation.classList.add("hide_element");
+                            }
+                        };
+                    })
+                    .catch((err)=>`Failed to fulfil promise: ${err}`); 
+                });
+            } 
         });
     },
 };

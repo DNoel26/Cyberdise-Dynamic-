@@ -104,7 +104,7 @@ exports.customer_register_form = (req,res,next)=>{
     //console.log("TESTTT",created_customer.testtt);
     //let data = JSON.parse(decodeURIComponent(created_customer.testtt));
     //console.log("JSON OBJECT",req.body.country_json,"REQ BODY!!!",req.body);
-    console.log(req.body);
+    console.log(req.body,is_error);
 
     if(is_error)
     {
@@ -130,19 +130,25 @@ exports.customer_register_form = (req,res,next)=>{
     else
     {
         User_model.get_user_by_username_email(created_customer.email,created_customer.username)
-        .then((selected_customer)=>{
+        .then((selected_users)=>{
 
-            if(selected_customer !== null)
+            if(selected_users !== null)
             {
-                if(selected_customer.email === created_customer.email)
-                {
-                    errors.email = "Entered email is already in use, please try another";
-                };
+                selected_users.forEach(user => {
+                    
+                    if(user.username.toLowerCase() === created_customer.username.toLowerCase())
+                    {
+                        errors.username = "Entered username is already in use, please try another";
+                    }
 
-                if(selected_customer.username === created_customer.username)
-                {
-                    errors.username = "Entered username is already in use, please try another";
-                };
+                    if(user.email.toLowerCase() === created_customer.email.toLowerCase())
+                    {
+                        errors.email = "Entered email is already in use, please try another";
+                    };
+                });
+
+                console.log("ON CHECK SELECTED CUST",selected_users,"ON CHECK CREATED CUST",created_customer);
+                console.log("ERRORS OBJECT ON CHECK FAIL",errors);
 
                 res.render("general/signup",{
 
@@ -186,7 +192,8 @@ exports.user_login_form = (req,res,next)=>{
 
     console.log("REQ BODY IS HEADER LOGIN",req.body.data);
     console.log("LOGIN USER FORM DATA INPUT",req.body);
-
+    console.log("SESSION TEST",req.session);
+    
     const login_user = new User;
 
     login_user.email = req.body.username_email;
@@ -206,7 +213,6 @@ exports.user_login_form = (req,res,next)=>{
         is_header_login = false;
     };
 
-    console.log("IS HEADER LOGIN REQ CHECKER - TRUE OR FALSE",is_header_login);
     req.is_header_login = is_header_login;
 
     const errors = 
@@ -240,6 +246,8 @@ exports.user_login_form = (req,res,next)=>{
         is_error = true;
         errors.username_email_login = "You must enter an email or username as well";
     };
+
+    console.log("IS HEADER LOGIN REQ CHECKER - TRUE OR FALSE",is_header_login,"LOGIN DETAILS",login_user);
 
     if(is_error)
     {
@@ -279,7 +287,7 @@ exports.user_login_form = (req,res,next)=>{
             if(selected_user !== null)
             {
                 is_exists = true;
-                console.log("THIS USER WAS SELECTED",selected_user,"USER ROLE",selected_user.role);
+                console.log("THIS USER WAS SELECTED",selected_user[0],"USER ROLE",selected_user[0].role);
 
                 if(login_user.password === "")
                 {
@@ -313,31 +321,26 @@ exports.user_login_form = (req,res,next)=>{
 
                 else
                 {
-                    bcryptjs.compare(login_user.password,selected_user.password)
+                    bcryptjs.compare(login_user.password,selected_user[0].password)
                     .then((auth_result)=>{
 
                         console.log(auth_result);
                         if(auth_result) //i.e. login_customer.password === selected_customer.password
                         {
                             is_authenticated = true;
-                            req.selected_user = selected_user;
+                            req.selected_user = selected_user[0];
+                            req.errors = errors,
                             console.log("CORRECT USER AND PASSWORD!!!");
 
-                            if(is_header_login === false)
+                            /*if(is_header_login === false)
                             {
                                 next();  
                             }
 
                             else
-                            {
-                                res.status(200).json({
-
-                                    errors: errors,
-                                    message: "Correct email and password was entered, error message is null", 
-                                });
-
+                            {*/
                                 next();
-                            };
+                            //};
                         }
 
                         else

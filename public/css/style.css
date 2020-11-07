@@ -13,6 +13,7 @@
     --font_color_black: black;
     --font_family_orbitron: 'Orbitron', sans-serif;
     --font_family_roboto: 'Roboto', sans-serif;
+    --font_family_lato: 'Lato', sans-serif;
     --font_family_geo: 'Geo', sans-serif;
     --font_family_nova_square: 'Nova Square', cursive;
     --hero_section_max_height: calc(100vh - 120px);
@@ -89,6 +90,66 @@
     from, to { transform: scale(1);}
     50% { transform: scale(1.015);}
 }
+
+                    /* CSS DOWNLOADS */
+
+/* ELLIPSIS LOADER */
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 40px;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 13px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
 
                     /* GENERAL DESIGN IS FOR 1200px MAX */
 
@@ -192,25 +253,28 @@ img
 {  
     display: inline-block;                 
     text-decoration: none;
-    color: var(--font_color_2);
+    color: var(--font_color_3);
     font-size: 0.7rem;
     font-weight: 900;
-    padding: 0;
+    padding: 0 8px 0 0;
     margin: 0;
     line-height: 18px;
 }
 
 .welcome_msg > p
 {
-    border-bottom: 2px solid var(--font_color_2);
+    border-bottom: 1px solid var(--font_color_3);
     padding: 0;
     margin: 0;
 }
 
-/*#header_login_btn
+#header_logout_btn a
 {
-    background-color: red;
-}*/
+    /*background-color: red;*/
+    border: none;
+    padding: 0;
+    margin: 0;
+}
 
 .hide_element
 {
@@ -1908,6 +1972,12 @@ footer
 #login_form a:hover
 {
     color: var(--font_color_2);
+}
+
+#login_success h2
+{
+    text-align: center;
+    padding: 32px 0;
 }
 
 #signup_login_form_section button

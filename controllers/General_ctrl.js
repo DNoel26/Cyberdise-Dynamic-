@@ -10,11 +10,13 @@ const Customer = require("../models/POJO/Customer.js");
 const Employee = require("../models/POJO/Employee.js");
 
 const {customer_register_form} = require("../middleware/Validate_mw.js");
+const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
 
 //*****HOME CONTROLS
 
 router.get("/",function(req,res){
 
+    console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info,req.flash());
     res.render("general/home",{
 
         title: "Homepage: See bestsellers and available deals today",
@@ -34,14 +36,15 @@ router.get("/",function(req,res){
 
 //*****SIGNUP AND LOGIN CONTROLS
 
-router.post("/signup",function(req,res){
+/*router.post("/signup",is_already_logged_in,function(req,res){
 
     console.log(req.body.data[3]);
+    res.locals.login_animate = true;
     //console.log("RES LOCALS COUNTRY LIST",res.locals.country_list[3].location_name);
     //res.locals.country_list = req.body.data;
-})
+})*/
 
-router.get("/signup",function(req,res){
+router.get("/signup",is_already_logged_in,function(req,res){
 
     //console.log(res.locals);
     //console.log((req));
@@ -57,9 +60,10 @@ router.get("/signup",function(req,res){
     });
 });
 
-router.post("/signup/create-account",customer_register_form,function(req,res){//
+router.post("/signup/create-account",customer_register_form,function(req,res){ //is_already_logged_in,
 
     //console.log("JSON OBJECT",req.body.country_json);
+    console.log("GOT TO SIGNUP POST STAGE")
 
     const catch_rollback = function(){
         
@@ -115,13 +119,19 @@ router.post("/signup/create-account",customer_register_form,function(req,res){//
     .then((test)=>{ 
 
         console.log("Fifth and final then before acc creation redirect",test);
-        res.redirect("/"); 
+        req.flash("message","Account successfully created!");
+        res.redirect("/signup/account-created"); 
     }) //FIFTH THEN       
     .catch((err)=>{
 
         console.log(`Error in General_ctrl.js: Customer Signup (on POST): ${err}`);
         catch_rollback();
     });
+});
+
+router.get("/signup/account-created",is_already_logged_in,function(req,res){
+    
+    res.redirect("/");
 });
 
 module.exports = router;

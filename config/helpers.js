@@ -9,13 +9,13 @@ const helper  = exphbs.create({
         {
             if(a === b) 
             {
-                console.log("if main this",options.fn(a),options.fn(b),options.fn(this));
+                //console.log("if main this",options.fn(a),options.fn(b),options.fn(this));
                 return options.fn(this);
             }
 
             else
             {
-                console.log("else main this",options.inverse(a),options.inverse(b),options.inverse(this));
+                //console.log("else main this",options.inverse(a),options.inverse(b),options.inverse(this));
                 return options.inverse(this);
             };
         },
@@ -37,13 +37,13 @@ const helper  = exphbs.create({
         {
             if(a === null || a === undefined || a === "" || a === false) 
             {
-                console.log("IF NOT IF",a)
+                //console.log("IF NOT IF",a)
                 return options.fn(this);
             }
 
             else
             {
-                console.log("IF NOT ELSE",a)
+                //console.log("IF NOT ELSE",a)
                 return options.inverse(this);
             };
         },
