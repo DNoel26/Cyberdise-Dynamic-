@@ -246,7 +246,7 @@ const App =
                 const test_obj = {test: 1,test_2: "two", test_3: "three"};
                 const test_obj_str = JSON.stringify(test_obj);
                 
-                let signup_url = 'http://localhost:3000/signup';
+                let signup_url = '/signup';
 
                     fetch(signup_url,{
 
@@ -346,7 +346,7 @@ const App =
                         password: password_login.value
                     };
     
-                    const url = 'http://localhost:3000/auth/login';
+                    const url = '/auth/login';
                     fetch(url,{
                         method: 'POST',
                         headers : {'Content-Type': 'application/json',
