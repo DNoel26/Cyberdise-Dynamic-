@@ -29,11 +29,21 @@ const App =
         const country_flag_img = document.querySelector("#country_flag");
         const country_flag_src = document.querySelector("#country_flag_src");
         const modal = document.querySelectorAll(".modal");
-        const modal_btns = document.querySelectorAll(".modal_close_btn");
+        const modal_close_btns = document.querySelectorAll(".modal_close_btn");
         const username_email_login = document.querySelector(".modal #username_email");
         const password_login = document.querySelector(".modal #password");
         const form_error_msg = document.querySelectorAll(".form_error_msg");
         const login_animation = document.querySelector(".lds-ellipsis");
+        const success_modal = document.querySelector("#success_modal");
+
+        const pagination = document.querySelectorAll(".pagination");
+        const products_display = document.querySelectorAll("#products_page_html .products_display");
+        const products_section = document.querySelector("#products_page_html #products_section");
+        const products_next_btn = document.querySelectorAll("#products_page_html .products_next_btn");
+        const products_prev_btn = document.querySelectorAll("#products_page_html .products_prev_btn");
+        const products_page_btn = document.querySelectorAll("#products_page_html .products_page_btn");
+        const page_num = document.querySelectorAll(".page_num");
+        const page_spacer = document.querySelectorAll(".page_spacer");
 
         const testtt = document.querySelector("#testtt"); //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
@@ -290,11 +300,24 @@ const App =
                     });
                 }
                 
-    
-                modal_btns[0].addEventListener("click",()=>{
+                modal_close_btns[0].addEventListener("click",()=>{
     
                     //alert("MODAL CLOSE BUTTON CLICKED");
                     modal[0].classList.toggle("remove_element");
+                });
+
+                function remove_modal(event) 
+                {    
+                    let e = event.target;
+                    if(e.className === "modal")
+                    {
+                        e.classList.toggle("remove_element");
+                    };
+                };
+                
+                modal.forEach((element) => {
+                    
+                    element.addEventListener("click", remove_modal);  
                 });
 
                 //document.querySelector("body").addEventListener("click",()=>{alert("YES")})
@@ -303,9 +326,15 @@ const App =
 
                     //alert("HEADER LOGIN SUBMITTED");
                     event.preventDefault();
+
+                    modal.forEach((element) => {
+
+                        element.removeEventListener("click",remove_modal);
+                    }); 
+
                     const load_time = setTimeout(() => {
                         
-                        login_animation.classList.toggle("hide_element");
+                        login_animation.classList.toggle("hide_element"); 
                     }, 200);
     
                     localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
@@ -335,6 +364,11 @@ const App =
                         
                         //alert("LOGIN API DATA");
                         console.log("HEADER LOGIN BUTTON - LOGIN API DATA - ON SUBMIT");
+                        //prevents modal from closing during reload
+                        modal.forEach((element) => {
+                    
+                            element.addEventListener("click", remove_modal);  
+                        });
     
                             console.log(data.errors.username_email_login);
                             console.log(data);
@@ -360,7 +394,7 @@ const App =
                                 <div id="login_form_section_right" class="modal_content">
                                     
                                     <div id="login_success">
-                                        <h2>${data.message}<br><br>Redirecting${load_dots}</h2>
+                                        <h2>${data.message}<br><br>Refreshing Page${load_dots}</h2>
                                     </div>
                                 </div>
                                 `
@@ -393,9 +427,193 @@ const App =
                     })
                     .catch((err)=>`Failed to fulfil promise: ${err}`); 
                 });
-            } 
-        });
-    },
+            }
+
+            if(success_modal)
+            {
+                setTimeout(() => {
+            
+                    success_modal.classList.add("remove_element");
+                }, 1500);
+            }  
+            
+            if(products_page_html)
+            {
+                const observers = [];
+
+                pagination.forEach(element => {
+                 
+                    const observer = new IntersectionObserver(([entries])=>{
+
+                        //console.log(entries);
+                           
+                        if(entries.isIntersecting)
+                        {
+                            element.classList.add("pagination_in_view");
+                        }
+
+                        else
+                        {
+                            element.classList.remove("pagination_in_view");
+                        }
+
+                    },{threshold: [0]})
+
+                    observers.push(observer);
+                });
+                
+                console.log(observers)
+                observers.forEach((element,index) => {
+                    
+                    element.observe(pagination[index]);
+                });
+
+                //alert("SIGNUP!");
+                console.log("NUM OF PRODUCTS ON DISPLAY",products_display.length);
+                let curr_page = 1;
+                let items_per_page = 3; //12
+                let num_of_items = products_display.length;
+                let num_of_pages = 12//parseInt(num_of_items / items_per_page);
+                console.log(num_of_pages);
+                let direction = "";
+                page_num[0].innerHTML = 1;
+                page_num[6].innerHTML = 1;
+                page_num[5].innerHTML = num_of_pages;
+                page_num[11].innerHTML = num_of_pages;
+
+                function highlight_page()
+                {
+                    //const mid_pg_nums = []
+                    
+                    page_num.forEach(element => {
+                        
+                        if(parseInt(element.innerHTML) === curr_page)
+                        {
+                            element.setAttribute("class","button_class page_num active_page");
+                        }
+    
+                        else
+                        {
+                            element.setAttribute("class","button_class page_num");
+                        };
+                    }); 
+
+                    if(curr_page > 0 && curr_page < 5)
+                    {
+                        page_spacer[0].style.display = "none";
+                        page_spacer[2].style.display = "none";
+                    }
+
+                    else
+                    {
+                        page_spacer[0].style.display = "initial";
+                        page_spacer[2].style.display = "initial";
+                    };
+
+                    if(curr_page > (num_of_pages - 5) && curr_page <= num_of_pages)
+                    {
+                        page_spacer[1].style.display = "none";
+                        page_spacer[3].style.display = "none";
+                    }
+
+                    else
+                    {
+                        page_spacer[1].style.display = "initial";
+                        page_spacer[3].style.display = "initial";
+                    };
+                };
+
+                function change_middle_nums(dir)
+                {
+                    page_num.forEach(element => {
+                        
+                        if(element.dataset.pgNumType == "middle" && (curr_page > 5 || curr_page < (num_of_pages - 5)))
+                        {
+                            console.log(element);
+                            if(dir == "next")
+                            {
+                                element.innerHTML ++;
+                            }
+
+                            else if(dir == "prev")
+                            {
+                                element.innerHTML --;
+                            }
+                        }
+                    });
+                }
+                
+                highlight_page();
+                change_middle_nums(direction);
+
+                function next_page()
+                {
+                    if(curr_page < num_of_pages)
+                    {
+                        curr_page++;
+                        console.log("PAGE NUM ON CLICK NEXT",curr_page);
+                    }
+
+                    return direction = "next";
+                };
+
+                function prev_page()
+                {
+                    if(curr_page > 1)
+                    {
+                        curr_page--;
+                        console.log("PAGE NUM ON CLICK PREV",curr_page);
+                    }
+
+                    return direction = "prev";
+                };
+
+                function change_page(direction)
+                {
+                    if(curr_page < 1)
+                    {
+                        curr_page = 1;
+                    };
+
+                    if(curr_page > num_of_pages)
+                    {
+                        curr_page = num_of_pages;
+                    };
+
+                    highlight_page();
+                    change_middle_nums(direction);
+                };
+
+                products_display.forEach(product => {
+                    
+                    console.log(product);
+                });
+
+                //console.log(products_next_btn)
+                products_next_btn.forEach(element => {
+                    
+                    element.addEventListener("click",()=>{
+
+                        next_page();
+                        //alert(`NEXT ${curr_page}`);
+                        console.log(direction);
+                        change_page(direction);
+                    });
+                });
+
+                products_prev_btn.forEach(element => {
+                    
+                    element.addEventListener("click",()=>{
+
+                        prev_page();
+                        //alert(`PREV ${curr_page}`);
+                        console.log(direction);
+                        change_page(direction);
+                    });
+                });
+            }
+        }); //end of DOMContentLoaded
+    }, //end of init()
 };
 
 App.init();

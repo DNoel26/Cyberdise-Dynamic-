@@ -12,12 +12,17 @@
     </div>  
 </nav>
 <h1>
-    <span class="white_words">Hello,</span> Signup <span class="white_words">or Login Below</span>
+    <span class="white_words">Hello,{{#if_not acc_created}}</span> Signup <span class="white_words">or {{else}} Please{{/if_not}} Login Below</span>
 </h1>
 <section id="signup_login_form_section" class="width_container">
     <section class="animate__animated animate__backInLeft" id="signup_form_section_left">
         {{#if message}}
-            {{message}}
+            <div id="acc_create_msg">
+                <div>
+                    <h2>{{{message}}}</h2>
+                    <a href="/">Return to Home Page</a>
+                </div> 
+            </div>
         {{else}}
             <div>
                 <div>
@@ -106,7 +111,7 @@
                         </div>
 
                         <a href="/">Return to Home Page</a>
-                        <button id="signup_btn"class="button_class" type="submit">Create Your Account</button>
+                        <button id="signup_btn" class="button_class" type="submit">Create Your Account</button>
                     </form>
                 </div>    
             </div>

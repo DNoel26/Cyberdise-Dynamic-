@@ -60,7 +60,7 @@ router.post("/login",is_already_logged_in,user_login_form,send_nodemail_on_login
     else
     {
         console.log("SUCCESSFULLY LOGGED IN FROM SIGNUP/LOGIN PAGE");
-
+            
         if(req.session.user_info.role === "employee")
         {
             res.redirect("/employee/my-account");
@@ -69,7 +69,7 @@ router.post("/login",is_already_logged_in,user_login_form,send_nodemail_on_login
         else if(req.session.user_info.role === "customer")
         {
             res.redirect("/products/all-products"); 
-        }
+        };
     }
 });
 

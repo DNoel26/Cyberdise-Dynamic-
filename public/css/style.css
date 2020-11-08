@@ -458,8 +458,9 @@ a
 .modal_content
 {
     position: relative;
-    width: 100%;
+    width: max-content;
     margin: auto;
+    z-index: 1001;
     /*background-color: red;*/
 }
 
@@ -481,6 +482,11 @@ a
     color: red;
 }
 
+#signup_login_success
+{
+    text-align: center;
+    color: var(--font_color_2);
+}
                     /* SPECIFIC CLASSES AND IDS ABOVE */
                     /* HEADER FORM DATA BELOW */
 
@@ -1952,6 +1958,7 @@ footer
 #signup_login_form_section form a
 {
     color: red;
+    text-decoration: underline;
     font-weight: 900;
     letter-spacing: 0.08rem;
     word-spacing: 0.1rem;
@@ -2060,6 +2067,39 @@ input:focus, select:focus
     letter-spacing: 0.1rem;
 }
 
+#acc_create_msg
+{
+    text-align: left;
+    display: grid;
+    align-self: flex-start;
+    padding: 0px 32px;
+}
+
+#acc_create_msg div
+{
+    height: 100%;
+}
+
+#acc_create_msg a
+{
+    color: red;
+    display: inline-block;
+    text-decoration: underline;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.08rem;
+    word-spacing: 0.1rem;
+    padding-left: 0px;
+    padding: 64px 0 16px 0;
+    justify-self: left;
+    vertical-align: bottom;
+}
+
+#acc_create_msg a:hover
+{
+    color: var(--font_color);
+}
+
                     /* SIGNUP AND LOGIN PAGE ABOVE */
 
                     /* ALL PRODUCTS PAGE BELOW */
@@ -2160,20 +2200,17 @@ input:focus, select:focus
 {
     display: grid;
     grid-template-columns: repeat(3, 300px);
-    grid-template-rows: repeat(4, 420px);
-    width: 1000px;
-    max-width: 1200px;
+    grid-template-rows: repeat(auto-fit, 420px);
+    max-width: 1120px;
     justify-content: center;
     margin: 0 auto;
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding: 64px;
     column-gap: 32px;
     row-gap: 32px;
     /*grid-template-rows: repeat(4, 400px);
     grid-template-columns: repeat(auto-fit, 300px);
     grid-template-rows: repeat(auto-fit, 300px);*/
-    border: 1px solid blue;
-    
+    border: 1px solid lightgrey;
 }
 
 .products_display
@@ -2269,6 +2306,64 @@ input:focus, select:focus
     background-color: rgba(255,255,255,0.5);
     padding: 16px 0;
     margin-bottom: 16px;
+}
+
+.pagination
+{
+    margin: 32px 0;
+}
+
+.pagination input
+{
+    width: 48px;
+}
+
+.top_pagination .product_button
+{
+    padding: inherit;
+    font-size: 1rem;
+}
+
+.top_pagination .product_button:hover
+{
+    padding: inherit;
+}
+
+.bot_pagination button
+{
+    width: 32px;
+    height: 32px;
+}
+
+.bot_pagination button:hover
+{
+    background-color: var(--bg_color_3);
+    color: var(--font_color);
+}
+
+.top_pagination, .bot_pagination
+{
+    /*background-color: red;*/
+    text-align: center;
+}
+
+.top_pagination li, .bot_pagination li
+{
+    list-style: none;
+    display: inline-block;
+    padding: 4px;
+}
+
+.bot_pagination
+{
+    /*background-color: blue;*/
+    padding-top: 32px;
+}
+
+.active_page
+{
+    background-color: var(--bg_color_2);
+    color: var(--font_color_2);
 }
 
                     /* ALL PRODUCTS PAGE ABOVE */

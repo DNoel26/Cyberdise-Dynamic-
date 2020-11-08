@@ -119,19 +119,22 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
     .then((test)=>{ 
 
         console.log("Fifth and final then before acc creation redirect",test);
-        req.flash("message","Account successfully created!");
-        res.redirect("/signup/account-created"); 
+        res.render("general/signup",{
+
+            title: signup_render_obj.title, 
+            html_id: signup_render_obj.html_id, 
+            body_id: signup_render_obj.body_id, 
+            main_id: signup_render_obj.main_id, 
+            no_modal: signup_render_obj.no_modal,
+            message: "Account successfully created! <br>Login to get started now",
+            acc_created: true,
+        });
     }) //FIFTH THEN       
     .catch((err)=>{
 
         console.log(`Error in General_ctrl.js: Customer Signup (on POST): ${err}`);
         catch_rollback();
     });
-});
-
-router.get("/signup/account-created",is_already_logged_in,function(req,res){
-    
-    res.redirect("/");
 });
 
 module.exports = router;

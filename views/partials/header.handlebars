@@ -13,7 +13,7 @@
         </div>
         <ul id="right_nav_list">
             <div>
-                <li class="welcome_msg"><p>Hello, {{#if user_info}}{{user_info.first_name}}{{message}}{{else}}Sign In to Start Shopping{{/if}}</p></li>
+                <li class="welcome_msg"><p>Hello, {{#if user_info}}{{user_info.first_name}}{{else}}Sign In to Start Shopping{{/if}}</p></li>
                 {{#if_not user_info}} 
                     <li><a class="{{signup_active_link}}" href="/signup" target="_blank"><img class="floating_icons" src="/img/icons/compose.png" alt="Pen Icon">Signup</a></li> 
                 {{/if_not}}
