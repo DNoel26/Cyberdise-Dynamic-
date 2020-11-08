@@ -18,6 +18,7 @@ const App =
         const home_page_main = document.querySelector("#home_page_main");
         const page_top = document.querySelector("#go_to_top");
         const signup_page_html = document.querySelector("#signup_page_html");
+        const products_page_html = document.querySelector("#products_page_html");
         const special_div = document.querySelector("#spec");
 
         const header_login_btn = document.querySelector("#header_login_btn");
