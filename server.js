@@ -53,7 +53,7 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    //cookie: { secure: false }
+    cookie: { secure: false }
 }));
 app.use(flash());
 app.use(request_ip.mw());
