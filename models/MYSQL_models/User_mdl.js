@@ -192,6 +192,12 @@ const User_model = {
             FROM user u
             LEFT JOIN customer c ON u.user_id = c.customer_id_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_fk
             WHERE email = ? OR username = ?;`;
+
+            if(!MySQL_DB.connection)
+            {
+                MySQL_DB.init();
+            }
+
             db.connection.query(this.SQL, [user_email,user_username]) //customer_email,customer_username])
             .then(([rows,fields])=>{
 
