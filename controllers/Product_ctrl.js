@@ -7,7 +7,7 @@ router.get("/all-products",function(req,res){
 
     const test_array = [];
     
-    for(let i = 0; i < 100; i++)
+    for(let i = 0; i < 500; i++)
     {
         let test_product = {};
         
