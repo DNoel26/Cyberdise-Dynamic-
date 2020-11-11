@@ -151,6 +151,87 @@
     }
   }
 
+/* CIRCLE LOADER */
+
+.lds-spinner {
+    color: official;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-spinner div {
+    transform-origin: 40px 40px;
+    animation: lds-spinner 1.2s linear infinite;
+  }
+  .lds-spinner div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: 37px;
+    width: 6px;
+    height: 18px;
+    border-radius: 20%;
+    background: #fff;
+  }
+  .lds-spinner div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -1.1s;
+  }
+  .lds-spinner div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -1s;
+  }
+  .lds-spinner div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.9s;
+  }
+  .lds-spinner div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.8s;
+  }
+  .lds-spinner div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.7s;
+  }
+  .lds-spinner div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.6s;
+  }
+  .lds-spinner div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.5s;
+  }
+  .lds-spinner div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.4s;
+  }
+  .lds-spinner div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.3s;
+  }
+  .lds-spinner div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.2s;
+  }
+  .lds-spinner div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.1s;
+  }
+  .lds-spinner div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+  }
+  @keyframes lds-spinner {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
                     /* GENERAL DESIGN IS FOR 1200px MAX */
 
 *
@@ -1053,7 +1134,7 @@ footer
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 12px;
+    bottom: 4vh;
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -2200,13 +2281,12 @@ input:focus, select:focus
 {
     display: grid;
     grid-template-columns: repeat(3, 300px);
-    grid-template-rows: repeat(auto-fit, 420px);
     max-width: 1120px;
     justify-content: center;
     margin: 0 auto;
     padding: 64px;
     column-gap: 32px;
-    row-gap: 32px;
+    row-gap: 96px;
     /*grid-template-rows: repeat(4, 400px);
     grid-template-columns: repeat(auto-fit, 300px);
     grid-template-rows: repeat(auto-fit, 300px);*/
@@ -2223,6 +2303,7 @@ input:focus, select:focus
     border: 1px solid lightgrey;
     border-bottom: 0px solid lightgrey;
     box-shadow: 4px 7px 8px -8px black;
+    position: relative;
 }
 
 #products_section img
@@ -2316,6 +2397,20 @@ input:focus, select:focus
 .pagination input
 {
     width: 48px;
+    font-size: 1rem;
+}
+
+.pagination input[type=number]::-webkit-outer-spin-button,
+.pagination input[type=number]::-webkit-inner-spin-button 
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pagination input:hover, .pagination input:focus
+{
+    background-color: var(--bg_color_2);
+    color: var(--font_color_2);
 }
 
 .top_pagination .product_button
@@ -2364,6 +2459,40 @@ input:focus, select:focus
 {
     background-color: var(--bg_color_2);
     color: var(--font_color_2);
+}
+
+#first_page, #first_page_bot
+{
+    border-right: 2px var(--bg_color_2) solid;
+}
+
+#last_page, #last_page_bot
+{
+    border-left: 2px var(--bg_color_2) solid;
+}
+
+#products_page_html .products_display .product_pos_num
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--bg_color_2);
+    color: var(--font_color_2);
+    width: max-content;
+    height: min-content;
+    font-size: 0.7rem;
+    padding: 8px 12px;
+}
+
+#products_page_html .products_display .best_seller_tag
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--font_color);
+    font-size: 1.2rem;
+    font-weight: 100;
+    padding: 4px;
 }
 
                     /* ALL PRODUCTS PAGE ABOVE */

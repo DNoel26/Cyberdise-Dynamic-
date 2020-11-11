@@ -45,6 +45,14 @@ const App =
         const products_page_btn = document.querySelectorAll("#products_page_html .products_page_btn");
         const page_num = document.querySelectorAll(".page_num");
         const page_spacer = document.querySelectorAll(".page_spacer");
+        const go_to_pg_btn = document.querySelectorAll(".go_to_pg_btn");
+        const product_page_no_top = document.querySelector("#product_page_no_top");
+        const product_page_no_bot = document.querySelector("#product_page_no_bot");
+        const current_num = document.querySelectorAll(".current_num");
+        const end_num = document.querySelectorAll(".end_num");
+        const products_load_modal = document.querySelector("#products_load_modal");
+        const all_products_container = document.querySelector("#all_products_container");
+        const product_pos_num = document.querySelectorAll(".product_pos_num h3");
 
         const testtt = document.querySelector("#testtt"); //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
@@ -438,6 +446,8 @@ const App =
                 }, 1500);
             }  
             
+            // --- ALL PRODUCTS PAGE ---
+            
             if(products_page_html)
             {
                 const observers = [];
@@ -471,16 +481,56 @@ const App =
 
                 //alert("SIGNUP!");
                 console.log("NUM OF PRODUCTS ON DISPLAY",products_display.length);
+                console.log(products_display[0])
                 let curr_page = 1;
-                let items_per_page = 3; //12
+                let items_per_page = 12; //12
                 let num_of_items = products_display.length;
-                let num_of_pages = 12//parseInt(num_of_items / items_per_page);
-                console.log(num_of_pages);
+                console.log("Number of products in all",products_display.length);
+
+                let num_of_pages = Math.ceil((num_of_items / items_per_page));
+                console.log("Number of pages in all products",num_of_pages)
+                products_section.innerHTML = "";
+                
+                product_pos_num.forEach(element => {
+                    
+                    element.innerHTML = parseInt(element.innerHTML) + 1;
+                });
+                
+
                 let direction = "";
-                page_num[0].innerHTML = 1;
-                page_num[6].innerHTML = 1;
-                page_num[5].innerHTML = num_of_pages;
-                page_num[11].innerHTML = num_of_pages;
+                const page_arr = [];
+                const dir_arr = [];
+
+                product_page_no_top.max = num_of_pages;
+                product_page_no_bot.max = num_of_pages;
+
+                current_num.forEach(element => {
+                    
+                    element.innerHTML = curr_page;
+                });
+                
+                end_num.forEach(element => {
+                    
+                    element.innerHTML = num_of_pages;
+                });
+
+                for(let i=0; i<num_of_pages; i++)
+                {
+                    page_arr.push(i+1);
+                }
+                console.log(page_arr);
+
+                page_num[0].innerHTML = page_arr[0];
+                page_num[5].innerHTML = page_arr[0];
+                page_num[4].innerHTML = page_arr[num_of_pages-1];
+                page_num[9].innerHTML = page_arr[num_of_pages-1];
+                console.log(page_num);
+
+                for(let i = ((curr_page - 1) * items_per_page); i < (curr_page * items_per_page); i++)
+                {
+                    console.log("product index", i);
+                    products_section.appendChild(products_display[i]);
+                }
 
                 function highlight_page()
                 {
@@ -493,66 +543,266 @@ const App =
                             element.setAttribute("class","button_class page_num active_page");
                         }
     
-                        else
+                        else if(parseInt(element.innerHTML) !== curr_page)
                         {
-                            element.setAttribute("class","button_class page_num");
-                        };
+                            //if(element.innerHTML != "")
+                            //{
+                                element.setAttribute("class","button_class page_num");
+                                //element.parentElement.style.display = "initial"
+                            //}
+
+                            /*else if(element.innerHTML == "")
+                            {
+                                element.parentElement.style.display = "none";
+                            }*/
+                        }
                     }); 
 
-                    if(curr_page > 0 && curr_page < 5)
+                    page_spacer.forEach(element => {
+                        
+                        if(num_of_pages < 6)
+                        {
+                            //console.log("PARENT",element.parentElement)
+                            element.style.display = "none";
+                        }
+
+                        else
+                        {
+                            //console.log("PARENT",element.parentElement)
+                            element.style.display = "initial";  
+                        }
+                    });
+
+                    if(curr_page >= 4 && num_of_pages > 5)   //(curr_page > 4 && curr_page <= 5) || num_of_pages <= 6)
                     {
-                        page_spacer[0].style.display = "none";
-                        page_spacer[2].style.display = "none";
+                        page_spacer[0].style.visibility = "visible";
+                        page_spacer[2].style.visibility = "visible";
                     }
 
                     else
                     {
-                        page_spacer[0].style.display = "initial";
-                        page_spacer[2].style.display = "initial";
+                        page_spacer[0].style.visibility = "hidden";
+                        page_spacer[2].style.visibility = "hidden";
                     };
 
-                    if(curr_page > (num_of_pages - 5) && curr_page <= num_of_pages)
+                    if(curr_page < (num_of_pages - 3) && num_of_pages > 5)   //(curr_page > (num_of_pages - 5) && curr_page <= (num_of_pages - 1)) || curr_page == num_of_pages || num_of_pages <= 6)
                     {
-                        page_spacer[1].style.display = "none";
-                        page_spacer[3].style.display = "none";
+                        page_spacer[1].style.visibility = "visible";
+                        page_spacer[3].style.visibility = "visible";
                     }
 
                     else
                     {
-                        page_spacer[1].style.display = "initial";
-                        page_spacer[3].style.display = "initial";
+                        page_spacer[1].style.visibility = "hidden";
+                        page_spacer[3].style.visibility = "hidden";
                     };
                 };
 
                 function change_middle_nums(dir)
-                {
-                    page_num.forEach(element => {
-                        
-                        if(element.dataset.pgNumType == "middle" && (curr_page > 5 || curr_page < (num_of_pages - 5)))
+                { 
+                    if(num_of_pages >= 5)
+                    {
+                        page_num[1].innerHTML = curr_page - 1;
+                        page_num[2].innerHTML = curr_page;
+                        page_num[3].innerHTML = curr_page + 1;
+
+                        if(curr_page == 1)
                         {
-                            console.log(element);
-                            if(dir == "next")
+                            page_num[1].innerHTML = curr_page + 1;
+                            page_num[2].innerHTML = curr_page + 2;
+                            page_num[3].innerHTML = curr_page + 3;
+                        }
+
+                        else if(curr_page == 2)
+                        {
+                            page_num[1].innerHTML = curr_page;
+                            page_num[2].innerHTML = curr_page + 1;
+                            page_num[3].innerHTML = curr_page + 2;
+                        }
+
+                        else if(curr_page == (num_of_pages - 2))
+                        {
+                            page_num[1].innerHTML = curr_page - 1;
+                            page_num[2].innerHTML = curr_page;
+                            page_num[3].innerHTML = num_of_pages - 1;
+                        }
+
+                        else if(curr_page == (num_of_pages - 1))
+                        {
+                            page_num[1].innerHTML = curr_page - 2;
+                            page_num[2].innerHTML = curr_page - 1;
+                            page_num[3].innerHTML = curr_page;
+                        }
+
+                        else if(curr_page == num_of_pages)
+                        {
+                            page_num[1].innerHTML = curr_page - 3;
+                            page_num[2].innerHTML = curr_page - 2;
+                            page_num[3].innerHTML = curr_page - 1;
+                        };
+
+                        page_num[6].innerHTML = page_num[1].innerHTML;
+                        page_num[7].innerHTML = page_num[2].innerHTML;
+                        page_num[8].innerHTML = page_num[3].innerHTML;
+                    }
+
+                    else
+                    { 
+                        page_num[1].innerHTML = 2;
+                        page_num[2].innerHTML = 3;
+                        page_num[3].innerHTML = 4;
+                        page_num[6].innerHTML = page_num[1].innerHTML;
+                        page_num[7].innerHTML = page_num[2].innerHTML;
+                        page_num[8].innerHTML = page_num[3].innerHTML;
+
+                        page_num.forEach((element,index) => {
+                            
+                            if((index > 0 && index < 4) || (index > 5 && index < 9))
                             {
-                                element.innerHTML ++;
+                                console.log("LESS THAN 5 PAGES INDEXES",element.innerHTML,index)
+                                if(element.innerHTML >= num_of_pages)
+                                {
+                                    element.parentElement.style.display = "none"
+                                }
+
+                                else
+                                {
+                                    element.parentElement.style.display = "initial"
+                                };
+                            };
+                        });
+
+                        if(num_of_pages <= 2)
+                        {
+                            page_num[0].style.border = "none";
+                            page_num[4].style.border = "none";
+                            page_num[5].style.border = "none";
+                            page_num[9].style.border = "none";
+                        };
+
+                        if(num_of_pages == 1)
+                        {
+                            page_num[4].style.display = "none";
+                            page_num[9].style.display = "none";
+                        }
+
+                        else
+                        {
+                            page_num[4].style.display = "initial";
+                            page_num[9].style.display = "initial";
+                        };
+                    };
+                }
+
+                    /*else if((curr_page >= (num_of_pages - 4) && curr_page <= num_of_pages))
+                    {
+                        page_num[4].innerHTML = num_of_pages - 1;
+                        page_num[3].innerHTML = num_of_pages - 2;
+                        page_num[2].innerHTML = num_of_pages - 3;
+                        page_num[1].innerHTML = num_of_pages - 4;
+                    }*/
+
+                    /*page_num.forEach(element => {
+                        
+                        if((dir == "next" && element.dataset.pgNumType == "middle" && curr_page >= (num_of_pages - 4)))
+                        {
+                            console.log(element.innerHTML,"BEFORE")
+
+                            page_num[4].innerHTML = num_of_pages - 1;
+                            page_num[3].innerHTML = num_of_pages - 2;
+                            page_num[2].innerHTML = num_of_pages - 3;
+                            page_num[1].innerHTML = num_of_pages - 4;
+                            /*if(num_of_pages == 7)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML) + 1;
                             }
 
-                            else if(dir == "prev")
+                            if(num_of_pages == 8)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  + 2;
+                            }
+
+                            if(num_of_pages > 9)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  + 3;
+                            }
+                            console.log(element.innerHTML,"AFTER")
+                        }
+
+                        if((dir == "prev" && element.dataset.pgNumType == "middle" && curr_page == (num_of_pages - 5)))
+                        {
+                            console.log(element.innerHTML,"BEFORE")
+                            if(num_of_pages == 6)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  - 0;
+                            }
+
+                            if(num_of_pages == 7)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  - 1;
+                            }
+
+                            if(num_of_pages == 8)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  - 3;
+                            }
+
+                            if(num_of_pages > 9)
+                            {
+                                element.innerHTML = parseInt(element.innerHTML)  - 4;
+                            }
+                            console.log(element.innerHTML,"AFTER")
+                        }
+
+                        if((dir == "prev" && element.dataset.pgNumType == "middle" && curr_page == 5))
+                        {
+                            console.log(element.innerHTML,"BEFORE")
+                            element.innerHTML = parseInt(element.innerHTML)  - 0;
+                            console.log(element.innerHTML,"AFTER")
+                        }
+
+                        if(dir == "next" && element.dataset.pgNumType == "middle" && (curr_page > 5 && curr_page < (num_of_pages - 0)))
+                        {
+                            console.log(element);
+                            //if(dir == "next") //&& curr_page < (num_of_pages - 4))
+                            //{
+                                element.innerHTML ++;
+                            //}
+
+                            /*else if(dir == "prev" && curr_page < 5)
+                            {
+                                element.innerHTML = 2;
+                            }
+                        }
+
+                        else if(dir == "prev" && element.dataset.pgNumType == "middle" && (curr_page > 4 && curr_page < (num_of_pages - 5)))
+                        {
+                            /*if(curr_page <= 5)
+                            {
+                                return;
+                            }
+                            element.innerHTML --;
+                        }
+
+                        /*if(element.dataset.pgNumType == "middle" && (curr_page > 1 && curr_page < (num_of_pages - 4)))
+                        {
+                            console.log(element);
+                            if(dir == "prev") //&& curr_page > 5)
                             {
                                 element.innerHTML --;
                             }
                         }
-                    });
-                }
+                    });*/
                 
-                highlight_page();
                 change_middle_nums(direction);
+                highlight_page();
 
                 function next_page()
                 {
                     if(curr_page < num_of_pages)
                     {
                         curr_page++;
-                        console.log("PAGE NUM ON CLICK NEXT",curr_page);
+                        //console.log("PAGE NUM ON CLICK NEXT",curr_page);
                     }
 
                     return direction = "next";
@@ -563,7 +813,7 @@ const App =
                     if(curr_page > 1)
                     {
                         curr_page--;
-                        console.log("PAGE NUM ON CLICK PREV",curr_page);
+                        //console.log("PAGE NUM ON CLICK PREV",curr_page);
                     }
 
                     return direction = "prev";
@@ -581,14 +831,27 @@ const App =
                         curr_page = num_of_pages;
                     };
 
-                    highlight_page();
                     change_middle_nums(direction);
-                };
+                    highlight_page();
 
-                products_display.forEach(product => {
+                    current_num.forEach(element => {
                     
-                    console.log(product);
-                });
+                        element.innerHTML = curr_page;
+                    });
+                    
+                    end_num.forEach(element => {
+                        
+                        element.innerHTML = num_of_pages;
+                    });
+
+                    products_section.innerHTML = "";
+
+                    for(let i = ((curr_page - 1) * items_per_page); i < (curr_page * items_per_page); i++)
+                    {
+                        //console.log("product index", i);
+                        products_section.appendChild(products_display[i]);
+                    }
+                };
 
                 //console.log(products_next_btn)
                 products_next_btn.forEach(element => {
@@ -612,8 +875,124 @@ const App =
                         change_page(direction);
                     });
                 });
+
+                go_to_pg_btn.forEach((element,index) => {
+                    
+                    element.addEventListener("click",()=>{
+                        
+                        if(product_page_no_top.value < 0 || product_page_no_bot < 0)
+                        {
+                            product_page_no_top.value = 1;
+                            product_page_no_bot.value = 1;
+                        }
+
+                        if(product_page_no_top.value > num_of_pages || product_page_no_bot > num_of_pages)
+                        {
+                            product_page_no_top.value = num_of_pages;
+                            product_page_no_bot.value = num_of_pages;
+                        }
+
+                        if(index == 0 && product_page_no_top.value > 0 && product_page_no_top.value <= num_of_pages)
+                        {
+                            console.log(product_page_no_top.value);
+
+                            if(product_page_no_top.value != curr_page && product_page_no_top.value > curr_page)
+                            {
+                                console.log("CYCLEEEEEEEEEEEEEE");
+                                for(let i = curr_page; i < product_page_no_top.value; i++)
+                                {
+                                    next_page();
+                                    change_page(direction);
+                                }
+                            }
+
+                            else if(product_page_no_top.value != curr_page && product_page_no_top.value < curr_page)
+                            {
+                                console.log("OTHER CYCLEEEEEE");
+                                for(let i = curr_page; i > product_page_no_top.value; i--)
+                                {
+                                    prev_page();
+                                    change_page(direction);
+                                }
+                            }
+                        }
+
+                        if(index == 1 &&  product_page_no_bot.value > 0 && product_page_no_bot.value <= num_of_pages)
+                        {
+                            console.log(product_page_no_bot.value);
+
+                            if(product_page_no_bot.value != curr_page && product_page_no_bot.value > curr_page)
+                            {
+                                console.log("CYCLEEEEEEEEEEEEEE");
+                                for(let i = curr_page; i < product_page_no_bot.value; i++)
+                                {
+                                    next_page();
+                                    change_page(direction);
+                                }
+                            }
+
+                            else if(product_page_no_bot.value != curr_page && product_page_no_bot.value < curr_page)
+                            {
+                                console.log("OTHER CYCLEEEEEE");
+                                for(let i = curr_page; i > product_page_no_bot.value; i--)
+                                {
+                                    prev_page();
+                                    change_page(direction);
+                                }
+                            }
+                        }
+                    })
+                });
+
+                page_num.forEach(element => {
+                    
+                    element.addEventListener("click",()=>{
+
+                        function change_on_click()
+                        {
+                            if (parseInt(element.innerHTML) != curr_page && parseInt(element.innerHTML) > curr_page)
+                            {
+                                //for(let i = curr_page; i < parseInt(element.innerHTML); i++)
+                                //{
+                                    curr_page = parseInt(element.innerHTML);
+                                    change_page(direction);
+                                //}
+                            }
+
+                            else if(parseInt(element.innerHTML) != curr_page && parseInt(element.innerHTML) < curr_page)
+                            {
+                                //for(let i = curr_page; i > parseInt(element.innerHTML); i--)
+                                //{
+                                    curr_page = parseInt(element.innerHTML);
+                                    change_page(direction);
+                                //}
+                            }
+
+                            //curr_page = parseInt(element.innerHTML);
+                            //change_page(direction) 
+                        }
+
+                        change_on_click();
+                        console.log("THIS BUTTON WAS CLICKED",element.innerHTML)
+                    })
+                });
             }
         }); //end of DOMContentLoaded
+
+        if(products_page_html)
+        {
+            document.addEventListener("DOMContentLoaded",()=>{
+
+                //alert("LOADING DONE!");
+                console.log("ALL PRODUCTS DOWNLOADED FROM SERVER");
+                products_load_modal.setAttribute("class","remove_element");
+            });
+
+            /*setTimeout(() => {
+                alert("!!!!!!!!!")     
+                products_load_modal.setAttribute("class","remove_element");
+            }, 200);*/
+        };
     }, //end of init()
 };
 

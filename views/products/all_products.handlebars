@@ -3,31 +3,67 @@
         <h2>Our Biggest Promotions Yet</h2>
     </div>
 </section>
-<section class="width_container">
+<section id="all_products_container" class="width_container">
+    <div id="products_load_modal" class="modal">
+        <div class="lds-spinner modal_content">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+    </div>
     <div>
         SEARCH SECTION
     </div>
     <div>
         <div class="pagination">
             <div class="top_pagination">
-                <li>Page 1 of 10</li>
-                <li><input type="number" name="product_page_no" id="product_page_no"></li>
-                <li><button class="button_class product_button">Go to Page</button></li>
+                <li>Page <span class="current_num">1</span> of <span class="end_num">10</span></li>
+                <li><input type="number" value="1" min="1" name="product_page_no_top" id="product_page_no_top" class="page_num_input"></li>
+                <li><button class="button_class product_button go_to_pg_btn">Go to Page</button></li>
             </div>
             <div class="bot_pagination">
                 <li><button class="button_class products_prev_btn"><i class="fas fa-angle-left"></i></button></li>
-                <li><button class="button_class page_num">1</button></li>
+                <li><button id="first_page" class="button_class page_num first_last_pages"></button></li>
                 <li class="page_spacer"><span>...</span></li>
-                <li><button data-pg-num-type="middle" class="button_class page_num">2</button></li>
-                <li><button data-pg-num-type="middle" class="button_class page_num">3</button></li>
-                <li><button data-pg-num-type="middle" class="button_class page_num">4</button></li>
-                <li><button data-pg-num-type="middle" class="button_class page_num">5</button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
                 <li class="page_spacer"><span>...</span></li>
-                <li><button class="button_class page_num">6</button></li>
+                <li><button id="last_page" class="button_class page_num"></button></li>
                 <li><button class="button_class products_next_btn"><i class="fas fa-angle-right"></i></button></li>
             </div>
-        </div> 
+        </div>
+        
         <div id="products_section">
+            <!--- HBS --->
+            {{#each products}}
+                <div class="products_display">
+                    <div>
+                        <a href="/products/product-overview">
+                            <img class="product_img" src="/img/fake_db_imgs/{{this.src}}" alt="" title="">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="rating_div" aria>
+                            <div class="rw-ui-container"></div> <!--REVIEW RATING WIDGET-->
+                        </div>
+                        <h4 class="product_name">
+                            {{this.title}}
+                        </h4>
+                        <h4 class="product_price">
+                            From {{this.price}}
+                        </h4>  
+                    </div>
+                    <a class="button_class product_button" href="/products/product-overview">
+                        See Full Details
+                    </a>
+                    <div class="product_pos_num">
+                        <h3>{{@index}}</h3>
+                    </div>
+                    <div class="best_seller_tag">
+                        <h3><i class="fas fa-medal"></i></h3>
+                    </div>
+                </div>
+            {{/each}}
+            <!--- HBS --->
             <div class="products_display">
                 <div>
                     <a href="/products/product-overview">
@@ -35,7 +71,7 @@
                     </a>
                 </div>
                 <div>
-                    <div class="rating_div">
+                    <div class="rating_div" aria>
                         <div class="rw-ui-container"></div> <!--REVIEW RATING WIDGET-->
                     </div>
                     <h4 class="product_name">
@@ -115,22 +151,21 @@
         </div>
         <div class="pagination">
             <div class="top_pagination">
-                <li>Page 1 of 10</li>
-                <li><input type="number" name="product_page_no" id="product_page_no"></li>
-                <li><button class="button_class product_button">Go to Page</button></li>
+                <li>Page <span class="current_num">1</span> of <span class="end_num">10</span></li>
+                <li><input type="number" value="1" min="1" name="product_page_no_bot" id="product_page_no_bot" class="page_num_input"></li>
+                <li><button class="button_class product_button go_to_pg_btn">Go to Page</button></li>
             </div>
             <div class="bot_pagination">
                 <li><button class="button_class products_prev_btn"><i class="fas fa-angle-left"></i></button></li>
-                <li><button class="button_class page_num">1</button></li>
+                <li><button id="first_page_bot" class="button_class page_num first_last_pages"></button></li>
                 <li class="page_spacer"><span>...</span></li>
-                <li><button class="button_class page_num">2</button></li>
-                <li><button class="button_class page_num">3</button></li>
-                <li><button class="button_class page_num">4</button></li>
-                <li><button class="button_class page_num">5</button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
+                <li><button data-pg-num-type="middle" class="button_class page_num"></button></li>
                 <li class="page_spacer"><span>...</span></li>
-                <li><button class="button_class page_num">6</button></li>
+                <li><button id="last_page_bot" class="button_class page_num"></button></li>
                 <li><button class="button_class products_next_btn"><i class="fas fa-angle-right"></i></button></li>
             </div>
-        </div>    
+        </div>     
     </div>
 </section>
