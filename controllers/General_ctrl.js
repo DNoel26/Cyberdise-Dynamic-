@@ -17,16 +17,6 @@ const MySQL_DB = require("../config/MySQL_DAO.js");
 
 router.get("/",function(req,res){
 
-    if(MySQL_DB)
-    {
-        MySQL_DB.end();
-    }
-
-    if(!MySQL_DB)
-    {
-        MySQL_DB.init();
-    }
-
     console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info,req.flash());
     res.render("general/home",{
 
