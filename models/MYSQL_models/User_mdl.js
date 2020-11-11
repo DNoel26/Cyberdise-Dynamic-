@@ -196,9 +196,9 @@ const User_model = {
             if(MySQL_DB.connection)
             {
                 console.log("CONNECTION DEAD",MySQL_DB.connection)
-                MySQL_DB.destroy()
-                .then(()=>{MySQL_DB.init();})
-                .catch((err)=>console.log(`Error in destroying DB`,err));
+                MySQL_DB.destroy();
+                
+                MySQL_DB.init();
             }
 
             db.connection.query(this.SQL, [user_email,user_username]) //customer_email,customer_username])
