@@ -16,6 +16,10 @@ const MySQL = {
         })
         .then((con) => {
 
+            if(this.connection != null)
+            {
+                this.connection.end();
+            }
             //console.log(con);
             this.connection = con;
             console.log("MySQL connection to database successful");
