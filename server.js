@@ -110,10 +110,10 @@ User1.first_name = "John";
 const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
-MySQL_DB.end();
-
 app.listen(process.env.PORT, function(){
 
+    console.log(`SQL END LOG ${MySQL_DB}`)
+    MySQL_DB.end();
     console.log("Server is connected and running", this.address().port, app.settings.env);
     MySQL_DB.init();
 });
