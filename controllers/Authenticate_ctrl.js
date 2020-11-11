@@ -36,10 +36,6 @@ router.post("/login",is_already_logged_in,user_login_form,send_nodemail_on_login
     .catch(err=>console.log(`Error in Authenticate_ctrl.js: router.post /login: ${err}`));
     //console.log("REQ IS HEADER LOGIN AUTH LOGIN",req.is_header_login,"RES LOCALS LOGGED IN STATUS",logged_in);
     //console.log(req.login_customer.email,req.login_customer.username,req.login_customer.username_email);
-    if(MySQL_DB.init())
-    {
-        MySQL_DB.end();
-    };
 
     if(req.is_header_login)
     {

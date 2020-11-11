@@ -184,11 +184,6 @@ const User_model = {
     get_user_by_username_email(user_email,user_username)//customer_email,customer_username)
     {
         return new Promise((resolve,reject)=>{
-            
-            if(MySQL_DB.init() == null)
-            {
-                MySQL_DB.init();
-            };
 
             this.SQL = 
             `SELECT *, c.role AS customer_role, ic.role AS inventory_clerk_role, 
@@ -279,7 +274,7 @@ const User_model = {
                 }
                 //console.log("SELECTED USER QUERY RESULTS",selected_user)
             })
-            .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err} ${MySQL_DB.end()}`));
+            .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err}`));
         })
     },
 
