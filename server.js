@@ -111,7 +111,10 @@ const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 //MySQL_DB.end();
 
-if(MySQl)
+if(MySQL_DB.init())
+{
+    MySQL_DB.end();
+}
 
 app.listen(process.env.PORT, function(){
 
