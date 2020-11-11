@@ -1123,7 +1123,6 @@ footer
 
 .scroll_down_container
 {
-    position: relative;
     align-self: flex-end;
     max-height: 70px;
     margin-top: 16px;

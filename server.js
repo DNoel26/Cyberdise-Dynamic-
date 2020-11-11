@@ -112,6 +112,7 @@ console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
 app.listen(process.env.PORT, function(){
 
+    MySQL_DB.end();
     console.log("Server is connected and running", this.address().port, app.settings.env);
     MySQL_DB.init();
 });
