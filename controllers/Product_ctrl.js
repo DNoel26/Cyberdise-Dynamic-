@@ -47,7 +47,7 @@ router.get("/all-products",function(req,res){
         test_array.push(test_product);
     }
 
-    console.log(test_array)
+    //console.log(test_array)
 
     res.render("products/all_products",{
 

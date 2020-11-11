@@ -7,6 +7,7 @@ const ip_middleware = require("../middleware/Request_ip_mw.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
 const is_auth = require("../middleware/Authenticate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
+const MySQL = require("../config/MySQL_DAO.js");
 
 //*****AUTHENTICATION CONTROLS
 
@@ -35,6 +36,10 @@ router.post("/login",is_already_logged_in,user_login_form,send_nodemail_on_login
     .catch(err=>console.log(`Error in Authenticate_ctrl.js: router.post /login: ${err}`));
     //console.log("REQ IS HEADER LOGIN AUTH LOGIN",req.is_header_login,"RES LOCALS LOGGED IN STATUS",logged_in);
     //console.log(req.login_customer.email,req.login_customer.username,req.login_customer.username_email);
+    if(MySQL.init())
+    {
+        MySQL.end();
+    };
 
     if(req.is_header_login)
     {

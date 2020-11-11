@@ -1,4 +1,5 @@
 const mysql = require("mysql2/promise");
+const MySQL = require("../../config/MySQL_DAO.js");
 const db = require("../../config/MySQL_DAO.js");
 const Customer = require("../POJO/Customer.js");
 const Employee = require("../POJO/Employee.js");
@@ -184,6 +185,11 @@ const User_model = {
     {
         return new Promise((resolve,reject)=>{
             
+            if(MySQL.init() == null)
+            {
+                MySQL.init();
+            };
+
             this.SQL = 
             `SELECT *, c.role AS customer_role, ic.role AS inventory_clerk_role, 
             c.date_created AS customer_date_created, c.last_modified AS customer_last_modified,
@@ -273,7 +279,7 @@ const User_model = {
                 }
                 //console.log("SELECTED USER QUERY RESULTS",selected_user)
             })
-            .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err}`));
+            .catch(err=>reject(`Error in User_mdl.js: user_login(): ${err} ${MySQL.end()}`));
         })
     },
 

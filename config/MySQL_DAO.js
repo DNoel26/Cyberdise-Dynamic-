@@ -19,6 +19,7 @@ const MySQL = {
             if(this.connection != null)
             {
                 this.connection.end();
+                this.connection = null;
             }
             //console.log(con);
             this.connection = con;
@@ -29,7 +30,8 @@ const MySQL = {
 
     end()
     {
-        return this.connection.end();
+        this.connection.end();
+        this.connection = null;
     }
 }
 
