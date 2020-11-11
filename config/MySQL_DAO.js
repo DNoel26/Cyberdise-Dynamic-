@@ -33,6 +33,14 @@ const MySQL_DB = {
         {
             this.connection.end();
         }
+    },
+
+    destroy()
+    {
+        if(this.connection)
+        {
+            this.connection.destroy();
+        }
     }
 }
 
