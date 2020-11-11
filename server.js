@@ -111,6 +111,8 @@ const Employee1 = new Employee;
 console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 //MySQL_DB.end();
 
+if(MySQl)
+
 app.listen(process.env.PORT, function(){
 
     console.log("Server is connected and running", this.address().port, app.settings.env);

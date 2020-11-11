@@ -1,6 +1,6 @@
 const mysql = require("mysql2/promise");
 
-const MySQL = {
+const MySQL_DB = {
 
     connection: null,
 
@@ -19,7 +19,6 @@ const MySQL = {
             if(this.connection != null)
             {
                 this.connection.end();
-                this.connection = null;
             }
             //console.log(con);
             this.connection = con;
@@ -31,8 +30,7 @@ const MySQL = {
     end()
     {
         this.connection.end();
-        this.connection = null;
     }
 }
 
-module.exports = MySQL;
+module.exports = MySQL_DB;
