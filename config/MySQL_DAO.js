@@ -29,7 +29,10 @@ const MySQL_DB = {
 
     end()
     {
-        this.connection.end();
+        if(this.connection)
+        {
+            this.connection.end();
+        }
     }
 }
 
