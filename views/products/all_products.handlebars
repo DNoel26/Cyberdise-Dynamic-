@@ -58,9 +58,11 @@
                     <div class="product_pos_num">
                         <h3>{{@index}}</h3>
                     </div>
-                    <div class="best_seller_tag">
-                        <h3><i class="fas fa-medal"></i></h3>
-                    </div>
+                    {{#if best_seller}}
+                        <div class="best_seller_tag"> 
+                            <h3><i class="fas fa-medal"></i></h3>
+                        </div>
+                    {{/if}} input
                 </div>
             {{/each}}
             <!--- HBS --->

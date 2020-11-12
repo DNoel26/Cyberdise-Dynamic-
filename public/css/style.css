@@ -1754,10 +1754,12 @@ footer
     align-self: flex-start;
     color: var(--font_color);
     font-weight: 900;
-    /*background-color: rgba(0,70,245,0.6);*/
-    background-color: rgba(245,245,245,0.67);
+    /*background-color: rgba(0,70,245,0.6);
+    background-color: rgba(245,245,245,0.67);*/
+    background-color: var(--bg_color_3);
+    border-color: var(--bg_color_2);
     width: max-content;
-    padding: 12px 24px;
+    padding: 12px 12px;
     /*border-radius: 24px;
     border-style: solid;
     border-width: 1px;
@@ -1772,13 +1774,13 @@ footer
 .bot_view_section > div > a:nth-child(3):hover
 {
     color: var(--font_color);
-    background-color: var(--bg_color_3);
-    border-color: var(--bg_color_2);
+    background-color: var(--bg_color_2);
+    color: var(--font_color_3);
     cursor: pointer;
-    padding-top: 18px;
+    /*padding-top: 18px;
     padding-bottom: 18px;
     border-radius: 36px;
-    border-width: 2px;
+    border-width: 2px;*/
     transition: 0.4s;
 }
 
@@ -2316,7 +2318,7 @@ input:focus, select:focus
 
 #products_section img:hover
 {
-    transform: scale(1.2);
+    transform: scale(1.1);
     padding-bottom: 20px;
     transition: 0.4s;
     border-bottom: none;
@@ -2327,7 +2329,6 @@ input:focus, select:focus
 {
     width: 100%;
     margin: auto;
-    padding-bottom: 24px;
     overflow: hidden;
     /*border: 1px solid black;*/
 }
@@ -2337,7 +2338,6 @@ input:focus, select:focus
     width: 90%;
     text-align: center;
     margin: auto;
-    margin-top: -20px;
     background-color: var(--bg_color);
     color: black;
     padding: 0 16px 16px 16px;
@@ -2356,7 +2356,7 @@ input:focus, select:focus
 {
     /*width: 50%;*/
     margin: auto;
-    margin-top: 20px;
+    margin-top: 25%;
     justify-self: center;
     font-size: 0.8rem;
     /*border-bottom: 0px solid lightgrey;
@@ -2484,6 +2484,21 @@ input:focus, select:focus
     font-size: 0.6rem;
     padding: 4px 6px;
     border-bottom-right-radius: 8px;
+    z-index: 10;
+}
+
+#products_page_html .products_display .product_pos_num::before
+{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: var(--bg_color_2);
+    width: 100%;
+    height: 100%;
+    transform-origin: top left;
+    transform: skewX(-30deg);
+    z-index: -1;
 }
 
 #products_page_html .products_display .best_seller_tag
@@ -2703,6 +2718,41 @@ input:focus, select:focus
 #my_employee_account_html section, #my_customer_account_html section
 {
     margin-left: 16px;
+}
+
+#edit_stock_html .button_class.product_button
+{
+    margin: 0 auto 32px auto;
+    width: 220px;
+    text-align: center;
+}
+
+#edit_stock_html .button_class.product_button:hover
+{
+    padding: 8px 16px;
+}
+
+#edit_stock_html i::before 
+{
+    font-weight: 900;
+}
+
+#edit_stock_html i:hover::before 
+{
+    color: var(--font_color); 
+    font-size: 0.85rem;
+    transition: 0.4s;
+}
+
+#edit_stock_html td:last-child
+{
+    background-color: var(--bg_color);
+}
+
+#edit_stock_html td a
+{
+    text-decoration: none;
+    color: black;
 }
 
                     /**********MY EMPLOYEE ACCOUNT**********/

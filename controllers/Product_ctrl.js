@@ -7,7 +7,7 @@ router.get("/all-products",function(req,res){
 
     const test_array = [];
     
-    for(let i = 0; i < 500; i++)
+    for(let i = 0; i < 200; i++)
     {
         let test_product = {};
         
@@ -18,7 +18,8 @@ router.get("/all-products",function(req,res){
                 id: 1,
                 src: "programmer_jersey.jpg",
                 title: "Programmer T-Shirt",
-                price: "$" + 52.75
+                price: "$" + 52.75,
+                best_seller: true
             }  
         }
 
@@ -29,7 +30,8 @@ router.get("/all-products",function(req,res){
                 id: 2,
                 src: "echo_dot.png",
                 title: "Alexa Echo Dot (new)",
-                price: "$" + 199.98
+                price: "$" + 199.98,
+                best_seller: false
             }
         }
 
@@ -40,7 +42,8 @@ router.get("/all-products",function(req,res){
                 id: 3,
                 src: "default_product.png",
                 title: "Some Product",
-                price: "$" + 100.00
+                price: "$" + 100.00,
+                best_seller: false
             }
         }
         

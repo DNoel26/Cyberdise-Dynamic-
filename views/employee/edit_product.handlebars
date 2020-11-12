@@ -1,0 +1,40 @@
+<section class="width_container">
+    <div class="greeting_msg">
+        {{> database_welcome_msg}}
+        <p>Edit Product {{id}} Below</p>
+    </div>
+</section>
+<section class="width_container">
+    <div class="table_container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Bestseller</th>
+                    <th>img_path</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                    <td>{{ph}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form action="/employee/edit-stock">
+        <div>
+
+        </div>
+        <button type="submit" class="button_class product_button">Accept Changes</button>
+    </form>
+</section>

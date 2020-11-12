@@ -30,4 +30,74 @@ router.get("/edit-stock",function(req,res){
     });
 });
 
+//*****RESTOCK PRODUCTS
+
+router.get("/edit-stock/restock",function(req,res){ 
+
+    res.render("employee/restock",{
+
+        title: "Order stock from available suppliers",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
+//*****ADD CATEGORIES
+
+router.get("/edit-stock/add-categories",function(req,res){ 
+
+    res.render("employee/add_categories",{
+
+        title: "Add new product categories to the store",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
+//*****ADD PRODUCTS
+
+router.get("/edit-stock/add-products",function(req,res){ 
+
+    res.render("employee/add_products",{
+
+        title: "Add new products to the store",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
+//*****EDIT CATEGORY
+
+router.get("/edit-stock/edit-category",function(req,res){ 
+
+    res.render("employee/edit_category",{
+
+        title: "Edit your selected category here",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
+//*****EDIT PRODUCT
+
+router.get("/edit-stock/edit-product",function(req,res){ 
+
+    res.render("employee/edit_product",{
+
+        title: "Edit your selected product here",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
 module.exports = router;
