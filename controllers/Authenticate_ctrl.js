@@ -11,7 +11,7 @@ const MySQL_DB = require("../config/MySQL_DAO.js");
 
 //*****AUTHENTICATION CONTROLS
 
-router.post("/login",is_already_logged_in,user_login_form,send_nodemail_on_login,ip_middleware,function(req,res){
+router.post("/login",is_already_logged_in,user_login_form,/*send_nodemail_on_login,*/ip_middleware,function(req,res){
 
     req.session.user_info = req.selected_user;
     req.session.user_info.logged_in = 1;

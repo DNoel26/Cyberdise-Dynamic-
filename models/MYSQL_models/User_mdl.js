@@ -76,7 +76,7 @@ const User_model = {
     {
         return new Promise((resolve,reject)=>{
 
-            this.SQL = ('DROP TRIGGER IF EXISTS on_customer_signup; CREATE TRIGGER on_customer_signup AFTER INSERT ON user FOR EACH ROW INSERT INTO customer (customer_id_fk, address) VALUES(NEW.user_id,?);');//LAST_INSERT_ID() NEW.user_id
+            this.SQL = ('DROP TRIGGER IF EXISTS on_customer_signup; CREATE TRIGGER on_customer_signup AFTER INSERT ON user FOR EACH ROW INSERT INTO customer (customer_id_pk_fk, address) VALUES(NEW.user_id,?);');//LAST_INSERT_ID() NEW.user_id
             db.connection.query(this.SQL, ["A PLACE TRIGGERED"])
             .then(()=>{
                 
@@ -190,16 +190,8 @@ const User_model = {
             c.date_created AS customer_date_created, c.last_modified AS customer_last_modified,
             ic.date_created AS inventory_clerk_date_created, ic.last_modified AS inventory_clerk_last_modified
             FROM user u
-            LEFT JOIN customer c ON u.user_id = c.customer_id_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_fk
+            LEFT JOIN customer c ON u.user_id = c.customer_id_pk_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_pk_fk
             WHERE email = ? OR username = ?;`;
-
-            /*if(MySQL_DB.connection)
-            {
-                console.log("CONNECTION DEAD",MySQL_DB.connection)
-                MySQL_DB.destroy();
-                
-                MySQL_DB.init();
-            }*/
 
             db.connection.query(this.SQL, [user_email,user_username]) //customer_email,customer_username])
             .then(([rows,fields])=>{

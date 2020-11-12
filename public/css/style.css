@@ -404,7 +404,7 @@ img
     height: 0;
     width: 0;
     visibility: hidden;
-    transition: 0.6s;
+    transition: 0.5s;
     z-index: 1000;
 }
 
@@ -444,7 +444,7 @@ nav .floating_icons
     border-color: black;
     border-radius: 40px;
     background-color: rgba(255,255,255,0.4);
-    transition: 0.6s;
+    transition: 0.5s;
 }
 
 .floating_icons.shopping_cart_icons:hover > div
@@ -452,7 +452,7 @@ nav .floating_icons
     filter: invert(100%);
     background-color: rgba(255,255,255,1); 
     cursor: pointer;
-    transition: 0.6s;
+    transition: 0.5s;
 }
 
 .shopping_cart_icons > div > img
@@ -568,6 +568,45 @@ a
     text-align: center;
     color: var(--font_color_2);
 }
+
+.form_class
+{
+    margin-bottom: 64px;
+}
+
+.form_class > div:last-child
+{
+    margin-top: 64px;
+}
+
+.form_class label
+{
+    margin: 0 4px 4px 4px;   
+}
+
+.form_class input, .form_class select, .form_class option, .form_class textarea
+{
+    margin: 0 4px 16px 4px;
+}
+
+.form_input_container
+{
+    display: grid;
+    width: 500px;
+}
+
+.form_input_container input
+{
+    display: grid;
+    width: 330px;
+}
+
+.form_input_container select, .form_input_container option
+{
+    display: grid;
+    width: fit-content;
+}
+
                     /* SPECIFIC CLASSES AND IDS ABOVE */
                     /* HEADER FORM DATA BELOW */
 
@@ -715,12 +754,14 @@ nav
     border-radius: 4px;
     border-color: var(--font_color);
     padding: 10px 16px 10px 8px;
-    transition-duration: 1s;
+    transition-duration: 0.5s;
 }
 
-#bottom_nav button:hover i::before
+#bottom_nav button:hover #search_icon::before
 {
     animation: search_icon_pulse 1s ease 0.4s infinite;
+    font-size: 2rem;
+    color: var(--font_color_2);
 }
 
 #bottom_nav input:focus, #bottom_nav select:focus,
@@ -804,7 +845,7 @@ nav a, #top_nav .button_class
     color: var(--font_color_2);
     font-size: 0.7rem;
     font-weight: 900;
-    transition: 0.6s;
+    transition: 0.5s;
     padding: 8px 4px;
     border: 1px solid transparent;
 }
@@ -819,7 +860,7 @@ nav a:hover, .active_link
     /*border-bottom-color: var(--font_color_3);
     border-bottom-style: solid;
     border-bottom-width: 1px;*/
-    transition: 0.6s;
+    transition: 0.5s;
 }
 
 nav a:hover, #top_nav .button_class:hover
@@ -980,7 +1021,6 @@ footer
     background-position: center;
     width: 100%;
     position: relative;
-    
     transition: 0.4s;
 }
 
@@ -1221,7 +1261,7 @@ footer
     color: white;
     border-top-right-radius: 3vmin;
     border-bottom-right-radius: 3vmin;
-    transition: 1s;
+    transition: 0.5s;
 }
 
 #home_page_main nav button:hover
@@ -1284,7 +1324,7 @@ footer
     font-weight: 900;
     color: var(--font_color);
     min-width: 140px;
-    transition: 0.6s;
+    transition: 0.5s;
     background-color: rgba(245,245,245, 0.33);
     padding: 4px;
     border-radius: 4px;
@@ -1306,7 +1346,7 @@ footer
     background-color: var(--bg_color_3);
     padding: 24px 12px;
     border-radius: 16px;
-    transition: 0.6s;
+    transition: 0.5s;
     font-weight: 900;
 }
 
@@ -1365,7 +1405,7 @@ footer
     color: var(--font_color);
     background-color: var(--bg_color_3);
     padding: 0;
-    transition: 0.6s;
+    transition: 0.5s;
 }
 
 .top_view_section > div, .bot_view_section > div
@@ -1509,7 +1549,7 @@ footer
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
-    transition: 0.15s;
+    transition: 0.4s;
     border: 0 solid var(--font_color);
     border-radius: inherit;
 }
@@ -1519,7 +1559,7 @@ footer
     cursor: pointer;
     transform: scale(1.2);
     /*border: 16px solid var(--bg_color_3);*/
-    transition: 0.3s;
+    transition: 0.4s;
 }
 
 .best_seller_carousel
@@ -2533,6 +2573,12 @@ input:focus, select:focus
     border-bottom: 2px solid var(--font_color);
 }
 
+.greeting_msg > p
+{
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
 .my_cart_container
 {
     display: grid;
@@ -2737,16 +2783,21 @@ input:focus, select:focus
     font-weight: 900;
 }
 
+#edit_stock_html td i::before 
+{
+    padding: 8px;
+}
+
 #edit_stock_html i:hover::before 
 {
     color: var(--font_color); 
-    font-size: 0.85rem;
+    font-size: 0.81rem;
     transition: 0.4s;
 }
 
-#edit_stock_html td:last-child
+#edit_stock_html .edit_td
 {
-    background-color: var(--bg_color);
+    background-color: var(--bg_color_3);
 }
 
 #edit_stock_html td a

@@ -31,10 +31,44 @@
             </tbody>
         </table>
     </div>
-    <form action="/employee/edit-stock">
+    <form action="/employee/edit-stock" class="form_class">
         <div>
+            <div class="form_input_container">
+                <label for="product_name">Product Name</label>
+                <input type="text" name="product_name" id="product_name">
+            </div>
+ 
+            <div class="form_input_container">
+                <label for="product_category">Product Category</label>
+                <input type="text" name="product_category" id="product_category">
+            </div>
 
+            <div class="form_input_container">
+                <label for="product_price">Product Price</label>
+                <input type="text" name="product_price" id="product_price">
+            </div>
+
+            <div class="form_input_container">
+                <label for="product_img">Product Image URL</label>
+                <input type="text" name="product_img" id="product_img">
+            </div>
+
+            <div class="form_input_container">
+                <label for="product_bestseller">Bestseller Status</label>
+                <select name="product_bestseller" id="product_bestseller">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form_input_container">
+                <label for="product_description">Product Description</label>
+                <textarea name="product_description" id="product_description" cols="100" rows="10"></textarea>
+            </div>
         </div>
-        <button type="submit" class="button_class product_button">Accept Changes</button>
+        <div>
+            <button type="submit" class="button_class product_button">Accept Changes <i class="fas fa-arrow-right"></i></button>
+            <a href="/employee/edit-stock" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
+        </div>
     </form>
 </section>

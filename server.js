@@ -112,8 +112,8 @@ console.log(`User ${User1.first_name} Employee ${Employee1.first_name}`);
 
 app.listen(process.env.PORT, function(){
 
-    console.log(`SQL END LOG`,MySQL_DB);
-    MySQL_DB.destroy();
+    //console.log(`SQL END LOG`,MySQL_DB);
+    //MySQL_DB.destroy();
     console.log("Server is connected and running", this.address().port, app.settings.env);
     MySQL_DB.init();
 });

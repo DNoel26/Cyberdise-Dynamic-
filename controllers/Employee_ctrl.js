@@ -41,6 +41,7 @@ router.get("/edit-stock/restock",function(req,res){
         body_id: "edit_stock_body",
         main_id: "edit_stock_main",
         my_stock_active_link: "active_link",
+        products: ["item_1","item_2"]
     });
 });
 
