@@ -5,9 +5,25 @@
     </div>
 </section>
 <section class="width_container">
-    <form action="/employee/edit-stock" class="form_class">
+    <div class="create_success_msg">
+        <p>Category added successfully! Add another or return to the dashboard</p>
+    </div>
+    <form action="/employee/edit-stock/add-categories" class="form_class">
         <div>
+            <div class="form_input_container">
+                <label for="category_name">Category Name</label>
+                <input type="text" name="category_name" id="category_name">
+            </div>
+ 
+            <div class="form_input_container">
+                <label for="category_description">Category Description</label>
+                <input type="text" name="category_description" id="category_description">
+            </div>
 
+            <div class="form_input_container">
+                <label for="category_photo">Category Photo URL</label>
+                <input type="text" name="category_photo" id="category_photo">
+            </div>
         </div>
         <div>
             <button type="submit" class="button_class product_button">Add Category <i class="fas fa-arrow-right"></i></button>

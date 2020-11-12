@@ -5,10 +5,13 @@
     </div>
 </section>
 <section class="width_container">
-    <form action="/employee/edit-stock" class="form_class">
+    <div class="create_success_msg">
+        <p>Order placed successfully! Add another or return to the dashboard</p>
+    </div>
+    <form action="/employee/edit-stock/restock" class="form_class">
         <div>
 
-            <div>
+            <div class="form_input_container">
                 <label for="supplier">Supplier</label>
                 <select name="supplier" id="supplier">
                     <option value="Amazon">Amazon</option>
@@ -20,7 +23,7 @@
                 </select>
             </div>
  
-            <div>
+            <div class="form_input_container">
                 <label for="product_code">Product Code</label>
                 <select name="product_code" id="product_code">
                     
@@ -29,12 +32,20 @@
                 <option value="{{this}}">{{@index}}</option>
 
                 {{/each}}
-
+                
                 </select>
-                <span>selected value</span>
             </div>
 
-            <div>
+            <div class="form_input_container">
+                <label for="product_quantity">Product Quantity</label>
+                <input type="number" value="1" min="1" name="product_quantity" id="product_quantity">
+            </div>
+
+            <div class="form_input_container">
+                <h3>Product Name: Product</h3>
+            </div>
+
+            <div class="form_input_container">
                 <h3>Estimated cost: $100.00</h3>
             </div>
         </div>
