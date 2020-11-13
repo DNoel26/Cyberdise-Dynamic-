@@ -1,13 +1,14 @@
 <section>
     <div>
         <div class="greeting_msg width_container">
-            <h1>Welcome to your Customer Dashboard, Darnell Noel</h1>
+            {{> customer_welcome_msg}}
+            <p>View and Edit Account Details Below</p>
         </div>
         <div class="centre_items">
             <div>
                 <div>
                     <h2>Your Items</h2>
-                    <p>You have 10 products in your shopping cart</p>
+                    <p id="product_cart_msg">You have 10 products in your shopping cart</p>
                 </div>
                 <div>
                     <a class="button_class product_button" href="/customer/my-cart">View Shopping Cart</a>  
@@ -18,7 +19,7 @@
             <div >
                 <div>
                     <div>
-                        <h2>Your Customer Profile:</h2>       
+                        <h2>Your Customer Profile</h2>       
                     </div>
                     <div>
                         <div>
@@ -65,6 +66,12 @@
                         </div>
                         <div>
                             <div>
+                                <h3>Username:</h3>
+                                <p>Placeholder</p> 
+                            </div>
+                        </div>
+                        <div>
+                            <div>
                                 <h3>Email:</h3>
                                 <p>Placeholder</p> 
                             </div>
@@ -93,7 +100,7 @@
         </div>
         <div>
             <div>
-                <a class="button_class product_button" href="">Edit Customer Profile</a>    
+                <a class="button_class product_button" href="/customer/edit-account">Edit Customer Profile</a>    
             </div> 
         </div>
         <div>

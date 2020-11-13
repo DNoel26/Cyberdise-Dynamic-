@@ -1,0 +1,95 @@
+<section >
+    <div>
+        <div class="greeting_msg width_container">
+            {{> customer_welcome_msg}}
+            <p>Edit Account Details Below</p>
+        </div>
+        <div class="profile_container">
+            <div>
+                <form action="/customer/my-account" class="form_class form_grid">
+                    <div>
+                        <div>
+                            <h2>Your Customer Profile Details</h2>       
+                        </div>
+                        <div>
+
+                            <div class="form_input_container">
+                                <label for="country_region">Country/Region</label>
+                                <input type="text" name="country_region" id="country_region" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="postcode">Postcode</label>
+                                <input type="text" name="postcode" id="postcode" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="address_line_1">Address Line 1</label>
+                                <textarea name="address_line_1" id="address_line_1" cols="30" rows="3" value="Placeholder"></textarea>
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="address_line_2">Address Line 2</label>
+                                <textarea name="address_line_2" id="address_line_2" cols="30" rows="3" value="Placeholder"></textarea>
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="town_city">Town/City</label>
+                                <input type="text" name="town_city" id="town_city" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="state">State</label>
+                                <input type="text" name="state" id="state" value="Placeholder">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <h2>Your Login & Security Details</h2>       
+                        </div>
+                        <div>
+
+                            <div class="form_input_container">
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" id="first_name" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" id="username" value="Placeholder">
+                            </div> 
+
+                            <div class="form_input_container">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="phone">Phone Number</label>
+                                <input type="text" name="phone" id="phone" value="Placeholder">
+                            </div>
+
+                            <div class="form_input_container">
+                                <label for="password">Password</label>
+                                <input type="text" name="password" id="password" value="Placeholder">
+                            </div>  
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="button_class product_button">Accept Changes <i class="fas fa-arrow-right"></i></button>
+                        <a href="/employee/my-account" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

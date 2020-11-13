@@ -367,6 +367,11 @@ img
     display: none !important;
 }
 
+.profile_container .button_class
+{
+    line-height: unset;
+}
+
 .button_class
 {
     font-family: inherit;
@@ -497,7 +502,7 @@ nav .floating_icons
 i span
 {
     content: " ";
-    font-family: var(--font_family_orbitron);
+    font-family: var(--font_family_roboto);
 }
 
 i span::before
@@ -584,7 +589,7 @@ a
     margin-left: 4px;   
 }
 
-.form_class h3
+.form_class h2, .form_class h3
 {
     margin-left: 4px;   
     margin-bottom: 16px;
@@ -593,21 +598,20 @@ a
 .form_class label
 {
     margin: 0 4px 4px 4px;  
-    cursor: pointer;
 }
 
 .form_class input, .form_class select, .form_class option, .form_class textarea
 {
     margin: 0 4px 16px 4px;
-    cursor: pointer;
-}
-
-.form_class input, .form_class select
-{
     transition: 0.5s;
 }
 
-.form_class input:hover, .form_class select:hover
+.form_class textarea
+{
+    max-width: 420px;
+}
+
+.form_class input:hover, .form_class select:hover, .form_class textarea:hover
 {
     background-color: var(--bg_color_2);
     color: var(--font_color_2);
@@ -623,13 +627,25 @@ a
 .form_input_container input
 {
     display: grid;
-    width: 330px;
+    width: 420px;
 }
 
 .form_input_container select, .form_input_container option, .form_input_container input[type=number]
 {
     display: grid;
     width: fit-content;
+}
+
+.form_grid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+
+.form_grid > div:last-child
+{
+    grid-column: 1 / span 2;
 }
 
                     /* SPECIFIC CLASSES AND IDS ABOVE */
@@ -1570,8 +1586,8 @@ footer
 
 .best_seller_preview div:hover
 {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    transform: scale(1.08);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transform: scale(1.02);
     transition: 0.4s;
     /*box-shadow: 1px 1px 4px black;*/
 }
@@ -1680,8 +1696,8 @@ footer
 
 .best_seller_carousel > div:hover
 {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    transform: scale(1.08);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transform: scale(1.02);
     transition: 0.4s;
 }
 
@@ -1768,7 +1784,7 @@ footer
 .rating_div > div span /*THIS CONTROLS THE RATING OR REVIEW WIDGET*/
 {
     color: white !important;
-    font-family: var(--font_family_orbitron) !important;
+    font-family: var(--font_family_roboto) !important;
     font-weight: 900 !important;
     background-color: rgba(0, 0, 0, 1) !important;
     display: none;
@@ -2394,8 +2410,8 @@ input:focus, select:focus
 
 .products_display:hover
 {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    transform: scale(1.08);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transform: scale(1.02);
     transition: 0.4s;
 }
 
@@ -2689,6 +2705,13 @@ input:focus, select:focus
     margin-top: 32px;
 }
 
+.my_cart_items_container img
+{
+    padding-left: 16px;
+    padding-right: 16px;
+    object-fit: cover;
+}
+
 .my_cart_items_container > div
 {
     display: grid;
@@ -2811,7 +2834,7 @@ input:focus, select:focus
 
 #my_customer_account_html main .button_class, #my_employee_account_html main .button_class
 {
-    width: 320px;
+    width: 260px;
     text-align: center;
 }
 
@@ -2822,9 +2845,53 @@ input:focus, select:focus
     text-align: center;
 }
 
+#product_cart_msg
+{
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
 #my_employee_account_html section, #my_customer_account_html section
 {
     margin-left: 16px;
+}
+
+                    /**********MY EMPLOYEE ACCOUNT**********/
+
+table, th, td 
+{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+table
+{
+    width: 100%;
+}
+
+th
+{
+    background-color: var(--bg_color_2);
+    color: var(--font_color_2);
+}
+
+th, td
+{
+    padding: 8px;
+}
+
+.table_container
+{
+    margin-bottom: 32px;
+}
+
+.create_success_msg
+{
+    margin-bottom: 16px;
+    margin-left: 4px;
+    text-align: left;
 }
 
 #edit_stock_html .button_class.product_button
@@ -2867,45 +2934,19 @@ input:focus, select:focus
     color: black;
 }
 
-                    /**********MY EMPLOYEE ACCOUNT**********/
-
-table, th, td 
-{
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: center;
-    font-size: 0.8rem;
-}
-
-table
-{
-    width: 100%;
-}
-
-th
-{
-    background-color: var(--bg_color_2);
-    color: var(--font_color_2);
-}
-
-th, td
-{
-    padding: 8px;
-}
-
-.table_container
-{
-    margin-bottom: 32px;
-}
-
-.create_success_msg
-{
-    margin-bottom: 16px;
-    margin-left: 4px;
-}
-
-#my_employee_account_main .button_class
+#my_employee_account_main .button_class, #my_customer_account_main .button_class
 {
     margin-top: 32px;
     margin-bottom: 32px;
+}
+
+#my_employee_account_main
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#my_employee_account_main h2, #my_employee_account_main h3, #my_customer_account_main h2, #my_customer_account_main h3
+{
+    margin-top: 16px;
 }

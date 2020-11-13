@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {http_put_req} = require("../middleware/Method_handler_mw.js");
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
 
@@ -8,6 +9,21 @@ router.get("/my-account",function(req,res){
     res.render("employee/my_employee_account",{
 
         title: "View and edit your employee account",
+        html_id: "my_employee_account_html",
+        body_id: "my_employee_account_body",
+        main_id: "my_employee_account_main",
+        main_class: "width_container",
+        my_account_active_link: "active_link",
+    });
+});
+
+//*****EDIT EMPLOYEE ACCOUNT
+
+router.get("/edit-account",function(req,res){
+
+    res.render("employee/edit_employee_account",{
+
+        title: "Edit your employee account",
         html_id: "my_employee_account_html",
         body_id: "my_employee_account_body",
         main_id: "my_employee_account_main",
@@ -48,6 +64,20 @@ router.get("/edit-stock/restock",function(req,res){
 //*****ADD CATEGORIES
 
 router.get("/edit-stock/add-categories",function(req,res){ 
+
+    res.render("employee/add_categories",{
+
+        title: "Add new product categories to the store",
+        html_id: "edit_stock_html",
+        body_id: "edit_stock_body",
+        main_id: "edit_stock_main",
+        my_stock_active_link: "active_link",
+    });
+});
+
+router.post("/edit-stock/add-categories",/*http_put_req,*/function(req,res){ 
+
+    console.log("PUT REQUEST SUBMITTED FOR ADD CATEGORIES");
 
     res.render("employee/add_categories",{
 

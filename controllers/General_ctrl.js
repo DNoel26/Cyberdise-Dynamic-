@@ -76,8 +76,8 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
         .catch(err=>{console.log(`Error in General_ctrl.js: Catch rollback function: ${err}`)}); 
     };
     
-    User_model.create_trigger_test()
-    .then(()=>{return User_model.create_user(req.created_customer)}) //FIRST THEN
+    User_model.create_user(req.created_customer) //User_model.create_trigger_test()
+    .then(()=>{return User_model.create_customer_on_user_creation()}) //FIRST THEN
     .then(()=>{
         
         console.log("ON CUSTOMER CREATION",req.created_customer);

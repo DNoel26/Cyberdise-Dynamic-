@@ -16,6 +16,21 @@ router.get("/my-account",function(req,res){
     });
 });
 
+//*****MY CUSTOMER EDIT ACCOUNT
+
+router.get("/edit-account",function(req,res){
+
+    res.render("customer/edit_customer_account",{
+
+        title: "Edit your customer account",
+        html_id: "my_customer_account_html",
+        body_id: "my_customer_account_body",
+        main_id: "my_customer_account_main",
+        main_class: "width_container",
+        my_account_active_link: "active_link",
+    });
+});
+
 //*****MY CART CONTROLS
 
 router.get("/my-cart",function(req,res){

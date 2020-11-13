@@ -180,6 +180,24 @@ const User_model = {
             });
         })
     },
+
+    create_customer_on_user_creation()
+    {
+        return new Promise((resolve,reject)=>{
+            
+            this.SQL = 'INSERT INTO customer (customer_id_pk_fk, address) VALUES(LAST_INSERT_ID(),?);';
+            db.connection.query(this.SQL, ["THIS ADDRESS AFTER USER CREATION"])
+            .then((data)=>{
+                
+                //LAST_INSERT_ID();
+                resolve(data);
+            })
+            .catch((err)=>{
+
+                reject(`Error in User_mdl.js: create_user(): ${err}`);
+            });
+        })
+    },
     
     get_user_by_username_email(user_email,user_username)//customer_email,customer_username)
     {
