@@ -1,10 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const {http_put_req} = require("../middleware/Method_handler_mw.js");
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
 
 router.get("/my-account",function(req,res){
+
+    res.render("employee/my_employee_account",{
+
+        title: "View and edit your employee account",
+        html_id: "my_employee_account_html",
+        body_id: "my_employee_account_body",
+        main_id: "my_employee_account_main",
+        main_class: "width_container",
+        my_account_active_link: "active_link",
+    });
+});
+
+router.put("/edit-account/:id",function(req,res){
+
+    console.log("POST REQUEST INTERCEPTED AND CHANGED TO PUT!!!");
 
     res.render("employee/my_employee_account",{
 
@@ -22,6 +36,19 @@ router.get("/my-account",function(req,res){
 router.get("/edit-account",function(req,res){
 
     res.render("employee/edit_employee_account",{
+
+        title: "Edit your employee account",
+        html_id: "my_employee_account_html",
+        body_id: "my_employee_account_body",
+        main_id: "my_employee_account_main",
+        main_class: "width_container",
+        my_account_active_link: "active_link",
+    });
+});
+
+router.put("/edit-account",function(req,res){
+
+    res.render("employee/my_employee_account",{
 
         title: "Edit your employee account",
         html_id: "my_employee_account_html",
@@ -75,7 +102,7 @@ router.get("/edit-stock/add-categories",function(req,res){
     });
 });
 
-router.post("/edit-stock/add-categories",/*http_put_req,*/function(req,res){ 
+router.put("/edit-stock/add-categories",function(req,res){ 
 
     console.log("PUT REQUEST SUBMITTED FOR ADD CATEGORIES");
 

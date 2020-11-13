@@ -27,6 +27,7 @@ const Authentication_Controller = require("./controllers/Authenticate_ctrl.js");
 const {is_authorized_customer,is_authorized_employee} = require("./middleware/Authorize_mw.js");
 const is_auth = require("./middleware/Authenticate_mw.js");
 const User_model = require("./models/MYSQL_models/User_mdl.js");
+const http_req = require("./middleware/Http_method_handler_mw.js");
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.use(express.static("public"));
 //app.use(body_parser.urlencoded({limit: '50mb', extended: true }));
 app.use(body_parser.urlencoded({extended: true}));
 app.use(body_parser.json({extended: true}));//{limit: '50mb', extended: true}));
+
+app.use(http_req);
+
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
