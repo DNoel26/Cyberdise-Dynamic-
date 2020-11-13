@@ -7,7 +7,7 @@ const MySQL_DB = {
     init()
     {
         mysql.createConnection({
-
+            
             host: process.env.HOST,
             user: process.env.USER,
             database: process.env.DATABASE,

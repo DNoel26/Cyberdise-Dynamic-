@@ -7,7 +7,6 @@ const ip_middleware = require("../middleware/Request_ip_mw.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
 const is_auth = require("../middleware/Authenticate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
-const MySQL_DB = require("../config/MySQL_DAO.js");
 
 //*****AUTHENTICATION CONTROLS
 

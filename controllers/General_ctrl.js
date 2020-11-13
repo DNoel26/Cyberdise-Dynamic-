@@ -11,7 +11,7 @@ const Employee = require("../models/POJO/Employee.js");
 
 const {customer_register_form} = require("../middleware/Validate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
-const MySQL_DB = require("../config/MySQL_DAO.js");
+
 
 //*****HOME CONTROLS
 

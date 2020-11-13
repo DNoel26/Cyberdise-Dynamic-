@@ -1,6 +1,5 @@
 const mysql = require("mysql2/promise");
-const MySQL_DB = require("../../config/MySQL_DAO.js");
-const db = require("../../config/MySQL_DAO.js");
+const db = require("../../config/MySQL_DAO_pool.js");
 const Customer = require("../POJO/Customer.js");
 const Employee = require("../POJO/Employee.js");
 const User = require("../POJO/User.js");
@@ -210,7 +209,7 @@ const User_model = {
             FROM user u
             LEFT JOIN customer c ON u.user_id = c.customer_id_pk_fk LEFT JOIN inventory_clerk ic ON u.user_id = ic.inventory_clerk_id_pk_fk
             WHERE email = ? OR username = ?;`;
-
+            
             db.connection.query(this.SQL, [user_email,user_username]) //customer_email,customer_username])
             .then(([rows,fields])=>{
 

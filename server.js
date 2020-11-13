@@ -14,6 +14,7 @@ require("dotenv").config({path: "config/keys.env"});
 const helper = require("./config/helpers.js");
 
 const MySQL_DB = require("./config/MySQL_DAO.js");
+const MySQL_DB_pool = require("./config/MySQL_DAO_pool.js");
 const User = require("./models/POJO/User.js");
 const Customer = require("./models/POJO/Customer.js");
 const Employee = require("./models/POJO/Employee.js");
@@ -119,7 +120,8 @@ app.listen(process.env.PORT, function(){
     //console.log(`SQL END LOG`,MySQL_DB);
     //MySQL_DB.destroy();
     console.log("Server is connected and running", this.address().port, app.settings.env);
-    MySQL_DB.init();
+    //MySQL_DB.init();
+    MySQL_DB_pool.init();
 });
 
 /*app.listen(process.env.PORT || 3000, function(){
