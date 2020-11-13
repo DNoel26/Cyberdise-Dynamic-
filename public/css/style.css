@@ -248,6 +248,15 @@ video
     object-fit: fill;
 }
 
+.hero_vid
+{
+    background-image: url("/img/hero_5.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    z-index: 1000;
+}
+
 #home_page_html
 {
     overflow: auto;
@@ -1211,16 +1220,16 @@ footer
 
 .hero i
 {
-    position: absolute;
+    position: relative;
     left: 0;
     right: 0;
-    bottom: 4vh;
+    bottom: 48px;
     display: block;
     margin: 0 auto;
     text-align: center;
     color: var(--font_color_2);
-    width: 6vw;
-    height: 8vh;
+    width: 200px;
+    height: 120px;
     font-size: 5rem;
     /*transition: 0.3s;*/
     animation: icon_jump 1s steps(80, end) infinite;
@@ -2424,6 +2433,14 @@ input:focus, select:focus
     width: 96px;
     height: 96px;
     z-index: 10;
+    transition: 0.4s;
+}
+
+.products_display:hover::before
+{
+    width: 0px;
+    height: 0px;
+    transition: 0.4s;
 }
 
 #products_section img
@@ -2854,6 +2871,11 @@ input:focus, select:focus
 #my_employee_account_html section, #my_customer_account_html section
 {
     margin-left: 16px;
+}
+
+.greeting_msg > img
+{
+    margin-top: 16px;
 }
 
                     /**********MY EMPLOYEE ACCOUNT**********/

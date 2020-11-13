@@ -14,11 +14,11 @@ exports.customer_register_form = (req,res,next)=>{
     created_customer.last_name = req.body.last_name;
     created_customer.gender = req.body.gender;
     created_customer.country = req.body.country;
+    created_customer.country_flag_src = req.body.country_flag_src;
     created_customer.username = req.body.username;
     created_customer.email = req.body.email;
     created_customer.password = req.body.password;
     created_customer.confirm_password = req.body.confirm_password;
-    created_customer.country_flag_src = req.body.country_flag_src;
     //created_customer.testtt = req.body.testtt; //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
     req.created_customer = created_customer;

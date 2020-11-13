@@ -1,4 +1,3 @@
-const mysql = require("mysql2/promise");
 const db = require("../../config/MySQL_DAO_pool.js");
 const Customer = require("../POJO/Customer.js");
 const Employee = require("../POJO/Employee.js");
@@ -7,69 +6,6 @@ const User = require("../POJO/User.js");
 const User_model = {
 
     SQL: '',
-    SQL_2: '',
-
-    create_user_test(user,curr_time)
-    {
-        return new Promise((resolve,reject)=>{
-            
-            this.SQL = 'START TRANSACTION; INSERT INTO user (first_name,last_name,gender,country,username,email,password) VALUES (?,?,?,?,?,?,?); ';
-            db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,
-                                            user.username,user.email,user.password])
-            .then((input_data)=>{
-
-                /*User_model.mysql_current_timestamp();
-                console.log(`CURRENT TIMESTAMP ${User_model.mysql_current_timestamp()}`);
-                console.log(User_model.mysql_current_timestamp());
-
-                User_model.mysql_last_insert_id();
-                console.log(`LAST INSERT ID ${User_model.mysql_last_insert_id()}`);
-                console.log(User_model.mysql_last_insert_id());*/
-
-                resolve(input_data);
-            })
-            .catch(err=>reject(`Error in User_mdl.js: create_user(): ${err}`));
-        })
-    },
-
-    /*customer_signup(user,ID,c_address)
-    {
-        return new Promise((resolve,reject)=>{
-
-            this.SQL = `START TRANSACTION; INSERT INTO user(first_name,last_name,gender,country,email,password) VALUES (?,?,?,?,?,?);
-            INSERT INTO customer(customer_id_fk,address) VALUES (?,?); COMMIT;`;
-
-            db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,
-                user.email,user.password,ID,c_address])
-            db.connection.query('START TRANSACTION')
-            .then(()=>{
-
-                this.SQL = 'INSERT INTO user(first_name,last_name,gender,country,email,password) VALUES (?,?,?,?,?,?)';
-                db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,
-                                                            user.email,user.password]);    
-
-                this.SQL_2 = 'INSERT INTO customer(customer_id_fk,address) VALUES (?,?)';
-                db.connection.query(this.SQL_2, [10,c_address]);
-            })
-            
-            
-            console.log(this.SQL)
-            console.log(this.SQL_2)
-            
-            db.connection.query('commit')
-            .then(()=>{
-
-                console.log("Before resolve");
-                console.log(resolve());
-            })
-            .catch(err=>reject(`Error in User_mdl.js: user_signup(): ${err}`))
-            .then(()=> {
-
-                this.SQL = 'ROLLBACK;';
-                db.connection.query(this.SQL);
-            })
-        })
-    },*/
 
     create_trigger_test()
     {
@@ -165,8 +101,8 @@ const User_model = {
     {
         return new Promise((resolve,reject)=>{
             
-            this.SQL = 'START TRANSACTION; INSERT INTO user (first_name,last_name,gender,country,username,email,password) VALUES (?,?,?,?,?,?,?);';
-            db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,
+            this.SQL = 'START TRANSACTION; INSERT INTO user (first_name,last_name,gender,country,country_flag_src,username,email,password) VALUES (?,?,?,?,?,?,?,?);';
+            db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,user.country_flag_src,
                                             user.username,user.email,user.password])
             .then((input_data)=>{
                 
@@ -184,8 +120,8 @@ const User_model = {
     {
         return new Promise((resolve,reject)=>{
             
-            this.SQL = 'INSERT INTO customer (customer_id_pk_fk, address) VALUES(LAST_INSERT_ID(),?);';
-            db.connection.query(this.SQL, ["THIS ADDRESS AFTER USER CREATION"])
+            this.SQL = 'INSERT INTO customer (customer_id_pk_fk, address_line_1, address_line_2) VALUES(LAST_INSERT_ID(),?,?);';
+            db.connection.query(this.SQL, ["THIS ADDRESS AFTER USER CREATION",""])
             .then((data)=>{
                 
                 //LAST_INSERT_ID();
@@ -227,18 +163,20 @@ const User_model = {
                             selected_user.user_id = row.user_id;
                             selected_user.first_name = row.first_name;
                             selected_user.last_name = row.last_name;
-                            selected_user.full_name = row.full_name;
                             selected_user.gender = row.gender;
                             selected_user.country = row.country;
+                            selected_user.country_flag_src = row.country_flag_src;
                             selected_user.username = row.username;
                             selected_user.email = row.email;
                             selected_user.password = row.password;
+                            selected_user.phone_num = row.phone_num;
                             selected_user.logged_in = row.logged_in;
                             selected_user.last_login_date = row.last_login_date;
                             selected_user.last_login_IP = row.last_login_IP;
                             //customer specific
-                            selected_user.customer_id_fk = row.customer_id_fk;
-                            selected_user.address = row.address;
+                            selected_user.customer_id_pk_fk = row.customer_id_pk_fk;
+                            selected_user.address_line_1 = row.address_line_1;
+                            selected_user.address_line_2 = row.address_line_2;
                             selected_user.town_city = row.town_city;
                             selected_user.state = row.state;
                             selected_user.credit_card_num = row.credit_card_num;
@@ -256,12 +194,13 @@ const User_model = {
                             selected_user.user_id = row.user_id;
                             selected_user.first_name = row.first_name;
                             selected_user.last_name = row.last_name;
-                            selected_user.full_name = row.full_name;
                             selected_user.gender = row.gender;
                             selected_user.country = row.country;
+                            selected_user.country_flag_src = row.country_flag_src;
                             selected_user.username = row.username;
                             selected_user.email = row.email;
                             selected_user.password = row.password;
+                            selected_user.phone_num = row.phone_num;
                             selected_user.logged_in = row.logged_in;
                             selected_user.last_login_date = row.last_login_date;
                             selected_user.last_login_IP = row.last_login_IP;

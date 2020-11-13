@@ -32,7 +32,7 @@ const App =
         const modal = document.querySelectorAll(".modal");
         const modal_close_btns = document.querySelectorAll(".modal_close_btn");
         const username_email_login = document.querySelector(".modal #username_email");
-        const password_login = document.querySelector(".modal #password");
+        const password_login = document.querySelector(".modal #password_login");
         const form_error_msg = document.querySelectorAll(".form_error_msg");
         const login_animation = document.querySelector(".lds-ellipsis");
         const success_modal = document.querySelector("#success_modal");
@@ -138,24 +138,16 @@ const App =
 
             const rest_country_api = new API("https://restcountries.eu/rest/v2/all");
 
-            console.log(rest_country_api);
-            console.log(rest_country_api.fetch_API());
-
+            //console.log(rest_country_api);
+            //console.log(rest_country_api.fetch_API());
+            console.log("API COUNTRY FETCH START");
             rest_country_api.fetch_API()
             .then((country_api_data)=>{
 
                 //country_flag_img.setAttribute("src",`${country_arr[index].location_flag}`);
                 console.log(country_api_data);
-
-                country_api_data.forEach((country,index) => {
+                country_api_data.forEach(country => {
                     
-                    //console.log(country,index);
-
-                    created_option[index] = document.createElement("option");
-                    created_option[index].setAttribute("value",`${country.name}`);
-                    created_option[index].innerHTML = country.name;    
-                    country_select.appendChild(created_option[index]); 
-
                     country_arr.push({
 
                         location_name: country.name, 
@@ -165,84 +157,102 @@ const App =
                         location_currencies: country.currencies, 
                         location_flag: country.flag,
                     });
-                    
-                    if(top_country_option.value === created_option[index].value)
-                    {
-                        created_option[index].style.display = "none";
-                        //created_option[index].style.visibility = "hidden";
-                        //created_option[index].setAttribute("disabled","disabled")
-                    }
-
-                    //if(index > 0)
-                    //{
-                        //const created_option = option.createElement("option");
-                        //const option_text = option.createTextNode("try");
-                        //let create_option = country_select.createElement("option");
-                        
-                        //created_option.setAttribute("value",`${country[index].name}`);
-                        //created_option.innerHTML = country[index].name;
-                        //country_select.appendChild(created_option);
-                        //created_option.appendChild(option_text);
-                    //}   
                 });
 
-                const country_options = document.querySelectorAll("#signup_login_form_section select#country option");
-                const flag_store = country_flag_img.src;
-
-                if(top_country_option.value === "")
+                if(signup_page_html)
                 {
-                    country_flag_img.setAttribute("class","hide_element");
-                }
+                    country_api_data.forEach((country,index) => {
+                    
+                        //console.log(country,index);
+                        created_option[index] = document.createElement("option");
+                        created_option[index].setAttribute("value",`${country.name}`);
+                        created_option[index].innerHTML = country.name;    
+                        country_select.appendChild(created_option[index]);   
 
-                console.log(created_option[0]);
-                console.log(country_arr[0]);
-                console.log(country_arr[0].location_currencies[0].symbol);
-                console.log(country_arr);
-              
-                country_select.addEventListener("change",()=>{
+                        if(top_country_option.value === created_option[index].value)
+                        {
+                            created_option[index].style.display = "none";
+                            //created_option[index].style.visibility = "hidden";
+                            //created_option[index].setAttribute("disabled","disabled")
+                        };
 
-                    country_flag_img.removeAttribute("class","hide_element");
+                        
+                        
+                        
+                        
+    
+                        //if(index > 0)
+                        //{
+                            //const created_option = option.createElement("option");
+                            //const option_text = option.createTextNode("try");
+                            //let create_option = country_select.createElement("option");
+                            
+                            //created_option.setAttribute("value",`${country[index].name}`);
+                            //created_option.innerHTML = country[index].name;
+                            //country_select.appendChild(created_option);
+                            //created_option.appendChild(option_text);
+                        //}   
+                    });
 
-                    if(top_country_option.selected && top_country_option.value === "")
+                    const country_options = document.querySelectorAll("#signup_login_form_section select#country option");
+                    const flag_store = country_flag_img.src;
+
+                    if(top_country_option.value === "")
                     {
                         country_flag_img.setAttribute("class","hide_element");
                     }
 
-                    created_option.forEach((option,index) => {
+                    console.log(created_option[0]);
+                    console.log(country_arr[0]);
+                    console.log(country_arr[0].location_currencies[0].symbol);
+                    console.log(country_arr);
+                
+                    country_select.addEventListener("change",()=>{
 
-                        if(option.selected && option.value !== top_country_option.value)
+                        country_flag_img.removeAttribute("class","hide_element");
+
+                        if(top_country_option.selected && top_country_option.value === "")
                         {
-                            console.log(option,index);
-                            country_flag_img.setAttribute("src",`${country_arr[index].location_flag}`);
-                            country_flag_src.value = country_arr[index].location_flag;
+                            country_flag_img.setAttribute("class","hide_element");
                         }
-                    });
+
+                        created_option.forEach((option,index) => {
+
+                            if(option.selected && option.value !== top_country_option.value)
+                            {
+                                console.log(option,index);
+                                country_flag_img.setAttribute("src",`${country_arr[index].location_flag}`);
+                                country_flag_src.value = country_arr[index].location_flag;
+                            }
+                        });
+
+                        if(top_country_option.selected)
+                        {
+                            country_flag_img.setAttribute("src",`${flag_store}`);
+                            country_flag_src.value = flag_store;
+                            console.log("FLAGGGG",country_flag_img.src);
+                        }   
+                    })
 
                     if(top_country_option.selected)
                     {
                         country_flag_img.setAttribute("src",`${flag_store}`);
                         country_flag_src.value = flag_store;
-                        console.log("FLAGGGG",country_flag_img.src);
-                    }   
-                })
+                    }
 
-                if(top_country_option.selected)
-                {
-                    country_flag_img.setAttribute("src",`${flag_store}`);
-                    country_flag_src.value = flag_store;
-                }
-
-                if(country_flag_img.src === "")
-                {
-                    country_flag_img.style.display = "none";
+                    if(country_flag_img.src === "")
+                    {
+                        country_flag_img.style.display = "none";
+                    }
+                    
+                    //alert(country_arr[0].location_name);
                 }
                 
-                //alert(country_arr[0].location_name);
-
+                console.log("API COUNTRY FETCH END");
                 return country_arr;
             })
             .then((country_arr)=>{
-
+                
                 country_json.data = country_arr;
                 
                 console.log("COUNTRY JSON");
@@ -255,27 +265,55 @@ const App =
                 const test_obj = {test: 1,test_2: "two", test_3: "three"};
                 const test_obj_str = JSON.stringify(test_obj);
                 
-                let signup_url = '/signup';
+                const signup_url = '/signup';
+                const edit_employee_account = '/employee/my-account';
+                const edit_customer_account = '/customer/my-account';
+                const url_arr = [signup_url, edit_employee_account, edit_customer_account];
+                const multi_fetch = [];
+                
+                if(window.location.pathname == edit_customer_account ||
+                    window.location.pathname == signup_url ||
+                    window.location.pathname == edit_employee_account
+                    )
+                {
+                    alert("!!!")
+                }
 
-                    fetch(signup_url,{
+                for(let i=0; i<url_arr.length; i++)
+                {
+                    if(window.location.pathname == url_arr[i])
+                    {
+                        multi_fetch[i] = fetch(url_arr[i],{
 
-                        method: 'POST',
-                        headers : {'Content-Type': 'application/json',
-                                    'Accept': 'application/json'},
-                        body: country_json_str, //country_json_str
-                        credentials: "same-origin"
-                    })
-                    .then(function(response) {
-                        
-                        console.log("RESPONSE ON SIGNUP PAGE LOAD",response);
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        
-                        console.log("DATA ON SIGNUP PAGE LOAD");
-                        return console.log(data);
-                    })
-                    .catch(err=>console.log(`ERROR IN SENDING JSON: ${err}`));
+                            method: 'POST',
+                            headers : {'Content-Type': 'application/json',
+                                        'Accept': 'application/json'},
+                            body: country_json_str, //country_json_str
+                            credentials: "same-origin"
+                        })
+                    };     
+                };
+
+                /*fetch(signup_url,{
+
+                    method: 'POST',
+                    headers : {'Content-Type': 'application/json',
+                                'Accept': 'application/json'},
+                    body: country_json_str, //country_json_str
+                    credentials: "same-origin"
+                })*/
+                Promise.all(multi_fetch)
+                .then(function(response) {
+                    
+                    console.log("RESPONSE ON SIGNUP PAGE LOAD",response);
+                    return response.json();
+                })
+                .then(function(data) {
+                    
+                    console.log("DATA ON SIGNUP PAGE LOAD");
+                    return console.log(data);
+                })
+                .catch(err=>console.log(`ERROR IN SENDING JSON: ${err}`));
             })
             .catch((err)=>`Failed to fulfil promise: ${err}`);
             //testtt.value = encodeURIComponent(country_arr_str); //TO TEST SENDING JSON FROM CLIENT TO SERVER
@@ -792,7 +830,7 @@ const App =
                     
                     element.addEventListener("click",()=>{
                         
-                        if(product_page_no_top.value < 0 || product_page_no_bot < 0)
+                        if(product_page_no_top.value < 1 || product_page_no_bot < 1)
                         {
                             product_page_no_top.value = 1;
                             product_page_no_bot.value = 1;

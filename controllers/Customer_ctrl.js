@@ -4,7 +4,8 @@ const router = express.Router();
 //*****MY CUSTOMER ACCOUNT CONTROLS
 
 router.get("/my-account",function(req,res){
-
+    
+    console.log("USER INFO COUNTRY FLAG",res.locals.user_info.country_flag_src,res.locals.user_info.first_name);
     res.render("customer/my_customer_account",{
 
         title: "View and edit your customer account",
