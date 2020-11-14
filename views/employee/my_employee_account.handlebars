@@ -1,7 +1,7 @@
 <section>
     <div class="width_container">
         <div class="greeting_msg width_container">
-            {{> employee_welcome_msg}} {{user_info.country_flag_src}}
+            {{> employee_welcome_msg}}
             <p>View and Edit Account Details Below</p>
         </div>
         <div class="centre_items">
@@ -28,24 +28,24 @@
                             <h2>Address</h2>    
                         </div> 
                         <div>
-                            <h3>Country:</h3>
-                            <p>Placeholder</p>  
+                            <h3>Country/Region:</h3>
+                            <p> {{#if user_info.country}} {{user_info.country}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Last Login Date:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.last_login_date}} {{user_info.last_login_date}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Last Login IP:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.last_login_IP}} {{user_info.last_login_IP}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Account Created:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.date_created}} {{user_info.date_created}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Last Edited:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.last_modified}} {{user_info.last_modified}} {{else}} --- {{/if}} </p>  
                         </div>
                     </div>
                 </div>
@@ -59,31 +59,31 @@
                         <div>
                             <div>
                                 <h3>Name:</h3>
-                                <p>Darnell Noel</p>
+                                <p> {{#if user_info.first_name}} {{#if user_info.last_name}} {{user_info.first_name}} {{user_info.last_name}} {{else}} --- {{/if}} {{/if}} </p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Username:</h3>
-                                <p>Placeholder</p> 
+                                <p> {{#if user_info.username}} @{{user_info.username}} {{else}} --- {{/if}} </p> 
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Email:</h3>
-                                <p>Placeholder</p> 
+                                <p> {{#if user_info.email}} {{user_info.email}} {{else}} --- {{/if}} </p> 
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Phone Number:</h3>
-                                <p>Placeholder</p>
+                                <p> {{#if user_info.phone_num}} {{user_info.phone_num}} {{else}} --- {{/if}} </p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Password:</h3>    
-                                <p>Placeholder</p>
+                                <p>Edit Profile to Change</p>
                             </div>    
                         </div>
                     </div>

@@ -49,7 +49,7 @@ router.get("/signup",is_already_logged_in,function(req,res){
 
     //console.log(res.locals);
     //console.log((req));
-    console.log("GET SIGNUP",req.body,req.query,req.params);
+    console.log("GET SIGNUP DATA",req.body,req.query,req.params);
 
     res.render("general/signup",{
 
@@ -59,6 +59,11 @@ router.get("/signup",is_already_logged_in,function(req,res){
         main_id: signup_render_obj.main_id, //"signup_page_main",
         no_modal: signup_render_obj.no_modal, //true
     });
+});
+
+router.post("/signup",is_already_logged_in,function(req,res){
+
+    res.redirect("/signup");
 });
 
 router.post("/signup/create-account",customer_register_form,function(req,res){ //is_already_logged_in,

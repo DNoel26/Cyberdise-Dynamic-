@@ -27,27 +27,23 @@
                         </div> 
                         <div>
                             <h3>Country/Region:</h3>
-                            <p>Placeholder</p>  
-                        </div>
-                        <div>
-                            <h3>Postcode:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.country}} {{user_info.country}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Address Line 1:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.address_line_1}} {{user_info.address_line_1}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Address Line 2:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.address_line_2}} {{user_info.address_line_2}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>Town/City:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.town_city}} {{user_info.town_city}} {{else}} --- {{/if}} </p>  
                         </div>
                         <div>
                             <h3>State:</h3>
-                            <p>Placeholder</p>  
+                            <p> {{#if user_info.state}} {{user_info.state}} {{else}} --- {{/if}} </p>  
                         </div>
                     </div>
                 </div>
@@ -61,37 +57,37 @@
                         <div>
                             <div>
                                 <h3>Name:</h3>
-                                <p>Darnell Noel</p>
+                                <p> {{#if user_info.first_name}} {{#if user_info.last_name}} {{user_info.first_name}} {{user_info.last_name}} {{else}} --- {{/if}} {{/if}} </p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Username:</h3>
-                                <p>Placeholder</p> 
+                                <p> {{#if user_info.username}} @{{user_info.username}} {{else}} --- {{/if}} </p> 
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Email:</h3>
-                                <p>Placeholder</p> 
+                                <p> {{#if user_info.email}} {{user_info.email}} {{else}} --- {{/if}} </p> 
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Phone Number:</h3>
-                                <p>Placeholder</p>
+                                <p> {{#if user_info.phone_num}} {{user_info.phone_num}} {{else}} --- {{/if}} </p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <h3>Credit Card Number:</h3>    
-                                <p>Placeholder</p>
+                                <p> {{#if user_info.credit_card_num}} {{user_info.credit_card_num}} {{else}} --- {{/if}} </p>
                             </div>    
                         </div>
                         <div>
                             <div>
                                 <h3>Password:</h3>    
-                                <p>Placeholder</p>
+                                <p>Edit Profile to Change</p>
                             </div>    
                         </div>
                     </div>

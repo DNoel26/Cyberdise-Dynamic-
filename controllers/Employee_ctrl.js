@@ -16,6 +16,11 @@ router.get("/my-account",function(req,res){
     });
 });
 
+router.post("/my-account",function(req,res){
+    
+    res.redirect("/employee/my-account");
+});
+
 router.put("/edit-account/:id",function(req,res){
 
     console.log("POST REQUEST INTERCEPTED AND CHANGED TO PUT!!!");

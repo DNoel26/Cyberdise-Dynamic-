@@ -4,7 +4,7 @@
             {{> employee_welcome_msg}}
             <p>Edit Account Details Below</p>
         </div>
-        <div class="profile_container">
+        <div class="edit_employee_container profile_container">
             <div>
                 <form action="/employee/edit-account/:id?method=put" method="POST" class="form_class form_grid">
                     <div>
@@ -13,34 +13,17 @@
                         </div>
                         <div>
 
-                            <div class="form_input_container">
-                                <label for="country_region">Country/Region</label>
-                                <input type="text" name="country_region" id="country_region" value="Placeholder">
-                            </div>
-
-                            <div class="form_input_container">
-                                <label for="postcode">Postcode</label>
-                                <input type="text" name="postcode" id="postcode" value="Placeholder">
-                            </div>
-
-                            <div class="form_input_container">
-                                <label for="address_line_1">Address Line 1</label>
-                                <textarea name="address_line_1" id="address_line_1" cols="30" rows="3" value="Placeholder"></textarea>
-                            </div>
-
-                            <div class="form_input_container">
-                                <label for="address_line_2">Address Line 2</label>
-                                <textarea name="address_line_2" id="address_line_2" cols="30" rows="3" value="Placeholder"></textarea>
-                            </div>
-
-                            <div class="form_input_container">
-                                <label for="town_city">Town/City</label>
-                                <input type="text" name="town_city" id="town_city" value="Placeholder">
-                            </div>
-
-                            <div class="form_input_container">
-                                <label for="state">State</label>
-                                <input type="text" name="state" id="state" value="Placeholder">
+                            <div>
+                                <label for="country">Country</label>
+                                <select name="country" id="country">
+                                    {{#if user_info.country}} <option id="top_selection" value="{{user_info.country}}">{{user_info.country}}</option> {{/if}}
+                                </select>
+                                <!--<input type="hidden" id="testtt" name="testtt" value=""> TO TEST SENDING JSON FROM CLIENT TO SERVER-->
+                                <input type="hidden" id="country_flag_src" name="country_flag_src" value="">
+                                <div>
+                                    <img id="country_flag" {{#if user_info.country_flag_src}} src="{{user_info.country_flag_src}}" {{/if}} alt="" width="122" height="64">
+                                </div>
+                                <span class="form_error_msg">{{errors.country}}</span>   
                             </div>
                         </div>
                     </div>
@@ -53,33 +36,43 @@
 
                             <div class="form_input_container">
                                 <label for="first_name">First Name</label>
-                                <input type="text" name="first_name" id="first_name" value="Placeholder">
+                                <input type="text" name="first_name" id="first_name" value="{{user_info.first_name}}">
                             </div>
 
                             <div class="form_input_container">
                                 <label for="last_name">Last Name</label>
-                                <input type="text" name="last_name" id="last_name" value="Placeholder">
+                                <input type="text" name="last_name" id="last_name" value="{{user_info.last_name}}">
                             </div>
 
                             <div class="form_input_container">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" id="username" value="Placeholder">
+                                <input type="text" name="username" id="username" value="{{user_info.username}}">
                             </div> 
 
                             <div class="form_input_container">
                                 <label for="email">Email</label>
-                                <input type="text" name="email" id="email" value="Placeholder">
+                                <input type="email" name="email" id="email" value="{{user_info.email}}">
                             </div>
 
                             <div class="form_input_container">
                                 <label for="phone">Phone Number</label>
-                                <input type="text" name="phone" id="phone" value="Placeholder">
+                                <input type="tel" name="phone" id="phone" value="{{user_info.phone_num}}">
                             </div>
 
                             <div class="form_input_container">
-                                <label for="password">Password</label>
-                                <input type="text" name="password" id="password" value="Placeholder">
+                                <label for="password">Confirm Old Password</label>
+                                <input type="password" name="password" id="password" value="">
                             </div>  
+
+                            <div class="form_input_container">
+                                <label for="new_password">Enter New Password</label>
+                                <input type="password" name="new_password" id="new_password" value="">
+                            </div>  
+
+                            <div class="form_input_container">
+                                <label for="new_confirm_password">Confirm New Password</label>
+                                <input type="password" name="new_confirm_password" id="new_confirm_password" value="">
+                            </div>
 
                         </div>
                     </div>

@@ -17,6 +17,11 @@ router.get("/my-account",function(req,res){
     });
 });
 
+router.post("/my-account",function(req,res){
+    
+    res.redirect("/customer/my-account");
+});
+
 //*****MY CUSTOMER EDIT ACCOUNT
 
 router.get("/edit-account",function(req,res){

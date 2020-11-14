@@ -72,12 +72,12 @@
                             <label class="required" for="country">Country</label>
                             <select name="country" id="country">
                                 {{#if created_customer.country}} <option id="top_selection" value="{{created_customer.country}}">{{created_customer.country}}</option> {{else}} <option id="top_selection" value="">Click Here to Select Your Location...</option> {{/if}}
-                                <div></div>
-                                <!--<option></option> 
+                                <!--<div></div>
+                                <option></option> 
                                 <option #if_eq created_customer.country "Albania" selected /if_eq value="Trinidad" >Trinidad</option>
                                 <option value="Scotland">Scotland</option>-->
                             </select>
-                            <input type="hidden" id="testtt" name="testtt" value=""> <!--TO TEST SENDING JSON FROM CLIENT TO SERVER-->
+                            <!--<input type="hidden" id="testtt" name="testtt" value=""> TO TEST SENDING JSON FROM CLIENT TO SERVER-->
                             <input type="hidden" id="country_flag_src" name="country_flag_src" value="">
                             <span><img id="country_flag" {{#if created_customer.country_flag_src}} src="{{created_customer.country_flag_src}}" {{else}} src="" {{/if}} alt="" width="122" height="64"></span>
                             <span class="form_error_msg">{{errors.country}}</span>   
@@ -85,7 +85,7 @@
                         
                         <div>
                             <label class="required" for="username">Username</label>
-                            <input value="{{created_customer.username}}" name="username" id="username" placeholder="Your Username Here...">
+                            <input value="{{created_customer.username}}" type="text" name="username" id="username" placeholder="Your Username Here...">
                             <span class="form_error_msg">{{errors.username}}</span>     
                         </div>
                         

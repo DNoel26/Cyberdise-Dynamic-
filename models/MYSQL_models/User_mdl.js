@@ -103,7 +103,7 @@ const User_model = {
             
             this.SQL = 'START TRANSACTION; INSERT INTO user (first_name,last_name,gender,country,country_flag_src,username,email,password) VALUES (?,?,?,?,?,?,?,?);';
             db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,user.country_flag_src,
-                                            user.username,user.email,user.password])
+                user.username,user.email,user.password])
             .then((input_data)=>{
                 
                 //LAST_INSERT_ID();

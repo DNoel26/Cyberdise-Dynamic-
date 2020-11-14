@@ -19,14 +19,16 @@ const App =
         const page_top = document.querySelector("#go_to_top");
         const signup_page_html = document.querySelector("#signup_page_html");
         const products_page_html = document.querySelector("#products_page_html");
+        const my_employee_account_html = document.querySelector("#my_employee_account_html");
+        const my_customer_account_html = document.querySelector("#my_customer_account_html");
         const special_div = document.querySelector("#spec");
 
         const header_login_btn = document.querySelector("#header_login_btn");
         const header_login_submit_btn = document.querySelector("#header_login_submit_btn");
         const login_submit_btn = document.querySelector("#login_submit_btn");
         //const header_login_btn = document.getElementById("header_login_btn");
-        const country_select = document.querySelector("#signup_login_form_section select#country");
-        const top_country_option = document.querySelector("#signup_login_form_section select#country option#top_selection");
+        const country_select = document.querySelector("select#country");
+        const top_country_option = document.querySelector("select#country option#top_selection");
         const country_flag_img = document.querySelector("#country_flag");
         const country_flag_src = document.querySelector("#country_flag_src");
         const modal = document.querySelectorAll(".modal");
@@ -159,7 +161,7 @@ const App =
                     });
                 });
 
-                if(signup_page_html)
+                if(signup_page_html || my_employee_account_html || my_customer_account_html)
                 {
                     country_api_data.forEach((country,index) => {
                     
@@ -176,11 +178,6 @@ const App =
                             //created_option[index].setAttribute("disabled","disabled")
                         };
 
-                        
-                        
-                        
-                        
-    
                         //if(index > 0)
                         //{
                             //const created_option = option.createElement("option");
@@ -194,7 +191,7 @@ const App =
                         //}   
                     });
 
-                    const country_options = document.querySelectorAll("#signup_login_form_section select#country option");
+                    //const country_options = document.querySelectorAll("#signup_login_form_section select#country option");
                     const flag_store = country_flag_img.src;
 
                     if(top_country_option.value === "")
@@ -271,42 +268,36 @@ const App =
                 const url_arr = [signup_url, edit_employee_account, edit_customer_account];
                 const multi_fetch = [];
                 
-                if(window.location.pathname == edit_customer_account ||
+                /*if(window.location.pathname == edit_customer_account ||
                     window.location.pathname == signup_url ||
                     window.location.pathname == edit_employee_account
                     )
                 {
-                    alert("!!!")
-                }
+                    alert("!!!");
+                };*/
 
                 for(let i=0; i<url_arr.length; i++)
                 {
                     if(window.location.pathname == url_arr[i])
                     {
-                        multi_fetch[i] = fetch(url_arr[i],{
+                        console.log(multi_fetch);
+                        
+                        multi_fetch.push(fetch(url_arr[i],{
 
                             method: 'POST',
                             headers : {'Content-Type': 'application/json',
                                         'Accept': 'application/json'},
                             body: country_json_str, //country_json_str
                             credentials: "same-origin"
-                        })
-                    };     
+                        })) 
+                    }
                 };
 
-                /*fetch(signup_url,{
-
-                    method: 'POST',
-                    headers : {'Content-Type': 'application/json',
-                                'Accept': 'application/json'},
-                    body: country_json_str, //country_json_str
-                    credentials: "same-origin"
-                })*/
                 Promise.all(multi_fetch)
                 .then(function(response) {
                     
                     console.log("RESPONSE ON SIGNUP PAGE LOAD",response);
-                    return response.json();
+                    return response;
                 })
                 .then(function(data) {
                     

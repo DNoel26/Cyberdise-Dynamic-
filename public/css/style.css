@@ -339,6 +339,12 @@ img
     color: var(--font_color_2);
 }
 
+.light_text
+{
+    color: var(--font_color);
+    font-style: italic;
+}
+
 .welcome_msg /* DISPLAYS WHEN USER LOGS IN ONLY */
 {  
     display: inline-block;                 
@@ -544,7 +550,7 @@ a
     background-color:var(--bg_color_2) !important;
 }*/
 
-.modal #login_form_section_right > div button:hover
+.modal #login_form_section_right > div button:hover, .modal #login_form_section_right > div button:focus
 {
     background-color:var(--bg_color_3);
     color: var(--font_color);
@@ -609,10 +615,10 @@ a
     margin: 0 4px 4px 4px;  
 }
 
-.form_class input, .form_class select, .form_class option, .form_class textarea
+.form_class input, .form_class select, .form_class textarea
 {
     margin: 0 4px 16px 4px;
-    transition: 0.5s;
+    transition: 0.4s;
 }
 
 .form_class textarea
@@ -620,11 +626,12 @@ a
     max-width: 420px;
 }
 
-.form_class input:hover, .form_class select:hover, .form_class textarea:hover
+.form_class input:hover, .form_class select:hover, .form_class textarea:hover,
+.form_class input:focus, .form_class select:focus, .form_class textarea:focus
 {
     background-color: var(--bg_color_2);
     color: var(--font_color_2);
-    transition: 0.5s;
+    transition: 0.4s;
 }
 
 .form_input_container
@@ -650,6 +657,11 @@ a
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
+}
+
+.edit_employee_container.profile_container
+{
+    display: block;
 }
 
 .form_grid > div:last-child
@@ -711,7 +723,8 @@ nav .header_form_class button
     /*background-color: var(--bg_color_2);*/
 }
 
-nav .header_form_class button:hover, nav .header_form_class button:hover .fa-search
+nav .header_form_class button:hover, nav .header_form_class button:hover .fa-search,
+nav .header_form_class button:focus, nav .header_form_class button:focus .fa-search
 {
     background-color: var(--font_color);
     color: var(--font_color_3);
@@ -2876,6 +2889,11 @@ input:focus, select:focus
 .greeting_msg > img
 {
     margin-top: 16px;
+}
+
+#cc_num
+{
+    width: 84%;
 }
 
                     /**********MY EMPLOYEE ACCOUNT**********/
