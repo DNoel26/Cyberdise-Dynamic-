@@ -594,6 +594,11 @@ a
     margin-bottom: 64px;
 }
 
+.form_class p
+{
+    margin-bottom: 32px;
+}
+
 .form_class > div:last-child
 {
     margin-top: 64px;
@@ -607,7 +612,7 @@ a
 .form_class h2, .form_class h3
 {
     margin-left: 4px;   
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .form_class label
@@ -638,6 +643,24 @@ a
 {
     display: grid;
     width: 500px;
+}
+
+.form_input_container h3
+{
+    font-size: 0.7rem;
+    margin-bottom: 4px;
+}
+
+.form_input_container p
+{
+    margin-left: 4px;
+    margin-bottom: 16px;
+}
+
+.form_input_container img
+{
+    margin-left: 4px;
+    margin-bottom: 16px;
 }
 
 .form_input_container input
@@ -1950,6 +1973,11 @@ footer
     display: none;
 }
 
+#signup_page_html body
+{
+    min-height: 100vh;
+}
+
 #signup_page_body
 {
     background-image: url("/img/sign_up_bg.jpg");
@@ -2499,6 +2527,11 @@ input:focus, select:focus
     padding-bottom: 4px;
 }
 
+.product_discount_price
+{
+    color: red;
+}
+
 .products_display .product_button
 {
     /*width: 50%;*/
@@ -2850,19 +2883,26 @@ input:focus, select:focus
 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin: 32px auto;
+    margin: 32px auto 80px auto;
     line-height: 1.5;
     gap: 32px;
     max-width: 1200px;
 }
 
+.profile_container p
+{
+    margin-left: 4px;
+}
+
 .profile_container > div
 {
     padding: 16px;
-    box-shadow: 0 0 8px lightgrey;
+    border: 1px lightgrey solid;
+    /*box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);*/
 }
 
-#my_customer_account_html main .button_class, #my_employee_account_html main .button_class
+#my_customer_account_html main .button_class, #my_employee_account_html main .button_class, 
+#edit_employee_account_html main .button_class, #edit_customer_account_html main .button_class
 {
     width: 260px;
     text-align: center;
@@ -2881,7 +2921,8 @@ input:focus, select:focus
     padding-bottom: 16px;
 }
 
-#my_employee_account_html section, #my_customer_account_html section
+#my_employee_account_html section, #my_customer_account_html section,
+#edit_employee_account_html section, #edit_customer_account_html section
 {
     margin-left: 16px;
 }
@@ -2909,6 +2950,7 @@ table, th, td
 table
 {
     width: 100%;
+    table-layout: auto;
 }
 
 th
@@ -2937,7 +2979,7 @@ th, td
 #edit_stock_html .button_class.product_button
 {
     margin: 0 auto 32px auto;
-    width: 220px;
+    width: 260px;
     text-align: center;
 }
 
@@ -2989,4 +3031,40 @@ th, td
 #my_employee_account_main h2, #my_employee_account_main h3, #my_customer_account_main h2, #my_customer_account_main h3
 {
     margin-top: 16px;
+}
+
+#edit_employee_account_main > section > div > div.edit_employee_container.profile_container > div > form > div:nth-child(3) > a
+{
+    margin-top: 32px;
+}
+
+.product_button.event_button
+{
+    display: block;
+    margin-left: 0 !important;
+}
+
+.new_category h2
+{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    color: var(--font_color);
+    background-color: lightgray;
+}
+
+#new_category_list, #new_product_list
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 64px;
+}
+
+.new_category, .new_product
+{
+    border-bottom: 2px solid lightgrey;
+}
+
+.new_category:last-of-type, .new_product:last-of-type
+{
+    border-bottom: 0px solid lightgrey;
 }

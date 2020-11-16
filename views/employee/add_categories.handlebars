@@ -5,29 +5,42 @@
     </div>
 </section>
 <section class="width_container">
-    <div class="create_success_msg">
+    <!--<div class="create_success_msg">
         <p>Category added successfully! Add another or return to the dashboard</p>
-    </div>
+    </div>-->
     <form action="/employee/edit-stock/add-categories" method="POST" class="form_class">
-        <div>
-            <div class="form_input_container">
-                <label for="category_name">Category Name</label>
-                <input type="text" name="category_name" id="category_name">
-            </div>
- 
-            <div class="form_input_container">
-                <label for="category_description">Category Description</label>
-                <input type="text" name="category_description" id="category_description">
-            </div>
+        <div id="new_category_list">
+            <div class="new_category">
+                <h2>Category 1</h2>
 
-            <div class="form_input_container">
-                <label for="category_photo">Category Photo URL</label>
-                <input type="text" name="category_photo" id="category_photo">
+                <div class="form_input_container">
+                    <label for="category_name[0]">Category Name</label>
+                    <input type="text" name="category_name[]" id="category_name[0]" value="{{created_category.title}}">
+                </div>
+    
+                <div class="form_input_container">
+                    <label for="category_description[0]">Category Description</label>
+                    <textarea name="category_description[]" id="category_description[0]" cols="30" rows="10">{{#if created_category.description}}{{created_category.description}}{{else}}{{/if}}</textarea>
+                </div>
+
+                <div class="form_input_container">
+                    <label for="category_photo[0]">Category Photo Image Path</label>
+                    <input type="text" name="category_photo[]" id="category_photo[0]" value="/img/Category/default_category.jpg{{created_category.image_path}}">
+                </div>
+
+                <div class="form_input_container">
+                    <h3>Category Image</h3>
+                    <img src="/img/Category/default_category.jpg{{created_category.image_path}}" alt="" width="256px" height="256px">
+                </div>
             </div>
         </div>
         <div>
-            <button type="submit" class="button_class product_button">Add Category <i class="fas fa-arrow-right"></i></button>
-            <a href="/employee/edit-stock" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <button type="button" id="add_category_btn" class="button_class product_button event_button"><i class="fas fa-plus"></i> Add Category</button>
+            <button type="button" id="remove_category_btn" class="button_class product_button event_button remove_element"><i class="fas fa-minus"></i> Remove Category</button>
+        </div>        
+        <div>
+            <button type="submit" class="button_class product_button">Submit <i class="fas fa-arrow-right"></i></button>
+            <a href="/employee/edit-stock/categories" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>
     </form>
 </section>

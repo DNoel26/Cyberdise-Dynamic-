@@ -1,0 +1,48 @@
+<section class="width_container">
+    <div class="greeting_msg">
+        {{> database_welcome_msg}}
+        <p>View and Edit Categories Below</p>
+    </div>
+</section>
+<section class="width_container">
+    <div>
+        <a class="button_class product_button" href="/employee/edit-stock/products">View Product Database</a>  
+        <a href="/employee/edit-stock/add-categories" class="button_class product_button"><i class="fas fa-plus"></i> Add Categories</a>
+    </div>
+    <div class="create_success_msg">
+        <p>{{message}}</p>
+    </div>
+    <div class="table_container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Category Description</th>
+                    <th>Category Photo</th>
+                    <th class="edit_th">Edit</th>
+                </tr>   
+            </thead>
+            <tbody>
+
+                {{#each categories}}
+
+                    <tr>
+                        <td>Category Name</td>
+                        <td>Category Description</td>
+                        <td>Category Photo</td>
+                        <td class="edit_td"><a href="/employee/edit-stock/edit-category" class="button_class"><i class="far fa-plus-square"></i></a></td>
+                    </tr> 
+
+                {{else}}
+
+                    <tr>
+                        <td colspan="4">No Categories Available</td>
+                        <td class="edit_td"><a href="/employee/edit-stock/edit-category" class="button_class"><i class="far fa-plus-square"></i></a></td>
+                    </tr>
+
+                {{/each}}
+                
+            </tbody>
+        </table>
+    </div>
+</section>

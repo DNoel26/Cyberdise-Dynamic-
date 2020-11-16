@@ -10,12 +10,15 @@
                     <h2>Products in Stock</h2>
                 </div>
                 <div>
-                    <a class="button_class product_button" href="/employee/edit-stock">View Product Database</a>  
+                    <a class="button_class product_button" href="/employee/edit-stock/categories">View Category Database</a>  
+                </div> 
+                <div>
+                    <a class="button_class product_button" href="/employee/edit-stock/products">View Product Database</a>  
                 </div> 
             </div>    
         </div>
         <div class="create_success_msg width_container" id="employee_edit_success_msg">
-            <p>Your Employee Account Details were modified successfully!</p>
+            <p>{{message}}</p>
         </div>
         <div class="profile_container">
             <div>
@@ -24,9 +27,6 @@
                         <h2>Your Employee Profile Details</h2>       
                     </div>
                     <div>
-                        <div>
-                            <h2>Address</h2>    
-                        </div> 
                         <div>
                             <h3>Country/Region:</h3>
                             <p> {{#if user_info.country}} {{user_info.country}} {{else}} --- {{/if}} </p>  

@@ -8,7 +8,7 @@
     <div class="create_success_msg">
         <p>Order placed successfully! Add another or return to the dashboard</p>
     </div>
-    <form action="/employee/edit-stock/restock/:id?method=put" method="POST" class="form_class">
+    <form action="/employee/edit-stock/restock/?method=put" method="POST" class="form_class">
         <div>
 
             <div class="form_input_container">
@@ -26,10 +26,11 @@
             <div class="form_input_container">
                 <label for="product_code">Product Code</label>
                 <select name="product_code" id="product_code">
-                    
-                {{#each products}}
 
-                <option value="{{this}}">{{@index}}</option>
+                <option value="test">test</option> 
+                {{#each all_products_info}}
+
+                <option value="{{this.product_code}}">{{this.product_code}}</option>
 
                 {{/each}}
                 
@@ -38,20 +39,22 @@
 
             <div class="form_input_container">
                 <label for="product_quantity">Product Quantity</label>
-                <input type="number" value="1" min="1" name="product_quantity" id="product_quantity">
+                <input type="number" value="{{ordered_inventory.restock_quantity}}" min="1" name="product_quantity" id="product_quantity">
             </div>
 
             <div class="form_input_container">
-                <h3>Product Name: Product</h3>
+                <h3>Product Name:</h3>
+                <p>Product{{ordered_inventory.product.title}}</p>
             </div>
 
             <div class="form_input_container">
-                <h3>Estimated cost: $100.00</h3>
+                <h3>Estimated cost:</h3>
+                <p>$100.00{{ordered_inventory.product.cost_price}}</p>
             </div>
         </div>
         <div>
             <button type="submit" class="button_class product_button">Place Order <i class="fas fa-arrow-right"></i></button>
-            <a href="/employee/edit-stock" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <a href="/employee/edit-stock/products" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>
     </form>
 </section>

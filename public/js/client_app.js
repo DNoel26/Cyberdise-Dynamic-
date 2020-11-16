@@ -19,8 +19,8 @@ const App =
         const page_top = document.querySelector("#go_to_top");
         const signup_page_html = document.querySelector("#signup_page_html");
         const products_page_html = document.querySelector("#products_page_html");
-        const my_employee_account_html = document.querySelector("#my_employee_account_html");
-        const my_customer_account_html = document.querySelector("#my_customer_account_html");
+        const edit_employee_account_html = document.querySelector("#edit_employee_account_html");
+        const edit_customer_account_html = document.querySelector("#edit_customer_account_html");
         const special_div = document.querySelector("#spec");
 
         const header_login_btn = document.querySelector("#header_login_btn");
@@ -55,6 +55,14 @@ const App =
         const products_load_modal = document.querySelector("#products_load_modal");
         const all_products_container = document.querySelector("#all_products_container");
         const product_pos_num = document.querySelectorAll(".product_pos_num h3");
+
+        const add_category_btn = document.querySelector("#add_category_btn");
+        const remove_category_btn = document.querySelector("#remove_category_btn");
+        const add_product_btn = document.querySelector("#add_product_btn");
+        const new_category_list = document.querySelector("#new_category_list");
+        const new_category = document.querySelectorAll(".new_category");
+        //const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
+        //const text_areas = document.querySelectorAll("textarea");
 
         const testtt = document.querySelector("#testtt"); //TO TEST SENDING JSON FROM CLIENT TO SERVER
 
@@ -93,7 +101,7 @@ const App =
 
             console.log("Client side js working!");
             //home_page_main.innerHTML += `<div><br><br>HELLO YOU {{test}}</div>`;
-            //username_email_login.value = "test";
+            //username_email_login.value = "test"; localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
             
             const username_email_login_info = JSON.parse(localStorage.getItem("username_email_login"));
             //alert(username_email_login_info);
@@ -161,7 +169,7 @@ const App =
                     });
                 });
 
-                if(signup_page_html || my_employee_account_html || my_customer_account_html)
+                if(signup_page_html || edit_employee_account_html || edit_customer_account_html)
                 {
                     country_api_data.forEach((country,index) => {
                     
@@ -927,6 +935,227 @@ const App =
                 alert("!!!!!!!!!")     
                 products_load_modal.setAttribute("class","remove_element");
             }, 200);*/
+        };
+
+        
+        if(window.location.pathname == "/employee/edit-stock/add-categories")
+        {
+            //alert("asdasda"); const username_email_login_info = JSON.parse(localStorage.getItem("username_email_login"));
+            //localStorage.removeItem("username_email_login"); const session_curr_page = parseInt(sessionStorage.getItem("session_curr_page"));
+            //sessionStorage.setItem("session_curr_page",curr_page);
+            let form_i;
+            let add_categories;
+            let input_val_storage = [];
+            let text_area_storage = [];
+            
+            console.log("INPUT VAL STORAGE",JSON.parse(sessionStorage.getItem("input_val_storage")));
+
+            document.addEventListener("submit",(event)=>{
+
+                sessionStorage.removeItem("category_form_index");
+                sessionStorage.removeItem("add_categories");
+                sessionStorage.removeItem("new_category_list");
+                
+                console.log("SUBMITTED!!!");
+                input_val_storage = JSON.parse(sessionStorage.getItem("input_val_storage"));
+                text_area_storage = JSON.parse(sessionStorage.getItem("text_area_storage"));
+                console.log(input_val_storage.length,"LENGTH");
+
+                for(let i = 0; i < input_val_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`input_val_storage[${i}]`);
+                };
+
+                for(let i = 0; i < text_area_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`text_area_storage[${i}]`);
+                };
+
+                sessionStorage.removeItem("input_val_storage");
+                sessionStorage.removeItem("text_area_storage");
+            });
+            
+            if(!sessionStorage.getItem("category_form_index"))
+            {
+                form_i = 2;
+                add_categories = [];
+            }
+
+            else if(sessionStorage.getItem("category_form_index"))
+            {
+                form_i = sessionStorage.getItem("category_form_index");
+
+                add_categories = JSON.parse(sessionStorage.getItem("add_categories"));
+                
+                new_category_list.innerHTML = JSON.parse(sessionStorage.getItem("new_category_list"));
+
+                remove_category_btn.classList.remove("remove_element");
+            };
+            
+            new_category_list.addEventListener("keyup",()=>{
+
+                const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
+                const new_category_list_textareas = document.querySelectorAll("#new_category_list textarea");
+
+                new_category_list_inputs.forEach((element,index) => {
+                    
+                    console.log("INPUT ELEMENT",element.value,index);
+                    element.value = element.value;
+                    input_val_storage[index];
+                    sessionStorage.setItem(`input_val_storage[${index}]`,JSON.stringify(element.value));
+                    input_val_storage[index] = (sessionStorage.getItem(`input_val_storage[${index}]`));
+                });
+
+                new_category_list_textareas.forEach((element,index) => {
+                    
+                    console.log("TEXTAREA ELEMENT",element.value,index);
+                    element.value = element.value;
+                    text_area_storage[index];
+                    sessionStorage.setItem(`text_area_storage[${index}]`,JSON.stringify(element.value));
+                    text_area_storage[index] = (sessionStorage.getItem(`text_area_storage[${index}]`));
+                });
+
+                console.log(input_val_storage,"INPUT VAL STORAGE ARRAY")
+                sessionStorage.setItem("input_val_storage",JSON.stringify(input_val_storage));
+                sessionStorage.setItem("text_area_storage",JSON.stringify(text_area_storage));
+            });
+
+            const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
+            const new_category_list_textareas = document.querySelectorAll("#new_category_list textarea");
+
+            new_category_list_inputs.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`input_val_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`input_val_storage[${index}]`));
+                }
+            });
+
+            new_category_list_textareas.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`text_area_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`text_area_storage[${index}]`));
+                }
+            });
+
+            remove_category_btn.addEventListener("click",()=>{
+
+                console.log("REMOVE FORM INDEX",form_i);
+                console.log(new_category_list.children.length,"children");
+                let remove_category = new_category_list.children[new_category_list.children.length - 1];
+                //let remove_category = new_category_list[new_category_list.children[0].length - 1];
+                
+                add_categories.pop();
+                new_category_list.removeChild(remove_category);
+                if(form_i == 3)
+                {
+                    add_categories.pop();
+                }
+
+                if(form_i > 2)
+                {
+                    form_i--;
+                };
+                
+                if(form_i <= 2)
+                {
+                    remove_category_btn.classList.add("remove_element");
+                    form_i = 2;
+                };
+
+                if(form_i <= 5)
+                {
+                    add_category_btn.classList.remove("remove_element");
+                };
+
+                sessionStorage.setItem("add_categories",JSON.stringify(add_categories));
+                sessionStorage.setItem("new_category_list",JSON.stringify(new_category_list.innerHTML));
+
+                sessionStorage.setItem("category_form_index",form_i);
+                console.log("REMOVE FORM AFTER INDEX",form_i);
+                console.log(new_category_list.children.length,"children");
+            })
+
+            add_category_btn.addEventListener("click",()=>{
+
+                console.log("ADD FORM INDEX",form_i);
+                console.log(new_category_list.children.length,"children");
+                console.log(new_category[0]);
+
+                if(remove_category_btn.classList.contains("remove_element"))
+                {
+                    remove_category_btn.classList.remove("remove_element");
+                }      
+
+                if(form_i == 2 && !sessionStorage.getItem("category_form_index"))
+                {
+                    add_categories.push(new_category[0]);
+                    new_category_list.appendChild(new_category[0]);
+                };
+
+                if(form_i < 6)
+                {
+                    form_i++;
+                }
+
+                if(form_i >= 6)
+                {
+                    form_i = 6;
+
+                    if(!add_category_btn.classList.contains("remove_element"))
+                    {
+                        add_category_btn.classList.add("remove_element");
+                    } 
+                }
+
+                let add_category = document.createElement("div");
+                add_category.setAttribute("class","new_category");
+                add_category.innerHTML = 
+                `
+                    <h2>Category ${form_i-1}</h2>
+    
+                    <div class="form_input_container">
+                        <label for="category_name[${form_i-1}]">Category Name</label>
+                        <input type="text" name="category_name[]" id="category_name[${form_i-1}]" value="">
+                    </div>
+        
+                    <div class="form_input_container">
+                        <label for="category_description[${form_i-1}]">Category Description</label>
+                        <textarea name="category_description[]" id="category_description[${form_i-1}]" cols="30" rows="10"></textarea>
+                    </div>
+    
+                    <div class="form_input_container">
+                        <label for="category_photo[${form_i-1}]">Category Photo Image Path</label>
+                        <input type="text" name="category_photo[]" id="category_photo[${form_i-1}]" value="/img/Category/default_category.jpg">
+                    </div>
+
+                    <div class="form_input_container">
+                        <h3>Category Image</h3>
+                        <img src="/img/Category/default_category.jpg" alt="" width="256px" height="256px">
+                    </div>
+                `
+                    
+                console.log("ADD CATEGORY",add_category);
+                add_categories.push(add_category);
+                new_category_list.appendChild(add_category);
+                
+                console.log("CATEGORIES",add_categories);
+                console.log("CATEGORIES");
+
+                sessionStorage.setItem("add_categories",JSON.stringify(add_categories));
+                sessionStorage.setItem("new_category_list",JSON.stringify(new_category_list.innerHTML));
+
+                console.log(new_category_list.children.length);
+                sessionStorage.setItem("category_form_index",form_i);
+                console.log("ADD FORM INDEX AFTER",form_i);
+                console.log(new_category_list.children.length,"children");
+            });
+        };
+
+        if(window.location.pathname == "/employee/edit-stock/add-products")
+        {
+            
         };
     }, //end of init()
 };

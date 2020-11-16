@@ -104,10 +104,10 @@ const User_model = {
             this.SQL = 'START TRANSACTION; INSERT INTO user (first_name,last_name,gender,country,country_flag_src,username,email,password) VALUES (?,?,?,?,?,?,?,?);';
             db.connection.query(this.SQL, [user.first_name,user.last_name,user.gender,user.country,user.country_flag_src,
                 user.username,user.email,user.password])
-            .then((input_data)=>{
+            .then(()=>{
                 
                 //LAST_INSERT_ID();
-                resolve(input_data);
+                resolve();
             })
             .catch((err)=>{
 
@@ -122,10 +122,10 @@ const User_model = {
             
             this.SQL = 'INSERT INTO customer (customer_id_pk_fk, address_line_1, address_line_2) VALUES(LAST_INSERT_ID(),?,?);';
             db.connection.query(this.SQL, ["THIS ADDRESS AFTER USER CREATION",""])
-            .then((data)=>{
+            .then(()=>{
                 
                 //LAST_INSERT_ID();
-                resolve(data);
+                resolve();
             })
             .catch((err)=>{
 

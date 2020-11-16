@@ -1,7 +1,7 @@
 <section class="width_container">
     <div class="greeting_msg">
         {{> database_welcome_msg}}
-        <p>Edit Product {{id}} Below</p>
+        <p>Edit Product '{{product_info.title}}' (code: {{product_info.product_code}}) Below</p>
     </div>
 </section>
 <section class="width_container">
@@ -15,65 +15,106 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Bestseller</th>
-                    <th>img_path</th>
+                    <th>Image</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
-                    <td>{{ph}}</td>
+                    <td>{{product_info.title}}</td>
+                    <td>{{product_info.description}}</td>
+                    <td>{{product_info.category.title}}</td>
+                    <td>${{product_info.selling_price}}</td>
+                    <td>{{product_info.current_quantity}}</td>
+                    <td>{{product_info.is_best_seller}}</td>
+                    <td><img src="{{product_info.image_path}}" alt="" width="128px" height="128px"></td>
                 </tr>
             </tbody>
         </table>
     </div>
     <form action="/employee/edit-stock/edit-product/:id?method=put" method="POST" class="form_class">
-        <div>
-            <div class="form_input_container">
-                <label for="product_name">Product Name</label>
-                <input type="text" name="product_name" id="product_name">
-            </div>
- 
-            <div class="form_input_container">
-                <label for="product_category">Product Category</label>
-                <input type="text" name="product_category" id="product_category">
+        <div class="profile_container">
+            
+            <div>
+                <div class="form_input_container">
+                    <label for="product_code">Product Code (Not Authorized to Change)</label>
+                    <input readonly type="text" name="product_code" id="product_code" value="{{product_info.product_code}}">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_name">Product Name</label>
+                    <input type="text" name="product_name" id="product_name" value="{{product_info.title}}">
+                </div>
+    
+                <div class="form_input_container">
+                    <label for="product_category">Product Category</label>
+                    <input type="text" name="product_category" id="product_category" value="{{product_info.category.title}}">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_quantity">Product Quantity in Stock (Not Authorized to Change: Order from Supplier to Restock)</label>
+                    <input readonly type="number" value="{{product_info.current_quantity}}" name="product_quantity" id="product_quantity">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_quantity_min">Product Quantity Minimum</label>
+                    <input  type="number" min="1" value="{{product_info.min_qty}}" name="product_quantity_min" id="product_quantity_min">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_quantity_max">Product Quantity Maximum</label>
+                    <input  type="number" min="10" value="{{product_info.max_qty}}" name="product_quantity_max" id="product_quantity_max">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_price">Product Selling Price</label>
+                    <input type="number" step="0.01" value="{{product_info.selling_price}}" min="1" name="product_price" id="product_price">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_img">Product Image Path</label>
+                    <input type="text" name="product_img" id="product_img" value="{{product_info.image_path}}">
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_bestseller">Bestseller Status</label>
+                    <select name="product_bestseller" id="product_bestseller">
+                        <option {{#if_eq product_info.is_best_seller 0}} selected {{else}} {{/if_eq}} value="no">No</option>
+                        <option {{#if_eq product_info.is_best_seller 1}} selected {{else}} {{/if_eq}} value="yes">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_description">Product Description</label>
+                    <textarea name="product_description" id="product_description" cols="100" rows="25">{{#if product_info.description}}{{product_info.description}}{{else}}{{/if}}</textarea>
+                </div>
             </div>
 
-            <div class="form_input_container">
-                <label for="product_quantity">Product Quantity</label>
-                <input readonly type="text" value="Cannot Change: Order from a Supplier to Restock" name="product_quantity" id="product_quantity">
-            </div>
+            <div>
+                <div class="form_input_container">
+                    <h3>Estimated Cost Price:</h3>
+                    <p>${{product_info.cost_price}}</p>
+                </div>
 
-            <div class="form_input_container">
-                <label for="product_price">Product Price</label>
-                <input type="number" step="0.01" value="0.99" min="1" name="product_price" id="product_price">
-            </div>
+                <div class="form_input_container">
+                    <h3>Estimated Stock Value (Selling Price):</h3>
+                    <p>${{stock_val}}</p>
+                </div>
 
-            <div class="form_input_container">
-                <label for="product_img">Product Image URL</label>
-                <input type="text" name="product_img" id="product_img">
-            </div>
+                <div class="form_input_container">
+                    <h3>Product Created and Added:</h3>
+                    <p>{{product_info.date_created}}</p>
+                </div>
 
-            <div class="form_input_container">
-                <label for="product_bestseller">Bestseller Status</label>
-                <select name="product_bestseller" id="product_bestseller">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                </select>
+                <div class="form_input_container">
+                    <h3>Product Last Updated:</h3>
+                    <p>{{product_info.last_modified}}</p>
+                </div>
             </div>
-
-            <div class="form_input_container">
-                <label for="product_description">Product Description</label>
-                <textarea name="product_description" id="product_description" cols="100" rows="10"></textarea>
-            </div>
+            
         </div>
         <div>
             <button type="submit" class="button_class product_button">Accept Changes <i class="fas fa-arrow-right"></i></button>
-            <a href="/employee/edit-stock" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <a href="/employee/edit-stock/products" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>
     </form>
 </section>

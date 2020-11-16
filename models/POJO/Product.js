@@ -10,6 +10,7 @@ class Product
     description;
     image_path;
     category; //Category object instance
+    is_best_seller = 0;
     date_created;
     last_modified;
 

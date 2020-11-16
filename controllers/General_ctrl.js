@@ -17,7 +17,7 @@ const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
 
 router.get("/",function(req,res){
 
-    console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info,req.flash());
+    console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info);
     res.render("general/home",{
 
         title: "Homepage: See bestsellers and available deals today",
@@ -124,6 +124,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
     }) //FOURTH THEN        
     .then((test)=>{ 
 
+        req.flash("message","Account successfully created! <br>Login to get started now")
         console.log("Fifth and final then before acc creation redirect",test);
         res.render("general/signup",{
 
@@ -132,7 +133,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
             body_id: signup_render_obj.body_id, 
             main_id: signup_render_obj.main_id, 
             no_modal: signup_render_obj.no_modal,
-            message: "Account successfully created! <br>Login to get started now",
+            message: req.flash("message"),
             acc_created: true,
         });
     }) //FIFTH THEN       
