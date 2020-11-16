@@ -87,6 +87,22 @@ router.get("/edit-stock/restock",function(req,res){
     });
 });
 
+router.post("/edit-stock/restock",function(req,res){ 
+
+    if(req.body.supplier.length > 1) 
+    {
+        req.flash("message","New Orders Placed successfully!");  
+    }
+
+    else
+    {
+        req.flash("message","New Order Placed successfully!");
+    }
+
+    console.log(req.body);
+    res.redirect("/employee/edit-stock/products");
+});
+
 //*****ADD CATEGORIES
 
 router.get("/edit-stock/add-categories",function(req,res){ 

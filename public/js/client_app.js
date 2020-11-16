@@ -59,8 +59,15 @@ const App =
         const add_category_btn = document.querySelector("#add_category_btn");
         const remove_category_btn = document.querySelector("#remove_category_btn");
         const add_product_btn = document.querySelector("#add_product_btn");
+        const remove_product_btn = document.querySelector("#remove_product_btn");
+        const add_order_btn = document.querySelector("#add_order_btn");
+        const remove_order_btn = document.querySelector("#remove_order_btn");
         const new_category_list = document.querySelector("#new_category_list");
         const new_category = document.querySelectorAll(".new_category");
+        const new_product_list = document.querySelector("#new_product_list");
+        const new_product = document.querySelectorAll(".new_product");
+        const new_order_list = document.querySelector("#new_order_list");
+        const new_order = document.querySelectorAll(".new_order");
         //const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
         //const text_areas = document.querySelectorAll("textarea");
 
@@ -989,10 +996,13 @@ const App =
                 
                 new_category_list.innerHTML = JSON.parse(sessionStorage.getItem("new_category_list"));
 
-                remove_category_btn.classList.remove("remove_element");
+                if(form_i > 2)
+                {
+                    remove_category_btn.classList.remove("remove_element");
+                }   
             };
             
-            new_category_list.addEventListener("keyup",()=>{
+            new_category_list.addEventListener("input",()=>{
 
                 const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
                 const new_category_list_textareas = document.querySelectorAll("#new_category_list textarea");
@@ -1151,12 +1161,516 @@ const App =
                 console.log("ADD FORM INDEX AFTER",form_i);
                 console.log(new_category_list.children.length,"children");
             });
-        };
+        }; //edit-stock/add-categories
 
         if(window.location.pathname == "/employee/edit-stock/add-products")
         {
+            let form_i;
+            let add_products;
+            let product_input_val_storage = [];
+            let product_text_area_storage = [];
+            let product_select_val_storage = [];
+
+            document.addEventListener("submit",(event)=>{
+
+                sessionStorage.removeItem("product_form_index");
+                sessionStorage.removeItem("add_products");
+                sessionStorage.removeItem("new_product_list");
+                
+                console.log("SUBMITTED!!!");
+                product_input_val_storage = JSON.parse(sessionStorage.getItem("product_input_val_storage"));
+                product_text_area_storage = JSON.parse(sessionStorage.getItem("product_text_area_storage"));
+                product_select_val_storage = JSON.parse(sessionStorage.getItem("product_select_val_storage"));
+                console.log(product_input_val_storage.length,"LENGTH");
+
+                for(let i = 0; i < product_input_val_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`product_input_val_storage[${i}]`);
+                };
+
+                for(let i = 0; i < product_text_area_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`product_text_area_storage[${i}]`);
+                };
+
+                for(let i = 0; i < product_select_val_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`product_select_val_storage[${i}]`);
+                };
+
+                sessionStorage.removeItem("product_input_val_storage");
+                sessionStorage.removeItem("product_text_area_storage");
+                sessionStorage.removeItem("product_select_val_storage");
+            });
             
-        };
+            if(!sessionStorage.getItem("product_form_index"))
+            {
+                form_i = 2;
+                add_products = [];
+            }
+
+            else if(sessionStorage.getItem("product_form_index"))
+            {
+                form_i = sessionStorage.getItem("product_form_index");
+
+                add_products = JSON.parse(sessionStorage.getItem("add_products"));
+                
+                new_product_list.innerHTML = JSON.parse(sessionStorage.getItem("new_product_list"));
+
+                if(form_i > 2)
+                {
+                    remove_product_btn.classList.remove("remove_element");
+                }   
+            };
+            
+            /*new_product_list.addEventListener("change",()=>{
+
+                const new_product_list_selects = document.querySelectorAll("#new_product_list select");
+
+                new_product_list_selects.forEach((element,index) => {
+                    
+                    console.log("SELECT OPTION ELEMENT",element.value,index);
+                    element.value = element.value;
+                    product_select_val_storage[index];
+                    sessionStorage.setItem(`product_select_val_storage[${index}]`,JSON.stringify(element.value));
+                    product_select_val_storage[index] = (sessionStorage.getItem(`product_select_val_storage[${index}]`));
+                });
+
+                sessionStorage.setItem("product_select_val_storage",JSON.stringify(product_select_val_storage));
+            });*/
+
+            new_product_list.addEventListener("input",()=>{
+
+                const new_product_list_inputs = document.querySelectorAll("#new_product_list input");
+                const new_product_list_textareas = document.querySelectorAll("#new_product_list textarea");
+                const new_product_list_selects = document.querySelectorAll("#new_product_list select");
+
+                new_product_list_inputs.forEach((element,index) => {
+                    
+                    console.log("INPUT ELEMENT",element.value,index);
+                    element.value = element.value;
+                    product_input_val_storage[index];
+                    sessionStorage.setItem(`product_input_val_storage[${index}]`,JSON.stringify(element.value));
+                    product_input_val_storage[index] = (sessionStorage.getItem(`product_input_val_storage[${index}]`));
+                });
+
+                new_product_list_textareas.forEach((element,index) => {
+                    
+                    console.log("TEXTAREA ELEMENT",element.value,index);
+                    element.value = element.value;
+                    product_text_area_storage[index];
+                    sessionStorage.setItem(`product_text_area_storage[${index}]`,JSON.stringify(element.value));
+                    product_text_area_storage[index] = (sessionStorage.getItem(`product_text_area_storage[${index}]`));
+                });
+
+                new_product_list_selects.forEach((element,index) => {
+                    
+                    console.log("SELECT OPTION ELEMENT",element.value,index);
+                    element.value = element.value;
+                    product_select_val_storage[index];
+                    sessionStorage.setItem(`product_select_val_storage[${index}]`,JSON.stringify(element.value));
+                    product_select_val_storage[index] = (sessionStorage.getItem(`product_select_val_storage[${index}]`));
+                });
+
+                console.log(product_input_val_storage,"PRODUCT INPUT VAL STORAGE ARRAY")
+                sessionStorage.setItem("product_input_val_storage",JSON.stringify(product_input_val_storage));
+                sessionStorage.setItem("product_text_area_storage",JSON.stringify(product_text_area_storage));
+                sessionStorage.setItem("product_select_val_storage",JSON.stringify(product_select_val_storage));
+            });
+
+            const new_product_list_inputs = document.querySelectorAll("#new_product_list input");
+            const new_product_list_textareas = document.querySelectorAll("#new_product_list textarea");
+            const new_product_list_selects = document.querySelectorAll("#new_product_list select");
+
+            new_product_list_inputs.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`product_input_val_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`product_input_val_storage[${index}]`));
+                }
+            });
+
+            new_product_list_textareas.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`product_text_area_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`product_text_area_storage[${index}]`));
+                }
+            });
+
+            new_product_list_selects.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`product_select_val_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`product_select_val_storage[${index}]`));
+                }
+            });
+
+            remove_product_btn.addEventListener("click",()=>{
+
+                console.log("REMOVE FORM INDEX",form_i);
+                console.log(new_product_list.children.length,"children");
+                let remove_product = new_product_list.children[new_product_list.children.length - 1];
+                //let remove_category = new_category_list[new_category_list.children[0].length - 1];
+                
+                add_products.pop();
+                new_product_list.removeChild(remove_product);
+                if(form_i == 3)
+                {
+                    add_products.pop();
+                }
+
+                if(form_i > 2)
+                {
+                    form_i--;
+                };
+                
+                if(form_i <= 2)
+                {
+                    remove_product_btn.classList.add("remove_element");
+                    form_i = 2;
+                };
+
+                if(form_i <= 5)
+                {
+                    add_product_btn.classList.remove("remove_element");
+                };
+
+                sessionStorage.setItem("add_products",JSON.stringify(add_products));
+                sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
+
+                sessionStorage.setItem("product_form_index",form_i);
+                console.log("REMOVE FORM AFTER INDEX",form_i);
+                console.log(new_product_list.children.length,"children");
+            })
+
+            add_product_btn.addEventListener("click",()=>{
+
+                console.log("ADD FORM INDEX",form_i);
+                console.log(new_product_list.children.length,"children");
+                console.log(new_product[0]);
+
+                if(remove_product_btn.classList.contains("remove_element"))
+                {
+                    remove_product_btn.classList.remove("remove_element");
+                }      
+
+                if(form_i == 2 && !sessionStorage.getItem("product_form_index"))
+                {
+                    add_products.push(new_product[0]);
+                    new_product_list.appendChild(new_product[0]);
+                };
+
+                if(form_i < 6)
+                {
+                    form_i++;
+                }
+
+                if(form_i >= 6)
+                {
+                    form_i = 6;
+
+                    if(!add_product_btn.classList.contains("remove_element"))
+                    {
+                        add_product_btn.classList.add("remove_element");
+                    } 
+                }
+
+                let add_product = document.createElement("div");
+                add_product.setAttribute("class","new_product");
+                add_product.innerHTML = 
+                `
+                    <h2>Product ${form_i-1}</h2>
+
+                    <div class="form_input_container">
+                        <label for="product_name[${form_i-1}]">Product Name</label>
+                        <input type="text" name="product_name[]" id="product_name[${form_i-1}]" value="">
+                    </div>
+        
+                    <div class="form_input_container">
+                        <label for="product_category[${form_i-1}]">Product Category</label>
+                        <input type="text" name="product_category[]" id="product_category[${form_i-1}]" value="">
+                    </div>
+                    
+                    <div class="form_input_container">
+                        <label for="product_quantity[${form_i-1}]">Product Quantity</label>
+                        <input type="number" min="1" name="product_quantity[]" id="product_quantity[${form_i-1}]" value="">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_price[${form_i-1}]">Product Price</label>
+                        <input type="number" step="0.01" min="1" name="product_price[]" id="product_price[${form_i-1}]" value="">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_img[${form_i-1}]">Product Image URL</label>
+                        <input type="text" name="product_img[]" id="product_img[${form_i-1}]" value="/img/Products/default_product.png">
+                    </div>
+
+                    <div class="form_input_container">
+                        <h3>Product Image</h3>
+                        <img src="/img/Products/default_product.png" alt="" width="256px" height="256px">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_bestseller[${form_i-1}]">Bestseller Status</label>
+                        <select name="product_bestseller[]" id="product_bestseller[${form_i-1}]">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_description[${form_i-1}]">Product Description</label>
+                        <textarea name="product_description[]" id="product_description[${form_i-1}]" cols="100" rows="25"></textarea>
+                    </div>
+                `
+                    
+                console.log("ADD PRODUCT",add_product);
+                add_products.push(add_product);
+                new_product_list.appendChild(add_product);
+                
+                console.log("PRODUCTS",add_product);
+                console.log("PRODUCTS");
+
+                sessionStorage.setItem("add_products",JSON.stringify(add_products));
+                sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
+
+                console.log(new_product_list.children.length);
+                sessionStorage.setItem("product_form_index",form_i);
+                console.log("ADD FORM INDEX AFTER",form_i);
+                console.log(new_product_list.children.length,"children");
+            });
+        }; //edit-stock/add-products
+
+        if(window.location.pathname == "/employee/edit-stock/restock")
+        {
+            let form_i;
+            let add_order;
+            let order_input_val_storage = [];
+            let order_select_val_storage = [];
+
+            document.addEventListener("submit",(event)=>{
+
+                sessionStorage.removeItem("order_form_index");
+                sessionStorage.removeItem("add_orders");
+                sessionStorage.removeItem("new_order_list");
+                
+                console.log("SUBMITTED!!!");
+                order_input_val_storage = JSON.parse(sessionStorage.getItem("order_input_val_storage"));
+                order_select_val_storage = JSON.parse(sessionStorage.getItem("order_select_val_storage"));
+                console.log(order_input_val_storage.length,"LENGTH");
+
+                for(let i = 0; i < order_input_val_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`order_input_val_storage[${i}]`);
+                };
+
+                for(let i = 0; i < order_select_val_storage.length; i++)
+                {
+                    sessionStorage.removeItem(`order_select_val_storage[${i}]`);
+                };
+
+                sessionStorage.removeItem("order_input_val_storage");
+                sessionStorage.removeItem("order_select_val_storage");
+            });
+            
+            if(!sessionStorage.getItem("order_form_index"))
+            {
+                form_i = 2;
+                add_orders = [];
+            }
+
+            else if(sessionStorage.getItem("order_form_index"))
+            {
+                form_i = sessionStorage.getItem("order_form_index");
+
+                add_orders = JSON.parse(sessionStorage.getItem("add_orders"));
+                
+                new_order_list.innerHTML = JSON.parse(sessionStorage.getItem("new_order_list"));
+
+                if(form_i > 2)
+                {
+                    remove_order_btn.classList.remove("remove_element");
+                }   
+            };
+
+            new_order_list.addEventListener("input",()=>{
+
+                const new_order_list_inputs = document.querySelectorAll("#new_order_list input");
+                const new_order_list_selects = document.querySelectorAll("#new_order_list select");
+
+                new_order_list_inputs.forEach((element,index) => {
+                    
+                    console.log("INPUT ELEMENT",element.value,index);
+                    element.value = element.value;
+                    order_input_val_storage[index];
+                    sessionStorage.setItem(`order_input_val_storage[${index}]`,JSON.stringify(element.value));
+                    order_input_val_storage[index] = (sessionStorage.getItem(`order_input_val_storage[${index}]`));
+                });
+
+                new_order_list_selects.forEach((element,index) => {
+                    
+                    console.log("SELECT OPTION ELEMENT",element.value,index);
+                    element.value = element.value;
+                    order_select_val_storage[index];
+                    sessionStorage.setItem(`order_select_val_storage[${index}]`,JSON.stringify(element.value));
+                    order_select_val_storage[index] = (sessionStorage.getItem(`order_select_val_storage[${index}]`));
+                });
+
+                console.log(order_input_val_storage,"ORDER INPUT VAL STORAGE ARRAY")
+                sessionStorage.setItem("order_input_val_storage",JSON.stringify(order_input_val_storage));
+                sessionStorage.setItem("order_select_val_storage",JSON.stringify(order_select_val_storage));
+            });
+
+            const new_order_list_inputs = document.querySelectorAll("#new_order_list input");
+            const new_order_list_selects = document.querySelectorAll("#new_order_list select");
+
+            new_order_list_inputs.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`order_input_val_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`order_input_val_storage[${index}]`));
+                }
+            });
+
+            new_order_list_selects.forEach((element,index) => {
+                
+                if(sessionStorage.getItem(`order_select_val_storage[${index}]`))
+                {
+                    element.value = JSON.parse(sessionStorage.getItem(`order_select_val_storage[${index}]`));
+                }
+            });
+
+            remove_order_btn.addEventListener("click",()=>{
+
+                console.log("REMOVE FORM INDEX",form_i);
+                console.log(new_order_list.children.length,"children");
+                let remove_order = new_order_list.children[new_order_list.children.length - 1];
+                
+                add_orders.pop();
+                new_order_list.removeChild(remove_order);
+                if(form_i == 3)
+                {
+                    add_orders.pop();
+                }
+
+                if(form_i > 2)
+                {
+                    form_i--;
+                };
+                
+                if(form_i <= 2)
+                {
+                    remove_order_btn.classList.add("remove_element");
+                    form_i = 2;
+                };
+
+                if(form_i <= 5)
+                {
+                    add_order_btn.classList.remove("remove_element");
+                };
+
+                sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
+                sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
+
+                sessionStorage.setItem("order_form_index",form_i);
+                console.log("REMOVE FORM AFTER INDEX",form_i);
+                console.log(new_order_list.children.length,"children");
+            })
+
+            add_order_btn.addEventListener("click",()=>{
+
+                console.log("ADD FORM INDEX",form_i);
+                console.log(new_order_list.children.length,"children");
+                console.log(new_order[0]);
+
+                if(remove_order_btn.classList.contains("remove_element"))
+                {
+                    remove_order_btn.classList.remove("remove_element");
+                }      
+
+                if(form_i == 2 && !sessionStorage.getItem("order_form_index"))
+                {
+                    add_orders.push(new_order[0]);
+                    new_order_list.appendChild(new_order[0]);
+                };
+
+                if(form_i < 6)
+                {
+                    form_i++;
+                }
+
+                if(form_i >= 6)
+                {
+                    form_i = 6;
+
+                    if(!add_order_btn.classList.contains("remove_element"))
+                    {
+                        add_order_btn.classList.add("remove_element");
+                    } 
+                }
+
+                let add_order = document.createElement("div");
+                add_order.setAttribute("class","new_order");
+                add_order.innerHTML = 
+                `
+                    <h2>Order ${form_i-1}</h2>
+
+                    <div class="form_input_container">
+                        <label for="supplier[${form_i-1}]">Supplier</label>
+                        <select name="supplier[]" id="supplier[${form_i-1}]">
+                            <option value="Amazon">Amazon</option>
+                            <option value="Courts">Courts</option>
+                            <option value="Ebay">Ebay</option>
+                            <option value="Massy">Massy</option>
+                            <option value="Megastore">Megastore</option>
+                            <option value="Walmart">Walmart</option>
+                        </select>
+                    </div>
+        
+                    <div class="form_input_container">
+                        <label for="product_code[${form_i-1}]">Product Code</label>
+                        <select name="product_code[]" id="product_code[${form_i-1}]">
+
+                        <option value="test">test</option>
+                        <option value="other_test">other_test</option>
+                        
+                        </select>
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_quantity[${form_i-1}]">Product Quantity</label>
+                        <input type="number" value="" min="1" name="product_quantity[]" id="product_quantity[${form_i-1}]">
+                    </div>
+
+                    <div class="form_input_container">
+                        <h3>Product Name:</h3>
+                        <p>Product</p>
+                    </div>
+
+                    <div class="form_input_container">
+                        <h3>Estimated cost:</h3>
+                        <p>$100.00</p>
+                    </div>
+                `
+                    
+                console.log("ADD ORDER",add_order);
+                add_orders.push(add_order);
+                new_order_list.appendChild(add_order);
+                
+                console.log("ORDERS",add_order);
+                console.log("ORDERS");
+
+                sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
+                sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
+
+                console.log(new_order_list.children.length);
+                sessionStorage.setItem("order_form_index",form_i);
+                console.log("ADD FORM INDEX AFTER",form_i);
+                console.log(new_order_list.children.length,"children");
+            });
+        }; //edit-stock/restock
     }, //end of init()
 };
 

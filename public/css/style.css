@@ -3044,7 +3044,7 @@ th, td
     margin-left: 0 !important;
 }
 
-.new_category h2
+.new_category h2, .new_product h2, .new_order h2
 {
     margin-top: 16px;
     margin-bottom: 16px;
@@ -3052,19 +3052,19 @@ th, td
     background-color: lightgray;
 }
 
-#new_category_list, #new_product_list
+#new_category_list, #new_product_list, #new_order_list
 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 64px;
 }
 
-.new_category, .new_product
+.new_category, .new_product, .new_order
 {
     border-bottom: 2px solid lightgrey;
 }
 
-.new_category:last-of-type, .new_product:last-of-type
+.new_category:last-of-type, .new_product:last-of-type, .new_product:last-of-type
 {
     border-bottom: 0px solid lightgrey;
 }

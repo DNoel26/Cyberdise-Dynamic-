@@ -5,55 +5,63 @@
     </div>
 </section>
 <section class="width_container">
-    <div class="create_success_msg">
+    <!--<div class="create_success_msg">
         <p>Order placed successfully! Add another or return to the dashboard</p>
-    </div>
-    <form action="/employee/edit-stock/restock/?method=put" method="POST" class="form_class">
-        <div>
+    </div>-->
+    <form action="/employee/edit-stock/restock" method="POST" class="form_class">
+        <div id="new_order_list">
+            <div class="new_order">
+                <h2>Order 1</h2>
 
-            <div class="form_input_container">
-                <label for="supplier">Supplier</label>
-                <select name="supplier" id="supplier">
-                    <option value="Amazon">Amazon</option>
-                    <option value="Courts">Courts</option>
-                    <option value="Ebay">Ebay</option>
-                    <option value="Massy">Massy</option>
-                    <option value="Megastore">Megastore</option>
-                    <option value="Walmart">Walmart</option>
-                </select>
-            </div>
- 
-            <div class="form_input_container">
-                <label for="product_code">Product Code</label>
-                <select name="product_code" id="product_code">
+                <div class="form_input_container">
+                    <label for="supplier[0]">Supplier</label>
+                    <select name="supplier[]" id="supplier[0]">
+                        <option value="Amazon">Amazon</option>
+                        <option value="Courts">Courts</option>
+                        <option value="Ebay">Ebay</option>
+                        <option value="Massy">Massy</option>
+                        <option value="Megastore">Megastore</option>
+                        <option value="Walmart">Walmart</option>
+                    </select>
+                </div>
+    
+                <div class="form_input_container">
+                    <label for="product_code[0]">Product Code</label>
+                    <select name="product_code[]" id="product_code[0]">
 
-                <option value="test">test</option> 
-                {{#each all_products_info}}
+                    <option value="test">test</option> 
+                    <option value="other_test">other_test</option> 
+                    {{#each all_products_info}}
 
-                <option value="{{this.product_code}}">{{this.product_code}}</option>
+                    <option value="{{this.product_code}}">{{this.product_code}}</option>
 
-                {{/each}}
-                
-                </select>
-            </div>
+                    {{/each}}
+                    
+                    </select>
+                </div>
 
-            <div class="form_input_container">
-                <label for="product_quantity">Product Quantity</label>
-                <input type="number" value="{{ordered_inventory.restock_quantity}}" min="1" name="product_quantity" id="product_quantity">
-            </div>
+                <div class="form_input_container">
+                    <label for="product_quantity[0]">Product Quantity</label>
+                    <input type="number" value="{{ordered_inventory.restock_quantity}}" min="1" name="product_quantity[]" id="product_quantity[0]">
+                </div>
 
-            <div class="form_input_container">
-                <h3>Product Name:</h3>
-                <p>Product{{ordered_inventory.product.title}}</p>
-            </div>
+                <div class="form_input_container">
+                    <h3>Product Name:</h3>
+                    <p>Product{{ordered_inventory.product.title}}</p>
+                </div>
 
-            <div class="form_input_container">
-                <h3>Estimated cost:</h3>
-                <p>$100.00{{ordered_inventory.product.cost_price}}</p>
+                <div class="form_input_container">
+                    <h3>Estimated cost:</h3>
+                    <p>$100.00{{ordered_inventory.product.cost_price}}</p>
+                </div>
             </div>
         </div>
         <div>
-            <button type="submit" class="button_class product_button">Place Order <i class="fas fa-arrow-right"></i></button>
+            <button type="button" id="add_order_btn" class="button_class product_button event_button"><i class="fas fa-plus"></i> Add Order</button>
+            <button type="button" id="remove_order_btn" class="button_class product_button event_button remove_element"><i class="fas fa-minus"></i> Remove Order</button>
+        </div> 
+        <div>
+            <button type="submit" class="button_class product_button">Submit <i class="fas fa-arrow-right"></i></button>
             <a href="/employee/edit-stock/products" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>
     </form>
