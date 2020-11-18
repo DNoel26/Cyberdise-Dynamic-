@@ -2,9 +2,13 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const {signup_render_obj} = require("../config/Render_obj_mw.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
+const Product_model = require("../models/MYSQL_models/Product_mdl.js");
+const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 const Customer = require("../models/POJO/Customer.js");
 const Employee = require("../models/POJO/Employee.js");
 const User = require("../models/POJO/User.js");
+const Category = require("../models/POJO/Category.js");
+const Product = require("../models/POJO/Product.js");
 
 exports.customer_register_form = (req,res,next)=>{
 
@@ -424,5 +428,153 @@ exports.user_login_form = (req,res,next)=>{
         //let login_error = false;
 
         //if(login_customer.password === )
+    };
+};
+
+exports.add_category_form = (req,res,next)=>{
+
+    const created_category = new Category;
+
+    created_category.title = req.body.category_name;
+    created_category.description = req.body.category_description;
+    created_category.image_path = req.body.category_photo;
+
+    console.log("0 - CREATED CATEGORY");
+    console.log("1",created_category,"OBJECT KEYS",Object.keys(created_category));
+    console.log("2",created_category.title);
+    console.log("3",created_category.title,created_category.description);
+    console.log("4 - CREATED CATEGORY",created_category.title[0],created_category.title[1]);
+    console.log("5",req.body);
+
+    req.created_category = created_category;
+    
+    let is_error = false;
+
+    const errors = 
+    {
+        title: [],
+        description: [],
+        image_path: [],
+    };
+
+    created_category.title.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.title[index] = "You must enter a title";
+        };
+    });
+
+    created_category.description.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.description[index] = "You must enter a description";
+        };
+    });
+    
+    created_category.image_path.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.image_path[index] = "You must upload an image";
+        };
+    });
+
+    //console.log(req.body);
+
+    if(is_error)
+    {
+        if(created_category.title.length == 1)
+        {
+            res.render("employee/add_categories",{
+
+                title: "Add new product categories to the store",
+                html_id: "edit_stock_html",
+                body_id: "edit_stock_body",
+                main_id: "edit_stock_main",
+                my_stock_active_link: "active_link",
+                errors,
+                created_category,
+            });
+        }
+        
+        else if(created_category.title.length > 1)
+        {
+            console.log("MULTI SUBMIT CREATED CATEGORY ERROR")
+            res.status(200).json({
+
+                errors: errors,
+                message: "Error message when add category form field is empty", 
+            }); 
+        };
     }
-}
+
+    else
+    {
+        Category_model.get_category_by_name(created_category.title)
+        .then((selected_categories)=>{
+
+            console.log("GET CATEGORY BY NAME",selected_categories,created_category.title,JSON.stringify(created_category.title));
+            if(selected_categories != null)
+            {
+                let results = selected_categories.map(category => category.title);
+                let category_comparison;
+
+                for(i=0; i<created_category.title.length; i++)
+                {
+                    console.log("Object keys",results)
+                    category_comparison = results.some(element => element == created_category.title[i]);
+
+                    console.log(category_comparison);
+
+                    if(category_comparison)  //selected_categories[i].title == created_category.title[i])
+                    {
+                        errors.title[i] = "Entered name is already in use, please try another";
+                        console.log("CATEGORY NAME ALREADY EXISTS",/*selected_categories,*/created_category.title);
+                        is_error = true;
+                    }
+
+                    console.log("ENTERED LOOP");
+                }
+
+                //if(selected_categories.title == created_category.title)
+                if(is_error == true)
+                {
+                    if(created_category.title.length == 1)
+                    {
+                        res.render("employee/add_categories",{
+
+                            title: "Add new product categories to the store",
+                            html_id: "edit_stock_html",
+                            body_id: "edit_stock_body",
+                            main_id: "edit_stock_main",
+                            my_stock_active_link: "active_link",
+                            errors,
+                            created_category,
+                        });
+                    }
+
+                    else if(created_category.title.length > 1)
+                    {
+                        res.status(200).json({
+
+                            errors: errors,
+                            message: "Error message when any add category title already exists", 
+                        }); 
+                    };
+                }    
+            }
+        
+            else
+            {
+                console.log("NO ISSUES IN CREATING CATEGORY")
+                next();
+            };
+        })
+        .catch(err=>{console.log(`Error in Validate_mw.js: add_category_form: get_category_by_name(): ${err} ${err.stack}`,console.trace(err))});
+    };
+};

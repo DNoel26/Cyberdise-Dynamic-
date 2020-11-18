@@ -62,7 +62,7 @@
 
                 <div class="form_input_container">
                     <label for="product_quantity_max">Product Quantity Maximum</label>
-                    <input  type="number" min="10" value="{{product_info.max_qty}}" name="product_quantity_max" id="product_quantity_max">
+                    <input  type="number" min="1" value="{{product_info.max_qty}}" name="product_quantity_max" id="product_quantity_max">
                 </div>
 
                 <div class="form_input_container">
@@ -108,6 +108,10 @@
                 <div class="form_input_container">
                     <h3>Product Last Updated:</h3>
                     <p>{{product_info.last_modified}}</p>
+                </div>
+
+                <div>
+                    <button type="button" id="delete_product_btn" class="button_class product_button event_button"><i class="fas fa-minus"></i> Delete Product</button>
                 </div>
             </div>
             

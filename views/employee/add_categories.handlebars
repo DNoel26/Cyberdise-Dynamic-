@@ -16,21 +16,24 @@
                 <div class="form_input_container">
                     <label for="category_name[0]">Category Name</label>
                     <input type="text" name="category_name[]" id="category_name[0]" value="{{created_category.title}}">
+                    <span class="form_error_msg">{{errors.title}}</span>     
                 </div>
     
                 <div class="form_input_container">
                     <label for="category_description[0]">Category Description</label>
                     <textarea name="category_description[]" id="category_description[0]" cols="30" rows="10">{{#if created_category.description}}{{created_category.description}}{{else}}{{/if}}</textarea>
+                    <span class="form_error_msg">{{errors.description}}</span>     
                 </div>
 
                 <div class="form_input_container">
                     <label for="category_photo[0]">Category Photo Image Path</label>
-                    <input type="text" name="category_photo[]" id="category_photo[0]" value="/img/Category/default_category.jpg{{created_category.image_path}}">
+                    <input type="text" name="category_photo[]" id="category_photo[0]" value="{{#if created_category.image_path}}{{created_category.image_path}}{{else}}/img/Category/default_category.jpg{{/if}}">
+                    <span class="form_error_msg">{{errors.image_path}}</span>     
                 </div>
 
                 <div class="form_input_container">
                     <h3>Category Image</h3>
-                    <img src="/img/Category/default_category.jpg{{created_category.image_path}}" alt="" width="256px" height="256px">
+                    <img src="{{#if created_category.image_path}}{{created_category.image_path}}{{else}}/img/Category/default_category.jpg{{/if}}" alt="" width="256px" height="256px">
                 </div>
             </div>
         </div>

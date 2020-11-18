@@ -20,7 +20,7 @@
                     <th>Category Description</th>
                     <th>Category Image Path</th>
                     <th>Category Image</th>
-                    <th class="edit_th">Edit</th>
+                    <th class="edit_th">Edit/Delete</th>
                 </tr>   
             </thead>
             <tbody>
@@ -28,10 +28,10 @@
                 {{#each categories}}
 
                     <tr>
-                        <td>Category Name</td>
-                        <td>Category Description</td>
-                        <td>Category Image Path</td>
-                        <td>Category Image</td>
+                        <td>{{this.title}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.image_path}}</td>
+                        <td><img src="{{this.image_path}}" alt="" width="128px" height="128px"></td>
                         <td class="edit_td"><a href="/employee/edit-stock/edit-category" class="button_class"><i class="far fa-plus-square"></i></a></td>
                     </tr> 
 

@@ -959,6 +959,7 @@ const App =
 
             document.addEventListener("submit",(event)=>{
 
+                //event.preventDefault();
                 sessionStorage.removeItem("category_form_index");
                 sessionStorage.removeItem("add_categories");
                 sessionStorage.removeItem("new_category_list");
@@ -984,7 +985,7 @@ const App =
             
             if(!sessionStorage.getItem("category_form_index"))
             {
-                form_i = 2;
+                form_i = new_category.length + 1;
                 add_categories = [];
             }
 
@@ -999,11 +1000,16 @@ const App =
                 if(form_i > 2)
                 {
                     remove_category_btn.classList.remove("remove_element");
-                }   
+                };
+                
+                if(form_i > 5)
+                {
+                    add_category_btn.classList.add("remove_element");
+                }; 
             };
             
-            new_category_list.addEventListener("input",()=>{
-
+            function session_event()
+            {
                 const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
                 const new_category_list_textareas = document.querySelectorAll("#new_category_list textarea");
 
@@ -1028,7 +1034,10 @@ const App =
                 console.log(input_val_storage,"INPUT VAL STORAGE ARRAY")
                 sessionStorage.setItem("input_val_storage",JSON.stringify(input_val_storage));
                 sessionStorage.setItem("text_area_storage",JSON.stringify(text_area_storage));
-            });
+            }
+            
+            new_category_list.addEventListener("input",session_event);
+            new_category_list.addEventListener("DOMContentLoaded",session_event);
 
             const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
             const new_category_list_textareas = document.querySelectorAll("#new_category_list textarea");
@@ -1220,7 +1229,12 @@ const App =
                 if(form_i > 2)
                 {
                     remove_product_btn.classList.remove("remove_element");
-                }   
+                };
+                
+                if(form_i > 5)
+                {
+                    add_product_btn.classList.add("remove_element");
+                }; 
             };
             
             /*new_product_list.addEventListener("change",()=>{
@@ -1379,7 +1393,7 @@ const App =
                 let add_product = document.createElement("div");
                 add_product.setAttribute("class","new_product");
                 add_product.innerHTML = 
-                `
+                `  
                     <h2>Product ${form_i-1}</h2>
 
                     <div class="form_input_container">
@@ -1393,13 +1407,28 @@ const App =
                     </div>
                     
                     <div class="form_input_container">
-                        <label for="product_quantity[${form_i-1}]">Product Quantity</label>
+                        <label for="product_quantity[${form_i-1}]">Product Quantity (Currently In Stock)</label>
                         <input type="number" min="1" name="product_quantity[]" id="product_quantity[${form_i-1}]" value="">
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_price[${form_i-1}]">Product Price</label>
-                        <input type="number" step="0.01" min="1" name="product_price[]" id="product_price[${form_i-1}]" value="">
+                        <label for="product_min_quantity[${form_i-1}]">Product Quantity (Min Threshold)</label>
+                        <input type="number" min="1" name="product_min_quantity[]" id="product_min_quantity[${form_i-1}]" value="">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_max_quantity[${form_i-1}]">Product Quantity (Max Threshold)</label>
+                        <input type="number" min="1" name="product_max_quantity[]" id="product_max_quantity[${form_i-1}]" value="">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_cost_price[${form_i-1}]">Product Cost Price (Estimated)</label>
+                        <input type="number" step="0.01" min="1" name="product_cost_price[]" id="product_cost_price[${form_i-1}]" value="">
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="product_selling_price[${form_i-1}]">Product Selling Price</label>
+                        <input type="number" step="0.01" min="1" name="product_selling_price[]" id="product_selling_price[${form_i-1}]" value="">
                     </div>
 
                     <div class="form_input_container">
@@ -1423,7 +1452,7 @@ const App =
                     <div class="form_input_container">
                         <label for="product_description[${form_i-1}]">Product Description</label>
                         <textarea name="product_description[]" id="product_description[${form_i-1}]" cols="100" rows="25"></textarea>
-                    </div>
+                    </div> 
                 `
                     
                 console.log("ADD PRODUCT",add_product);
@@ -1492,7 +1521,12 @@ const App =
                 if(form_i > 2)
                 {
                     remove_order_btn.classList.remove("remove_element");
-                }   
+                };   
+
+                if(form_i > 10)
+                {
+                    add_order_btn.classList.add("remove_element");
+                };   
             };
 
             new_order_list.addEventListener("input",()=>{
@@ -1566,7 +1600,7 @@ const App =
                     form_i = 2;
                 };
 
-                if(form_i <= 5)
+                if(form_i <= 10)
                 {
                     add_order_btn.classList.remove("remove_element");
                 };
@@ -1596,14 +1630,14 @@ const App =
                     new_order_list.appendChild(new_order[0]);
                 };
 
-                if(form_i < 6)
+                if(form_i < 11)
                 {
                     form_i++;
                 }
 
-                if(form_i >= 6)
+                if(form_i >= 11)
                 {
-                    form_i = 6;
+                    form_i = 11;
 
                     if(!add_order_btn.classList.contains("remove_element"))
                     {
