@@ -29,16 +29,16 @@
             </thead>
             <tbody>
 
-                {{#each products}}
+                {{#each test_products}}
 
                     <tr>
-                        <td>Speaker</td>
-                        <td>1000 Watts kalsdjadnasuodadnwjasaifbasfsajd udoisfsufhdsdufhsfudshfsasaidasodasdoasi uaoshasudashdoashd</td>
-                        <td>Electronics</td>
-                        <td>$111.99</td>
-                        <td>28</td>
-                        <td>Yes</td>
-                        <td>img_path</td>
+                        <td>{{this.title}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.category.title}}</td>
+                        <td>${{this.selling_price}}</td>
+                        <td>{{this.current_quantity}}</td>
+                        <td>{{this.is_best_seller}}</td>
+                        <td>{{this.image_path}}</td>
                         <td class="edit_td"><a href="/employee/edit-stock/edit-product" class="button_class"><i class="far fa-plus-square"></i></a></td>
                     </tr>
 

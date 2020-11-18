@@ -74,7 +74,7 @@ const Category_model =
         })
     },
 
-    get_category_by_name(category_name_arr)
+    get_categories_by_names(category_name_arr)
     {
         return new Promise((resolve,reject)=>{
             
@@ -94,7 +94,7 @@ const Category_model =
                 {
                     rows.forEach(row => {
                         
-                        let selected_category = new Category;
+                        const selected_category = new Category;
 
                         selected_category.category_id = row.category_id;
                         selected_category.title = row.title;
@@ -118,7 +118,7 @@ const Category_model =
             })
             .catch((err)=>{
 
-                reject(`Error in Category_mdl.js: get_category_by_name(): ${err}`);
+                reject(`Error in Category_mdl.js: get_categories_by_names(): ${err}`);
             });
         })
     },

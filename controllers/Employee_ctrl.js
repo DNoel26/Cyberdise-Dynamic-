@@ -4,7 +4,7 @@ const Product_model = require("../models/MYSQL_models/Product_mdl.js");
 const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
-const {add_category_form} = require("../middleware/Validate_mw.js")
+const {add_category_form,add_product_form} = require("../middleware/Validate_mw.js")
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
 
@@ -55,14 +55,23 @@ router.put("/edit-account/:id",function(req,res){
 
 router.get("/edit-stock/products",function(req,res){ 
 
-    res.render("employee/edit_stock_products",{
+    //Product_model.get_all_products()
+    //.then((products)=>{
 
-        title: "View, add and edit products",
-        html_id: "edit_stock_html",
-        body_id: "edit_stock_body",
-        main_id: "edit_stock_main",
-        my_stock_active_link: "active_link",
-    });
+        //console.log(products);
+        let test_products = [{title: "TESTING",description: "A B C D E F G!!!"},{title: "OTHER",description: "HMMM!!!"}];
+
+        res.render("employee/edit_stock_products",{
+
+            title: "View, add and edit products",
+            html_id: "edit_stock_html",
+            body_id: "edit_stock_body",
+            main_id: "edit_stock_main",
+            my_stock_active_link: "active_link",
+            test_products,
+        });
+    //})
+    //.catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/products: ${err}`));
 });
 
 router.get("/edit-stock/categories",function(req,res){ 
@@ -166,45 +175,30 @@ router.get("/edit-stock/add-products",function(req,res){
     });
 });
 
-router.post("/edit-stock/add-products",function(req,res){ 
+router.post("/edit-stock/add-products",add_product_form,function(req,res){ 
 
-    const queried_category = new Category;
 
-    const created_product = new Product;
-
-    created_product.category = queried_category;
-
-    created_product.title = req.body.product_name;
-    created_product.category.title = req.body.product_category;
-    created_product.current_quantity = req.body.product_quantity;
-    created_product.min_qty = req.body.product_min_quantity;
-    created_product.max_qty = req.body.product_max_quantity;
-    created_product.cost_price = req.body.product_cost_price;
-    created_product.selling_price = req.body.product_selling_price;
-    created_product.image_path = req.body.product_img;
-    created_product.is_best_seller = req.body.product_bestseller;
-    created_product.description = req.body.product_description;
-
-    console.log("0 - CREATED PRODUCT");
-    console.log("1",created_product);
-    console.log("2",created_product.category);
-    console.log("3",created_product.title,created_product.category.title);
-    console.log("4 - CREATED PRODUCT",created_product.title[0],created_product.title[1]);
-    
     //Product_model.create_product();
+    console.log("VALIDATED CREATE PRODUCT");
+    Product_model.create_product(req.created_product)
+    .then(()=>{
 
-    if(req.body.product_name.length > 1) 
-    {
-        req.flash("message","New Products Added successfully!");  
-    }
+        if(req.body.product_name.length > 1) 
+        {
+            req.flash("message","New Products Added successfully!");  
+        }
 
-    else
-    {
-        req.flash("message","New Product Added successfully!");
-    }
+        else
+        {
+            req.flash("message","New Product Added successfully!");
+        }
 
-    console.log("CREATED PRODUCT REQ BODY",req.body);
-    res.redirect("/employee/edit-stock/products");
+        console.log(req.body);
+        
+        //console.log("CREATED PRODUCT REQ BODY",req.body);
+        res.redirect("/employee/edit-stock/products");
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: POST /edit-stock/add-categories: ${err}`));
 });
 
 //*****EDIT CATEGORY

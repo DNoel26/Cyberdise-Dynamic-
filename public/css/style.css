@@ -406,7 +406,7 @@ img
     font-weight: 900;
     font-size: 0.75rem;
     letter-spacing: 0.1rem;
-    margin-bottom: 10px;                                    /* FORM ERROR MESSAGE TOGGLE */
+    margin-bottom: 32px;                                    /* FORM ERROR MESSAGE TOGGLE */
 }
 
 .floating_icons

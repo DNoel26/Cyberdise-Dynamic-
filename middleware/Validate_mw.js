@@ -515,7 +515,7 @@ exports.add_category_form = (req,res,next)=>{
 
     else
     {
-        Category_model.get_category_by_name(created_category.title)
+        Category_model.get_categories_by_names(created_category.title)
         .then((selected_categories)=>{
 
             console.log("GET CATEGORY BY NAME",selected_categories,created_category.title,JSON.stringify(created_category.title));
@@ -576,5 +576,236 @@ exports.add_category_form = (req,res,next)=>{
             };
         })
         .catch(err=>{console.log(`Error in Validate_mw.js: add_category_form: get_category_by_name(): ${err} ${err.stack}`,console.trace(err))});
+    };
+};
+
+exports.add_product_form = (req,res,next)=>{
+
+    const created_product = new Product;
+    const queried_category = new Category;
+
+    created_product.category = queried_category;
+
+    created_product.title = req.body.product_name;
+    created_product.category.title = req.body.product_category;
+    created_product.current_quantity = req.body.product_quantity;
+    created_product.min_qty = req.body.product_min_quantity;
+    created_product.max_qty = req.body.product_max_quantity;
+    created_product.cost_price = req.body.product_cost_price;
+    created_product.selling_price = req.body.product_selling_price;
+    created_product.image_path = req.body.product_img;
+    created_product.is_best_seller = req.body.product_bestseller;
+    created_product.description = req.body.product_description;
+
+    console.log("0 - CREATED PRODUCT");
+    console.log("1",created_product,"OBJECT KEYS",Object.keys(created_product));
+    console.log("2",created_product.category,created_product.category.title);
+    console.log("3",created_product.title,created_product.description);
+    console.log("4 - CREATED CATEGORY",created_product.title[0],created_product.title[1]);
+    console.log("5",req.body);
+
+    req.created_product = created_product;
+    
+    let is_error = false;
+
+    const errors = 
+    {
+        title: [],
+        category_title: [],
+        current_quantity: [],
+        min_qty: [],
+        max_qty: [],
+        cost_price: [],
+        selling_price: [],
+        image_path: [],
+        is_best_seller: [],
+        description: [],
+    };
+
+    created_product.title.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.title[index] = "You must enter a title";
+        };
+    });
+
+    created_product.category.title.forEach((element,index) => {
+        
+        if(element == "" || element == "none")
+        {
+            created_product.category = null;
+            element = null;
+            is_error = true;
+            errors.category_title[index] = "You must select a category";
+        };
+    });
+
+    created_product.current_quantity.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.current_quantity[index] = "You must enter a quantity";
+        };
+    });
+
+    created_product.min_qty.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.min_qty[index] = "You must enter a minimum quantity";
+        };
+    });
+
+    created_product.max_qty.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.max_qty[index] = "You must enter a maximum quantity";
+        };
+    });
+
+    created_product.cost_price.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.cost_price[index] = "You must enter a cost price";
+        };
+    });
+
+    created_product.selling_price.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.selling_price[index] = "You must enter a selling price";
+        };
+    });
+
+    created_product.image_path.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.image_path[index] = "You must upload an image";
+        };
+    });
+
+    created_product.is_best_seller.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.is_best_seller[index] = "You must select a bestseller status";
+        };
+    });
+
+    created_product.description.forEach((element,index) => {
+        
+        if(element == "")
+        {
+            is_error = true;
+            errors.description[index] = "You must enter a description";
+        };
+    });
+
+    //console.log(req.body);
+
+    if(is_error)
+    {
+        if(created_product.title.length == 1)
+        {
+            res.render("employee/add_products",{
+
+                title: "Add new products to the store",
+                html_id: "edit_stock_html",
+                body_id: "edit_stock_body",
+                main_id: "edit_stock_main",
+                my_stock_active_link: "active_link",
+                errors,
+                created_product,
+            });
+        }
+        
+        else if(created_product.title.length > 1)
+        {
+            console.log("MULTI SUBMIT CREATED PRODUCT ERROR")
+            res.status(200).json({
+
+                errors: errors,
+                message: "Error message when add product form field is empty", 
+            }); 
+        };
+    }
+
+    else
+    {
+        Product_model.get_products_by_names(created_product.title)
+        .then((selected_products)=>{
+
+            console.log("GET PRODUCT BY NAME",selected_products);
+
+            if(selected_products != null)
+            {
+                let results = selected_products.map(product => product.title);
+                let product_comparison;
+
+                for(i=0; i<created_product.title.length; i++)
+                {
+                    console.log("Object keys",results)
+                    product_comparison = results.some(element => element == created_product.title[i]);
+
+                    console.log(product_comparison);
+
+                    if(product_comparison)  //selected_categories[i].title == created_category.title[i])
+                    {
+                        errors.title[i] = "Entered name is already in use, please try another";
+                        console.log("PRODUCT NAME ALREADY EXISTS",/*selected_categories,*/created_product.title);
+                        is_error = true;
+                    }
+
+                    console.log("ENTERED LOOP - PRODUCTS");
+                }
+
+                //if(selected_categories.title == created_category.title)
+                if(is_error == true)
+                {
+                    if(created_product.title.length == 1)
+                    {
+                        res.render("employee/add_products",{
+
+                            title: "Add new products to the store",
+                            html_id: "edit_stock_html",
+                            body_id: "edit_stock_body",
+                            main_id: "edit_stock_main",
+                            my_stock_active_link: "active_link",
+                            errors,
+                            created_product,
+                        });
+                    }
+
+                    else if(created_product.title.length > 1)
+                    {
+                        res.status(200).json({
+
+                            errors: errors,
+                            message: "Error message when any add product title already exists", 
+                        }); 
+                    };
+                }    
+            }
+        
+            else
+            {
+                console.log("NO ISSUES IN CREATING PRODUCT")
+                next();
+            };
+        })
+        .catch(err=>{console.log(`Error in Validate_mw.js: add_product_form: get_products_by_names(): ${err} ${err.stack}`,console.trace(err))});
     };
 };
