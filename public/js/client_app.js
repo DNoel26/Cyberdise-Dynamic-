@@ -68,6 +68,17 @@ const App =
         const new_product = document.querySelectorAll(".new_product");
         const new_order_list = document.querySelector("#new_order_list");
         const new_order = document.querySelectorAll(".new_order");
+
+        //const product_code_dropdown = document.querySelectorAll("#new_order_list .product_codes");
+        //const product_name_sel = document.querySelectorAll("#new_order_list .product_names");
+        const product_code_options = document.querySelectorAll("#new_order_list .product_codes option:checked");
+        const product_code_dropdown = document.getElementsByClassName("product_codes");
+        const product_name_sel = document.getElementsByClassName("product_names");
+        const product_quantity_sel = document.getElementsByClassName("product_quantities");
+        const product_cost_price_sel = document.getElementsByClassName("product_cost_prices");
+        const product_subtotal_price_sel = document.getElementsByClassName("product_subtotal_prices");
+        const product_total_price_sel = document.getElementsByClassName("product_total_price");
+
         //const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
         //const text_areas = document.querySelectorAll("textarea");
 
@@ -405,7 +416,7 @@ const App =
                         headers : {'Content-Type': 'application/json',
                                         'Accept': 'application/json'},
                         body: JSON.stringify(is_header_login),
-                        credentials: "include" 
+                        credentials: "same-origin" //"include" 
                     })
                     .then(function(response){
     
@@ -1136,17 +1147,17 @@ const App =
     
                     <div class="form_input_container">
                         <label for="category_name[${form_i-1}]">Category Name</label>
-                        <input type="text" name="category_name[]" id="category_name[${form_i-1}]" value="">
+                        <input type="text" name="category_name[]" id="category_name[${form_i-2}]" value="">
                     </div>
         
                     <div class="form_input_container">
-                        <label for="category_description[${form_i-1}]">Category Description</label>
-                        <textarea name="category_description[]" id="category_description[${form_i-1}]" cols="30" rows="10"></textarea>
+                        <label for="category_description[${form_i-2}]">Category Description</label>
+                        <textarea name="category_description[]" id="category_description[${form_i-2}]" cols="30" rows="10"></textarea>
                     </div>
     
                     <div class="form_input_container">
-                        <label for="category_photo[${form_i-1}]">Category Photo Image Path</label>
-                        <input type="text" name="category_photo[]" id="category_photo[${form_i-1}]" value="/img/Category/default_category.jpg">
+                        <label for="category_photo[${form_i-2}]">Category Photo Image Path</label>
+                        <input type="text" name="category_photo[]" id="category_photo[${form_i-2}]" value="/img/Category/default_category.jpg">
                     </div>
 
                     <div class="form_input_container">
@@ -1397,43 +1408,60 @@ const App =
                     <h2>Product ${form_i-1}</h2>
 
                     <div class="form_input_container">
-                        <label for="product_name[${form_i-1}]">Product Name</label>
-                        <input type="text" name="product_name[]" id="product_name[${form_i-1}]" value="">
+                        <label for="product_name[${form_i-2}]">Product Name</label>
+                        <input type="text" name="product_name[]" id="product_name[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span>     
                     </div>
         
                     <div class="form_input_container">
-                        <label for="product_category[${form_i-1}]">Product Category</label>
-                        <input type="text" name="product_category[]" id="product_category[${form_i-1}]" value="">
+                        <label for="product_category[${form_i-2}]">Product Category</label>
+                        <select name="product_category[]" id="product_category[${form_i-2}]">
+
+                                <option value="">Please Select a Category</option>    
+                                <option value="Electronics">Electronics</option>
+                                <option value="Apparel">Apparel</option>
+                                <option value="Appliances">Appliances</option>
+                                <option value="Beauty">Beauty</option>
+                                <option value="Books">Books</option>
+
+                        </select>
+                        <span class="form_error_msg"></span>     
                     </div>
                     
                     <div class="form_input_container">
-                        <label for="product_quantity[${form_i-1}]">Product Quantity (Currently In Stock)</label>
-                        <input type="number" min="1" name="product_quantity[]" id="product_quantity[${form_i-1}]" value="">
+                        <label for="product_quantity[${form_i-2}]">Product Quantity (Currently In Stock)</label>
+                        <input type="number" min="1" name="product_quantity[]" id="product_quantity[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_min_quantity[${form_i-1}]">Product Quantity (Min Threshold)</label>
-                        <input type="number" min="1" name="product_min_quantity[]" id="product_min_quantity[${form_i-1}]" value="">
+                        <label for="product_min_quantity[${form_i-2}]">Product Quantity (Min Threshold)</label>
+                        <input type="number" min="1" name="product_min_quantity[]" id="product_min_quantity[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_max_quantity[${form_i-1}]">Product Quantity (Max Threshold)</label>
-                        <input type="number" min="1" name="product_max_quantity[]" id="product_max_quantity[${form_i-1}]" value="">
+                        <label for="product_max_quantity[${form_i-2}]">Product Quantity (Max Threshold)</label>
+                        <input type="number" min="1" name="product_max_quantity[]" id="product_max_quantity[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_cost_price[${form_i-1}]">Product Cost Price (Estimated)</label>
-                        <input type="number" step="0.01" min="1" name="product_cost_price[]" id="product_cost_price[${form_i-1}]" value="">
+                        <label for="product_cost_price[${form_i-2}]">Product Cost Price (Estimated)</label>
+                        <input type="number" step="0.01" min="1" name="product_cost_price[]" id="product_cost_price[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_selling_price[${form_i-1}]">Product Selling Price</label>
-                        <input type="number" step="0.01" min="1" name="product_selling_price[]" id="product_selling_price[${form_i-1}]" value="">
+                        <label for="product_selling_price[${form_i-2}]">Product Selling Price</label>
+                        <input type="number" step="0.01" min="1" name="product_selling_price[]" id="product_selling_price[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_img[${form_i-1}]">Product Image URL</label>
-                        <input type="text" name="product_img[]" id="product_img[${form_i-1}]" value="/img/Products/default_product.png">
+                        <label for="product_img[${form_i-2}]">Product Image URL</label>
+                        <input type="text" name="product_img[]" id="product_img[${form_i-2}]" value="/img/Products/default_product.png">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
@@ -1442,17 +1470,19 @@ const App =
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_bestseller[${form_i-1}]">Bestseller Status</label>
-                        <select name="product_bestseller[]" id="product_bestseller[${form_i-1}]">
+                        <label for="product_bestseller[${form_i-2}]">Bestseller Status</label>
+                        <select name="product_bestseller[]" id="product_bestseller[${form_i-2}]">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
                         </select>
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
-                        <label for="product_description[${form_i-1}]">Product Description</label>
-                        <textarea name="product_description[]" id="product_description[${form_i-1}]" cols="100" rows="25"></textarea>
-                    </div> 
+                        <label for="product_description[${form_i-2}]">Product Description</label>
+                        <textarea name="product_description[]" id="product_description[${form_i-2}]" cols="100" rows="25"></textarea>
+                        <span class="form_error_msg"></span> 
+                    </div>
                 `
                     
                 console.log("ADD PRODUCT",add_product);
@@ -1576,134 +1606,239 @@ const App =
                 }
             });
 
-            remove_order_btn.addEventListener("click",()=>{
+            fetch("/employee/edit-stock/restock/data"//,{
 
-                console.log("REMOVE FORM INDEX",form_i);
-                console.log(new_order_list.children.length,"children");
-                let remove_order = new_order_list.children[new_order_list.children.length - 1];
+                /*method: 'POST',
+                headers : {'Content-Type': 'application/json',
+                            'Accept': 'application/json'},
+                credentials: "same-origin"}*/
+            )
+            .then((response)=>{
                 
-                add_orders.pop();
-                new_order_list.removeChild(remove_order);
-                if(form_i == 3)
-                {
-                    add_orders.pop();
-                }
-
-                if(form_i > 2)
-                {
-                    form_i--;
-                };
-                
-                if(form_i <= 2)
-                {
-                    remove_order_btn.classList.add("remove_element");
-                    form_i = 2;
-                };
-
-                if(form_i <= 10)
-                {
-                    add_order_btn.classList.remove("remove_element");
-                };
-
-                sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
-                sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
-
-                sessionStorage.setItem("order_form_index",form_i);
-                console.log("REMOVE FORM AFTER INDEX",form_i);
-                console.log(new_order_list.children.length,"children");
+                return response.json();
             })
+            .then((data)=>{
 
-            add_order_btn.addEventListener("click",()=>{
+                console.log(data);
 
-                console.log("ADD FORM INDEX",form_i);
-                console.log(new_order_list.children.length,"children");
-                console.log(new_order[0]);
+                //document.addEventListener()
+                //const product_code_dropdown = document.querySelectorAll("#new_order_list .product_codes");
+                //const product_code_options = document.querySelectorAll("#new_order_list .product_codes option:checked");
 
-                if(remove_order_btn.classList.contains("remove_element"))
+                let product_names = [];
+
+                function update_product_names()
                 {
-                    remove_order_btn.classList.remove("remove_element");
-                }      
+                    let total = 0;
+                    product_total_price_sel[0].innerHTML = "$---";
 
-                if(form_i == 2 && !sessionStorage.getItem("order_form_index"))
-                {
-                    add_orders.push(new_order[0]);
-                    new_order_list.appendChild(new_order[0]);
+                    for(let i=0; i<product_code_dropdown.length; i++)
+                    {
+                        data.forEach((element,index) => {
+                        
+                            for(let j=0; j<product_code_dropdown[i].length; j++)
+                            {   
+                                if(product_code_dropdown[i].children[j].selected && product_code_dropdown[i].children[j].value == data[index].product_code)
+                                {
+                                    //alert("ABC");
+                                    console.log(data[index].product_code);
+                                    product_name_sel[i].innerHTML = data[index].title;
+                                    product_cost_price_sel[i].innerHTML = "$" + parseFloat(data[index].cost_price);
+                                    product_subtotal_price_sel[i].innerHTML = "$" + parseFloat(data[index].cost_price * product_quantity_sel[i].value);
+                                }
+
+                                else if(product_code_dropdown[i].children[j].selected && product_code_dropdown[i].children[j].value == "")
+                                {
+                                    product_name_sel[i].innerHTML = "No Product Code Selected";
+                                    product_cost_price_sel[i].innerHTML = "$---";
+                                    product_subtotal_price_sel[i].innerHTML = "$---";
+                                }
+                            };
+                        });  
+
+                        console.log("PRODUCT SUBTOTAL",product_subtotal_price_sel[i],product_subtotal_price_sel[i].innerHTML.replace('$', ''));
+                        if((product_code_dropdown[0].children[0].selected && product_code_dropdown[0].children[0].value == "") &&
+                        product_code_dropdown[1])
+                        {
+                            total = 0;
+                        }
+
+                        total += parseFloat(product_subtotal_price_sel[i].innerHTML.replace('$', ''));
+                        console.log(total);
+                    }
+
+                    if(total > 0)
+                    {
+                        product_total_price_sel[0].innerHTML = "$" + total;
+                    }
                 };
 
-                if(form_i < 11)
-                {
-                    form_i++;
-                }
-
-                if(form_i >= 11)
-                {
-                    form_i = 11;
-
-                    if(!add_order_btn.classList.contains("remove_element"))
-                    {
-                        add_order_btn.classList.add("remove_element");
-                    } 
-                }
-
-                let add_order = document.createElement("div");
-                add_order.setAttribute("class","new_order");
-                add_order.innerHTML = 
-                `
-                    <h2>Order ${form_i-1}</h2>
-
-                    <div class="form_input_container">
-                        <label for="supplier[${form_i-1}]">Supplier</label>
-                        <select name="supplier[]" id="supplier[${form_i-1}]">
-                            <option value="Amazon">Amazon</option>
-                            <option value="Courts">Courts</option>
-                            <option value="Ebay">Ebay</option>
-                            <option value="Massy">Massy</option>
-                            <option value="Megastore">Megastore</option>
-                            <option value="Walmart">Walmart</option>
-                        </select>
-                    </div>
-        
-                    <div class="form_input_container">
-                        <label for="product_code[${form_i-1}]">Product Code</label>
-                        <select name="product_code[]" id="product_code[${form_i-1}]">
-
-                        <option value="test">test</option>
-                        <option value="other_test">other_test</option>
-                        
-                        </select>
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_quantity[${form_i-1}]">Product Quantity</label>
-                        <input type="number" value="" min="1" name="product_quantity[]" id="product_quantity[${form_i-1}]">
-                    </div>
-
-                    <div class="form_input_container">
-                        <h3>Product Name:</h3>
-                        <p>Product</p>
-                    </div>
-
-                    <div class="form_input_container">
-                        <h3>Estimated cost:</h3>
-                        <p>$100.00</p>
-                    </div>
-                `
+                document.addEventListener("readystatechange",()=>{
                     
-                console.log("ADD ORDER",add_order);
-                add_orders.push(add_order);
-                new_order_list.appendChild(add_order);
+                    update_product_names();
+                    //alert("YES")
+                });
+                new_order_list.addEventListener("change",update_product_names);
                 
-                console.log("ORDERS",add_order);
-                console.log("ORDERS");
+                console.log(product_code_dropdown);   
+                console.log(product_code_dropdown[0].children);
+                console.log(product_code_dropdown[0].childNodes);             
+                
+                remove_order_btn.addEventListener("click",()=>{
 
-                sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
-                sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
+                    console.log("REMOVE FORM INDEX",form_i);
+                    console.log(new_order_list.children.length,"children");
+                    let remove_order = new_order_list.children[new_order_list.children.length - 1];
+                    
+                    add_orders.pop();
+                    new_order_list.removeChild(remove_order);
+                    if(form_i == 3)
+                    {
+                        add_orders.pop();
+                    }
+    
+                    if(form_i > 2)
+                    {
+                        form_i--;
+                    };
+                    
+                    if(form_i <= 2)
+                    {
+                        remove_order_btn.classList.add("remove_element");
+                        form_i = 2;
+                    };
+    
+                    if(form_i <= 10)
+                    {
+                        add_order_btn.classList.remove("remove_element");
+                    };
+    
+                    sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
+                    sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
+    
+                    sessionStorage.setItem("order_form_index",form_i);
+                    console.log("REMOVE FORM AFTER INDEX",form_i);
+                    console.log(new_order_list.children.length,"children");
 
-                console.log(new_order_list.children.length);
-                sessionStorage.setItem("order_form_index",form_i);
-                console.log("ADD FORM INDEX AFTER",form_i);
-                console.log(new_order_list.children.length,"children");
-            });
+                    new_order_list.dispatchEvent(new Event('change'));
+                });
+
+                add_order_btn.addEventListener("click",()=>{
+
+                    const product_code_dropdown = document.getElementsByClassName("product_codes");
+
+                    console.log("ADD FORM INDEX",form_i);
+                    console.log(new_order_list.children.length,"children");
+                    console.log(new_order[0]);
+    
+                    if(remove_order_btn.classList.contains("remove_element"))
+                    {
+                        remove_order_btn.classList.remove("remove_element");
+                    }      
+    
+                    if(form_i == 2 && !sessionStorage.getItem("order_form_index"))
+                    {
+                        add_orders.push(new_order[0]);
+                        new_order_list.appendChild(new_order[0]);
+                    };
+    
+                    if(form_i < 11)
+                    {
+                        form_i++;
+                    }
+    
+                    if(form_i >= 11)
+                    {
+                        form_i = 11;
+    
+                        if(!add_order_btn.classList.contains("remove_element"))
+                        {
+                            add_order_btn.classList.add("remove_element");
+                        } 
+                    }
+    
+                    let add_order = document.createElement("div");
+                    add_order.setAttribute("class","new_order");
+                    add_order.innerHTML = 
+                    `
+                        <h2>Order ${form_i-1}</h2>
+    
+                        <div class="form_input_container">
+                            <label for="supplier[${form_i-2}]">Supplier</label>
+                            <select name="supplier[]" id="supplier[${form_i-2}]">
+                                <option value="">Select a Supplier</option>
+                                <option value="Amazon">Amazon</option>
+                                <option value="Courts">Courts</option>
+                                <option value="Ebay">Ebay</option>
+                                <option value="Massy">Massy</option>
+                                <option value="Megastore">Megastore</option>
+                                <option value="Walmart">Walmart</option>
+                            </select>
+                            <span class="form_error_msg"></span>     
+                        </div>
+            
+                        <div class="form_input_container">
+                            <label for="product_code[${form_i-2}]">Product Code</label>
+                            <select class="product_codes" name="product_code[]" id="product_code[${form_i-2}]">
+                            
+                            <option value="">Select a Product Code</option> 
+    
+                            </select>
+                            <span class="form_error_msg"></span>     
+                        </div>
+    
+                        <div class="form_input_container">
+                            <h3>Product Name:</h3>
+                            <p class="product_names">No Product Code Selected</p>
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_quantity[${form_i-2}]">Product Quantity</label>
+                            <input class="product_quantities" type="number" value="" min="1" name="product_quantity[]" id="product_quantity[${form_i-2}]">
+                            <span class="form_error_msg"></span>     
+                        </div>
+    
+                        <div class="form_input_container">
+                            <h3>Estimated cost per item:</h3>
+                            <p class="product_cost_prices">$---</p>
+                        </div>
+
+                        <div class="form_input_container">
+                            <h3>Estimated subtotal cost:</h3>
+                            <p class="product_subtotal_prices">$---</p>
+                        </div>
+                    `
+                        
+                    console.log("ADD ORDER",add_order);
+                    add_orders.push(add_order);
+                    new_order_list.appendChild(add_order);
+                    
+                    console.log("ORDERS",add_order);
+                    console.log("ORDERS");
+                    
+                    data.forEach((element,index) => {
+                        
+                        const product_code_option = document.createElement("option");
+                        product_code_option.setAttribute("value",`${element.product_code}`);
+                        product_code_option.innerHTML = product_code_option.value;
+                        console.log(product_code_option);
+                        product_code_dropdown[form_i-2].appendChild(product_code_option);
+                        console.log("DATA OPTIONS",element,index);
+                    });
+
+                    sessionStorage.setItem("add_orders",JSON.stringify(add_orders));
+                    sessionStorage.setItem("new_order_list",JSON.stringify(new_order_list.innerHTML));
+    
+                    console.log(new_order_list.children.length);
+                    sessionStorage.setItem("order_form_index",form_i);
+                    console.log("ADD FORM INDEX AFTER",form_i);
+                    console.log(new_order_list.children.length,"children");
+
+                    //const product_code_dropdown = document.querySelectorAll("#new_order_list .product_codes");  
+                    console.log(product_code_dropdown);
+                });
+            })
+            .catch(err => console.log(`Cannot get data: ${err}`));    
         }; //edit-stock/restock
     }, //end of init()
 };

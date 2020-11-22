@@ -5,6 +5,7 @@ const {send_nodemail_on_login} = require("../middleware/Nodemailer_mw.js");
 const {telesign_sms} = require("../middleware/Telesign_api_mw.js");
 const ip_middleware = require("../middleware/Request_ip_mw.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
+const General_model = require("../models/MYSQL_models/General_mdl.js");
 const is_auth = require("../middleware/Authenticate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
 
@@ -19,7 +20,7 @@ router.post("/login",is_already_logged_in,user_login_form,/*send_nodemail_on_log
     
     console.log("SESSION USER ON LOGIN",req.session.user_info);
 
-    User_model.mysql_current_timestamp()
+    General_model.mysql_current_timestamp()
     .then((curr_time)=>{
 
         const curr_time_to_string = JSON.stringify(curr_time[0][0]['CURRENT_TIMESTAMP()']);
@@ -81,6 +82,7 @@ router.get("/logout",is_auth,function(req,res){//
     User_model.update_user_on_logout(req.session.user_info)
     .then(()=>console.log("Successful update on user logout"))
     .catch(err=>console.log(`Failed to update user info on logout ${err}`));
+    
     req.session.destroy();
 
     res.redirect("/"); 

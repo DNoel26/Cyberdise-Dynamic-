@@ -23,8 +23,11 @@
                     <label for="product_category[0]">Product Category</label>
                     <select name="product_category[]" id="product_category[0]">
 
-                        {{#each created_product.category.title}}
-                            <option value="{{this}}">{{this}}</option>
+                        {{#if categories}}
+                            <option value="">Please Select a Category</option>    
+                        {{/if}}
+                        {{#each categories}}
+                            <option value="{{this.title}}">{{this.title}}</option>
                         {{else}}
                             <option value="none">No Categories Found</option>
                         {{/each}}
@@ -93,7 +96,7 @@
         </div>
         <div>
             <button type="button" id="add_product_btn" class="button_class product_button event_button"><i class="fas fa-plus"></i> Add Product</button>
-            <button type="button" id="remove_product_btn" class="button_class product_button event_button remove_element"><i class="fas fa-minus"></i> Remove Product</button>
+            <button type="button" id="remove_product_btn" class="button_class product_button event_button remove_element remove_button"><i class="fas fa-minus"></i> Remove Product</button>
         </div> 
         <div>
             <button type="submit" class="button_class product_button">Submit <i class="fas fa-arrow-right"></i></button>

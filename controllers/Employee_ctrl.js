@@ -4,7 +4,13 @@ const Product_model = require("../models/MYSQL_models/Product_mdl.js");
 const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
-const {add_category_form,add_product_form} = require("../middleware/Validate_mw.js")
+const Inventory = require("../models/POJO/Inventory.js");
+const Shipment = require("../models/POJO/Shipment.js");
+const {add_category_form,add_product_form} = require("../middleware/Validate_mw.js");
+const General_model = require("../models/MYSQL_models/General_mdl.js");
+const Shipment_model = require("../models/MYSQL_models/Shipment_mdl.js");
+const Inventory_model = require("../models/MYSQL_models/Inventory_mdl.js");
+
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
 
@@ -55,11 +61,11 @@ router.put("/edit-account/:id",function(req,res){
 
 router.get("/edit-stock/products",function(req,res){ 
 
-    //Product_model.get_all_products()
-    //.then((products)=>{
+    let test_products = [{title: "TESTING",description: "A B C D E F G!!!"},{title: "OTHER",description: "HMMM!!!"}];
+    Product_model.get_all_products()
+    .then((products)=>{
 
-        //console.log(products);
-        let test_products = [{title: "TESTING",description: "A B C D E F G!!!"},{title: "OTHER",description: "HMMM!!!"}];
+        //console.log("FROM GET ALL PRODUCTS",products);
 
         res.render("employee/edit_stock_products",{
 
@@ -68,10 +74,10 @@ router.get("/edit-stock/products",function(req,res){
             body_id: "edit_stock_body",
             main_id: "edit_stock_main",
             my_stock_active_link: "active_link",
-            test_products,
+            products,
         });
-    //})
-    //.catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/products: ${err}`));
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/products: ${err}`));
 });
 
 router.get("/edit-stock/categories",function(req,res){ 
@@ -98,31 +104,91 @@ router.get("/edit-stock/categories",function(req,res){
 
 router.get("/edit-stock/restock",function(req,res){ 
 
-    res.render("employee/restock",{
+    Product_model.get_all_products()
+    .then((products)=>{
 
-        title: "Order stock from available suppliers",
-        html_id: "edit_stock_html",
-        body_id: "edit_stock_body",
-        main_id: "edit_stock_main",
-        my_stock_active_link: "active_link",
-        products: ["item_1","item_2"]
-    });
+        res.render("employee/restock",{
+
+            title: "Order stock from available suppliers",
+            html_id: "edit_stock_html",
+            body_id: "edit_stock_body",
+            main_id: "edit_stock_main",
+            my_stock_active_link: "active_link",
+            products,
+        });
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl.js: GET /edit-stock/restock ${err}`));
+});
+
+router.get("/edit-stock/restock/data",function(req,res){ 
+
+    Product_model.get_all_products()
+    .then((data)=>{
+
+        res.json(data);
+    })
 });
 
 router.post("/edit-stock/restock",function(req,res){ 
 
-    if(req.body.supplier.length > 1) 
-    {
-        req.flash("message","New Orders Placed successfully!");  
-    }
+    const created_shipment = new Shipment;
 
-    else
-    {
-        req.flash("message","New Order Placed successfully!");
-    }
+    console.trace("REQ SESSION USER INFO",req.session.user_info);
+    //created_shipment.employee_id = req.session.user_info.
 
-    console.log(req.body);
-    res.redirect("/employee/edit-stock/products");
+    const created_inventory = new Inventory;
+    const restocked_product = new Product;
+
+    created_inventory.product = restocked_product;
+    
+    created_inventory.supplier = req.body.supplier;
+    restocked_product.product_code = req.body.product_code;
+    created_inventory.restock_quantity = req.body.product_quantity;
+
+    General_model.mysql_transaction()
+    .then(()=>{
+
+        return Shipment_model.create_shipment(1);
+    })
+    .then(()=>{
+
+        return General_model.mysql_last_insert_id();
+    })
+    .then((data)=>{
+
+        console.log("LAST SHIPMENT ID DATA",data);
+        const last_shipment_id = data[0][0]['LAST_INSERT_ID()'];
+
+        return Inventory_model.product_restock(restocked_product.product_code,last_shipment_id,
+            created_inventory.supplier,created_inventory.restock_quantity);
+    })
+    .then((shipment_data)=>{
+
+        console.trace("SHIPMENT DATA",shipment_data);
+        return Product_model.increase_quantity(created_inventory.restock_quantity,restocked_product.product_code)
+    })
+    .then(()=>{
+
+        General_model.mysql_commit();
+
+        if(req.body.supplier.length > 1) 
+        {
+            req.flash("message","New Orders Placed successfully!");  
+        }
+
+        else
+        {
+            req.flash("message","New Order Placed successfully!");
+        }
+
+        console.log(req.body);
+        res.redirect("/employee/edit-stock/products");
+    })
+    .catch(err=>{
+        
+        console.log(`Error in Employee_ctrl: POST /edit-stock/restock: ${err}`);
+        General_model.mysql_rollback();
+    });
 });
 
 //*****ADD CATEGORIES
@@ -142,7 +208,7 @@ router.get("/edit-stock/add-categories",function(req,res){
 router.post("/edit-stock/add-categories",add_category_form,function(req,res){ 
 
     console.log("VALIDATED CREATE CATEGORY");
-    Category_model.create_category(req.created_category)
+    Category_model.create_categories(req.created_category)
     .then(()=>{
 
         if(req.created_category.title.length > 1) 
@@ -165,25 +231,35 @@ router.post("/edit-stock/add-categories",add_category_form,function(req,res){
 
 router.get("/edit-stock/add-products",function(req,res){ 
 
-    res.render("employee/add_products",{
+    Category_model.get_all_categories()
+    .then((categories)=>{
 
-        title: "Add new products to the store",
-        html_id: "edit_stock_html",
-        body_id: "edit_stock_body",
-        main_id: "edit_stock_main",
-        my_stock_active_link: "active_link",
-    });
+        res.render("employee/add_products",{
+
+            title: "Add new products to the store",
+            html_id: "edit_stock_html",
+            body_id: "edit_stock_body",
+            main_id: "edit_stock_main",
+            my_stock_active_link: "active_link",
+            categories,
+        });
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/add-products: ${err}`));
 });
 
 router.post("/edit-stock/add-products",add_product_form,function(req,res){ 
 
-
     //Product_model.create_product();
     console.log("VALIDATED CREATE PRODUCT");
-    Product_model.create_product(req.created_product)
+
+    Category_model.get_categories_by_names_check(req.created_product.category.title) //body.product_category)
+    .then((selected_categories)=>{
+        
+        return Product_model.create_products(req.created_product,selected_categories)
+    })
     .then(()=>{
 
-        if(req.body.product_name.length > 1) 
+        if(req.created_product.title.length > 1) 
         {
             req.flash("message","New Products Added successfully!");  
         }
@@ -193,12 +269,12 @@ router.post("/edit-stock/add-products",add_product_form,function(req,res){
             req.flash("message","New Product Added successfully!");
         }
 
-        console.log(req.body);
+        console.log(req.created_product);
         
         //console.log("CREATED PRODUCT REQ BODY",req.body);
         res.redirect("/employee/edit-stock/products");
     })
-    .catch(err=>console.log(`Error in Employee_ctrl: POST /edit-stock/add-categories: ${err}`));
+    .catch(err=>console.log(`Error in Employee_ctrl: POST /edit-stock/add-products: ${err}`));
 });
 
 //*****EDIT CATEGORY

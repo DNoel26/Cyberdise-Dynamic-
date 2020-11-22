@@ -9,6 +9,7 @@ const Employee = require("../models/POJO/Employee.js");
 const User = require("../models/POJO/User.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
+const { create_products } = require("../models/MYSQL_models/Product_mdl.js");
 
 exports.customer_register_form = (req,res,next)=>{
 
@@ -515,7 +516,7 @@ exports.add_category_form = (req,res,next)=>{
 
     else
     {
-        Category_model.get_categories_by_names(created_category.title)
+        Category_model.get_categories_by_names_check(created_category.title)
         .then((selected_categories)=>{
 
             console.log("GET CATEGORY BY NAME",selected_categories,created_category.title,JSON.stringify(created_category.title));
@@ -581,13 +582,42 @@ exports.add_category_form = (req,res,next)=>{
 
 exports.add_product_form = (req,res,next)=>{
 
+    /*req.body.product_bestseller.forEach(element => {
+        
+        console.log("BEST SELLER ELEMENT",element);
+        if(element == "yes")
+        {
+            element = 1;
+        }
+
+        else
+        {
+            element = 0;
+        }
+
+        console.log("BEST SELLER ELEMENT AFTER",element);
+    });*/
+
+    for(let i=0; i<req.body.product_bestseller.length; i++)
+    {
+        if(req.body.product_bestseller[i] == "yes")
+        {
+            req.body.product_bestseller[i] = 1;
+        }
+
+        else
+        {
+            req.body.product_bestseller[i] = 0;
+        }
+    }
+
     const created_product = new Product;
     const queried_category = new Category;
 
     created_product.category = queried_category;
 
     created_product.title = req.body.product_name;
-    created_product.category.title = req.body.product_category;
+    queried_category.title = req.body.product_category;
     created_product.current_quantity = req.body.product_quantity;
     created_product.min_qty = req.body.product_min_quantity;
     created_product.max_qty = req.body.product_max_quantity;
@@ -603,8 +633,6 @@ exports.add_product_form = (req,res,next)=>{
     console.log("3",created_product.title,created_product.description);
     console.log("4 - CREATED CATEGORY",created_product.title[0],created_product.title[1]);
     console.log("5",req.body);
-
-    req.created_product = created_product;
     
     let is_error = false;
 
@@ -658,6 +686,12 @@ exports.add_product_form = (req,res,next)=>{
             is_error = true;
             errors.min_qty[index] = "You must enter a minimum quantity";
         };
+
+        if(element > created_product.max_qty[index])
+        {
+            is_error = true;
+            errors.min_qty[index] = "Minimum quantity cannot be greater than maximum quantity";
+        };
     });
 
     created_product.max_qty.forEach((element,index) => {
@@ -666,6 +700,12 @@ exports.add_product_form = (req,res,next)=>{
         {
             is_error = true;
             errors.max_qty[index] = "You must enter a maximum quantity";
+        };
+
+        if(element < created_product.min_qty[index])
+        {
+            is_error = true;
+            errors.max_qty[index] = "Maximum quantity cannot be less than minimum quantity";
         };
     });
 
@@ -696,6 +736,8 @@ exports.add_product_form = (req,res,next)=>{
         };
     });
 
+    console.log("6 BEFORE - IS BEST SELLER",created_product.is_best_seller);
+
     created_product.is_best_seller.forEach((element,index) => {
         
         if(element == "")
@@ -703,7 +745,21 @@ exports.add_product_form = (req,res,next)=>{
             is_error = true;
             errors.is_best_seller[index] = "You must select a bestseller status";
         };
+
+        if(element == "no")
+        {
+            console.log("BEST SELLER NO",element);
+            element = 0;
+        }
+
+        else if(element == "yes")
+        {
+            console.log("BEST SELLER YES",element);
+            element = 1;
+        };
     });
+
+    console.log("6 AFTER - IS BEST SELLER",created_product.is_best_seller);
 
     created_product.description.forEach((element,index) => {
         
@@ -714,6 +770,7 @@ exports.add_product_form = (req,res,next)=>{
         };
     });
 
+    req.created_product = created_product;
     //console.log(req.body);
 
     if(is_error)
@@ -745,7 +802,7 @@ exports.add_product_form = (req,res,next)=>{
 
     else
     {
-        Product_model.get_products_by_names(created_product.title)
+        Product_model.get_products_by_names_check(created_product.title)
         .then((selected_products)=>{
 
             console.log("GET PRODUCT BY NAME",selected_products);

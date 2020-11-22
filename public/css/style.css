@@ -406,7 +406,7 @@ img
     font-weight: 900;
     font-size: 0.75rem;
     letter-spacing: 0.1rem;
-    margin-bottom: 32px;                                    /* FORM ERROR MESSAGE TOGGLE */
+    margin-bottom: 16px;                                    /* FORM ERROR MESSAGE TOGGLE */
 }
 
 .floating_icons
@@ -622,7 +622,7 @@ a
 
 .form_class input, .form_class select, .form_class textarea
 {
-    margin: 0 4px 16px 4px;
+    margin: 0 4px 4px 4px;
     transition: 0.4s;
 }
 
@@ -2284,16 +2284,17 @@ input:focus, select:focus
     width: max-content;
 }
 
-#signup_form div:nth-child(4) span
+#signup_form div:nth-child(4) span /*.form_error_msg*/
 {   
     margin-top: 8px;
 }
 
-#signup_form span, #login_form span
+#signup_form span /*.form_error_msg*/, #login_form span /*.form_error_msg*/
 {
     display: block;
     font-weight: 900;
-    margin-bottom: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     letter-spacing: 0.1rem;
 }
 
@@ -2739,13 +2740,25 @@ input:focus, select:focus
     display: block;
 }
 
-.my_cart_container .button_class.remove_button
+/*.my_cart_container .button_class.remove_button
 {
     color: red;
     background-color: whitesmoke;
 }
 
 .my_cart_container .button_class.remove_button:hover
+{
+    color: whitesmoke;
+    background-color: red;
+}*/
+
+.button_class.remove_button
+{
+    color: red;
+    background-color: rgb(255, 170, 170);
+}
+
+.button_class.remove_button:hover
 {
     color: whitesmoke;
     background-color: red;
@@ -3067,4 +3080,22 @@ th, td
 .new_category:last-of-type, .new_product:last-of-type, .new_product:last-of-type
 {
     border-bottom: 0px solid lightgrey;
+}
+
+p.product_names
+{
+    color: var(--font_color);
+    background-color: lightgrey;
+    width: max-content;
+    padding-right: 32px;
+}
+
+#total_price
+{
+    color: var(--font_color);
+    background-color: lightgrey;
+    width: max-content;
+    padding-right: 32px;
+    padding-top: 16px;
+    font-size: 1.2rem;
 }

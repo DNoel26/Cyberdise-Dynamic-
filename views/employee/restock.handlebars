@@ -16,6 +16,7 @@
                 <div class="form_input_container">
                     <label for="supplier[0]">Supplier</label>
                     <select name="supplier[]" id="supplier[0]">
+                        <option value="">Select a Supplier</option>
                         <option value="Amazon">Amazon</option>
                         <option value="Courts">Courts</option>
                         <option value="Ebay">Ebay</option>
@@ -23,44 +24,57 @@
                         <option value="Megastore">Megastore</option>
                         <option value="Walmart">Walmart</option>
                     </select>
+                    <span class="form_error_msg">{{errors.supplier}}</span>     
                 </div>
     
                 <div class="form_input_container">
                     <label for="product_code[0]">Product Code</label>
-                    <select name="product_code[]" id="product_code[0]">
-
-                    <option value="test">test</option> 
-                    <option value="other_test">other_test</option> 
-                    {{#each all_products_info}}
+                    <select class="product_codes" name="product_code[]" id="product_code[0]">
+                    
+                    <option value="">Select a Product Code</option>
+                    <!--<option value="test">test</option> 
+                    <option value="other_test">other_test</option>-->
+                    {{#each products}}
 
                     <option value="{{this.product_code}}">{{this.product_code}}</option>
 
                     {{/each}}
                     
                     </select>
-                </div>
-
-                <div class="form_input_container">
-                    <label for="product_quantity[0]">Product Quantity</label>
-                    <input type="number" value="{{ordered_inventory.restock_quantity}}" min="1" name="product_quantity[]" id="product_quantity[0]">
+                    <span class="form_error_msg">{{errors.product_code}}</span>     
                 </div>
 
                 <div class="form_input_container">
                     <h3>Product Name:</h3>
-                    <p>Product{{ordered_inventory.product.title}}</p>
+                    <p class="product_names"><!--ordered_inventory.product.title--></p>
                 </div>
 
                 <div class="form_input_container">
-                    <h3>Estimated cost:</h3>
-                    <p>$100.00{{ordered_inventory.product.cost_price}}</p>
+                    <label for="product_quantity[0]">Product Quantity</label>
+                    <input class="product_quantities" type="number" value="{{ordered_inventory.restock_quantity}}" min="1" name="product_quantity[]" id="product_quantity[0]">
+                    <span class="form_error_msg">{{errors.order_quantity}}</span>     
+                </div>
+
+                <div class="form_input_container">
+                    <h3>Estimated cost per item:</h3>
+                    <p class="product_cost_prices">$---{{!--$100.00{{ordered_inventory.product.cost_price}}--}}</p>
+                </div>
+
+                <div class="form_input_container">
+                    <h3>Estimated subtotal cost:</h3>
+                    <p class="product_subtotal_prices">$---{{!--$100.00{{ordered_inventory.product.cost_price}}--}}</p>
                 </div>
             </div>
         </div>
         <div>
             <button type="button" id="add_order_btn" class="button_class product_button event_button"><i class="fas fa-plus"></i> Add Order</button>
-            <button type="button" id="remove_order_btn" class="button_class product_button event_button remove_element"><i class="fas fa-minus"></i> Remove Order</button>
+            <button type="button" id="remove_order_btn" class="button_class product_button event_button remove_button remove_element"><i class="fas fa-minus"></i> Remove Order</button>
         </div> 
         <div>
+            <div id="total_price" class="form_input_container">
+                <h3>Estimated total cost:</h3>
+                <p class="product_total_price">$---</p>
+            </div>
             <button type="submit" class="button_class product_button">Submit <i class="fas fa-arrow-right"></i></button>
             <a href="/employee/edit-stock/products" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>

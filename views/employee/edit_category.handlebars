@@ -24,25 +24,47 @@
         </table>
     </div>
     <form action="/employee/edit-stock/edit-category/:id?method=put" method="POST" class="form_class">
-        <div>
-            <div class="form_input_container">
-                <label for="category_name">Category Name</label>
-                <input type="text" name="category_name" id="category_name" value="{{category_info.title}}">
-            </div>
- 
-            <div class="form_input_container">
-                <label for="category_description">Category Description</label>
-                <textarea name="category_description" id="category_description" cols="30" rows="10">{{#if category_info.description}}{{category_info.description}}{{else}}{{/if}}</textarea>
-            </div>
+        <div class="profile_container">
 
-            <div class="form_input_container">
-                <label for="category_photo">Category Image Path</label>
-                <input type="text" name="category_photo" id="category_photo" value="{{category_info.image_path}}">
+            <div>
+                <div class="form_input_container">
+                    <label for="category_name">Category Name</label>
+                    <input type="text" name="category_name" id="category_name" value="{{category_info.title}}">
+                </div>
+    
+                <div class="form_input_container">
+                    <label for="category_description">Category Description</label>
+                    <textarea name="category_description" id="category_description" cols="30" rows="10">{{#if category_info.description}}{{category_info.description}}{{else}}{{/if}}</textarea>
+                </div>
+
+                <div class="form_input_container">
+                    <label for="category_photo">Category Image Path</label>
+                    <input type="text" name="category_photo" id="category_photo" value="{{category_info.image_path}}">
+                </div>
+
             </div>
 
             <div>
-                <button type="button" id="delete_category_btn" class="button_class product_button event_button"><i class="fas fa-minus"></i> Delete Category</button>
+                <div>
+
+                    <div class="form_input_container">
+                        <h3>Category Created and Added:</h3>
+                        <p>{{category_info.date_created}}</p>
+                    </div>
+
+                    <div class="form_input_container">
+                        <h3>Category Last Updated:</h3>
+                        <p>{{category_info.last_modified}}</p>
+                    </div>
+
+                    <div>
+                        <button type="button" id="delete_category_btn" class="button_class product_button event_button remove_button"><i class="fas fa-minus"></i> Delete Category</button>
+                    </div>
+
+                </div>
+
             </div>
+            
         </div>
         <div>
             <button type="submit" class="button_class product_button">Accept Changes <i class="fas fa-arrow-right"></i></button>

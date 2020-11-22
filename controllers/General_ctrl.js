@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 const {signup_render_obj} = require("../config/Render_obj_mw.js");
 
 const db = require("../config/MySQL_DAO.js");
+const General_model = require("../models/MYSQL_models/General_mdl.js");
 const User_model = require("../models/MYSQL_models/User_mdl.js");
 const User = require("../models/POJO/User.js");
 const Customer = require("../models/POJO/Customer.js");
@@ -73,7 +74,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
 
     const catch_rollback = function(){
         
-        User_model.mysql_rollback()
+        General_model.mysql_rollback()
         .then(()=>{
 
             res.redirect("/signup");     
@@ -88,7 +89,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
         console.log("ON CUSTOMER CREATION",req.created_customer);
         const time_stamp = "2020-10-24T08:28:53";
 
-        return User_model.mysql_current_timestamp()
+        return General_model.mysql_current_timestamp()
     }) //SECOND THEN
     .then((curr_time)=>{
 
@@ -100,7 +101,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
         const mysql_curr_time = curr_time_to_string.substring(1,20);
         console.log("CURRENT TIMESTAMP COMPATIBLE WITH MYSQL",mysql_curr_time);
 
-        return User_model.mysql_last_insert_id()    
+        return General_model.mysql_last_insert_id()    
     }) //THIRD THEN
     .then((last_ins_id)=>{
         
@@ -120,7 +121,7 @@ router.post("/signup/create-account",customer_register_form,function(req,res){ /
         //console.log(curr_time[0][0]);
         //const time_stamp = curr_time[0][0];
 
-        return User_model.mysql_commit()
+        return General_model.mysql_commit()
     }) //FOURTH THEN        
     .then((test)=>{ 
 

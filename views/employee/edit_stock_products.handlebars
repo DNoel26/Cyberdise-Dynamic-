@@ -24,12 +24,13 @@
                     <th>Quantity</th>
                     <th>Bestseller</th>
                     <th>Image Path</th>
+                    <th>Image</th>
                     <th class="edit_th">Edit/Delete</th>
                 </tr>
             </thead>
             <tbody>
 
-                {{#each test_products}}
+                {{#each products}}
 
                     <tr>
                         <td>{{this.title}}</td>
@@ -39,6 +40,7 @@
                         <td>{{this.current_quantity}}</td>
                         <td>{{this.is_best_seller}}</td>
                         <td>{{this.image_path}}</td>
+                        <td><img src="{{this.image_path}}" alt="" width="64px" height="64px"></td>
                         <td class="edit_td"><a href="/employee/edit-stock/edit-product" class="button_class"><i class="far fa-plus-square"></i></a></td>
                     </tr>
 

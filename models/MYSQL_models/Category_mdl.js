@@ -7,18 +7,18 @@ const Category = require("../POJO/Category.js");
 
 const Category_model =
 { 
-    create_category(category)
+    create_categories(categories)
     {
         return new Promise((resolve,reject)=>{
             
             let category_arr = [];
             
-            for(let i=0; i < category.title.length; i++)
+            for(let i=0; i < categories.title.length; i++)
             {
                 let category_arr_sub = [];
-                category_arr_sub[0] = category.title[i];
-                category_arr_sub[1] = category.description[i];
-                category_arr_sub[2] = category.image_path[i];
+                category_arr_sub[0] = categories.title[i];
+                category_arr_sub[1] = categories.description[i];
+                category_arr_sub[2] = categories.image_path[i];
 
                 //console.log("length",category.title.length);
                 //console.log("i",i);
@@ -30,13 +30,13 @@ const Category_model =
 
             this.SQL = `INSERT IGNORE INTO category (title,description,image_path) VALUES ?;`;
             db.connection.query(this.SQL, [category_arr])
-            .then((input_data)=>{
+            .then(()=>{
                 
-                resolve(input_data);
+                resolve();
             })
             .catch((err)=>{
 
-                reject(`Error in Category_mdl.js: create_category(): ${err}`);
+                reject(`Error in Category_mdl.js: create_categories(): ${err}`);
             });
         })
     },
@@ -74,7 +74,7 @@ const Category_model =
         })
     },
 
-    get_categories_by_names(category_name_arr)
+    get_categories_by_names_check(category_name_arr)
     {
         return new Promise((resolve,reject)=>{
             
@@ -83,8 +83,57 @@ const Category_model =
             console.log(category_name_arr,"Category names joined",category_names);
 
             this.SQL = `SELECT * FROM category 
-                WHERE title IN (?)`;
+                WHERE title IN (?);`;
             db.connection.query(this.SQL, [category_name_arr])
+            .then(([rows,fields])=>{
+                
+                //console.log("CATEGORY ROWS",rows);
+                let selected_categories = [];
+
+                if(rows.length > 0)
+                {
+                    rows.forEach(row => {
+                        
+                        const selected_category = new Category;
+
+                        selected_category.category_id = row.category_id;
+                        selected_category.title = row.title;
+                        selected_category.description = row.description;
+                        selected_category.image_path = row.image_path;
+                        selected_category.date_created = row.date_created;
+                        selected_category.last_modified = row.last_modified;
+
+                        //console.log("FOR EACH SELECTED CATEGORY!!!",selected_category);
+                        selected_categories.push(selected_category);
+                    });
+                }
+
+                else
+                {
+                    selected_categories = null;
+                };
+
+                console.log("SELECTED CATEGORIES",selected_categories);
+                resolve(selected_categories); 
+            })
+            .catch((err)=>{
+
+                reject(`Error in Category_mdl.js: get_categories_by_names(): ${err}`);
+            });
+        })
+    },
+
+    get_categories_by_ids(category_id_arr)
+    {
+        return new Promise((resolve,reject)=>{
+            
+            const category_ids = /*"(" +*/ category_id_arr.map(item => `"${item}"`).join() /*+ ")"*/;
+            
+            console.log(category_id_arr,"Category ids joined",category_ids);
+
+            this.SQL = `SELECT * FROM category 
+                WHERE category_id IN (?)`;
+            db.connection.query(this.SQL, [category_id_arr])
             .then(([rows,fields])=>{
                 
                 console.log("CATEGORY ROWS",rows);
@@ -111,14 +160,14 @@ const Category_model =
                 else
                 {
                     selected_categories = null;
-                }
+                };
 
                 console.log("SELECTED CATEGORIES",selected_categories);
-                resolve(selected_categories);
+                resolve(selected_categories); 
             })
             .catch((err)=>{
 
-                reject(`Error in Category_mdl.js: get_categories_by_names(): ${err}`);
+                reject(`Error in Category_mdl.js: get_categories_by_ids(): ${err}`);
             });
         })
     },
