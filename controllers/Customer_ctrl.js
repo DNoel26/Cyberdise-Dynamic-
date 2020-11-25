@@ -50,4 +50,16 @@ router.get("/my-cart",function(req,res){
     });
 });
 
+router.post("/my-cart",function(req,res){
+    
+    res.render("customer/my_cart",{
+
+        title: "View and edit items in your cart",
+        html_id: "my_cart_html",
+        body_id: "my_cart_body",
+        main_id: "my_cart_main",
+        my_cart_active_link: "active_link",
+    });
+});
+
 module.exports = router;

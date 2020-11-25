@@ -20,6 +20,7 @@ const General_model =
     {
         return new Promise((resolve,reject)=>{
 
+            console.log("Transaction committed");
             this.SQL = 'COMMIT;';
             db.connection.query(this.SQL)
             .then(()=>{
@@ -34,6 +35,7 @@ const General_model =
     {
         return new Promise((resolve,reject)=>{
 
+            console.log("Transaction rolled back");
             this.SQL = 'ROLLBACK;';
             db.connection.query(this.SQL)
             .then(()=>{

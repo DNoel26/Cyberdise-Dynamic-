@@ -1,12 +1,12 @@
 <section class="width_container">
     <div class="greeting_msg">
         {{> database_welcome_msg}}
-        <p>Edit Category '{{category_info.title}}' Below</p> 
+        <p>Edit Category '{{category.title}}' Below</p> 
     </div>
 </section>
 <section class="width_container">
     <div class="table_container">
-        <table>
+        <table class="edit_table">
             <thead>
                 <tr>
                     <th>Category Name</th>
@@ -16,45 +16,55 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{category_info.title}}</td>
-                    <td>{{category_info.description}}</td>
-                    <td><img src={{category_info.image_path}}"" alt="" width="128px" height="128px"></td>
+                    <td>{{category.title}}</td>
+                    <td>{{category.description}}</td>
+                    <td><img src="{{category.image_path}}" alt="" width="128px" height="128px"></td>
                 </tr> 
             </tbody>
         </table>
     </div>
-    <form action="/employee/edit-stock/edit-category/:id?method=put" method="POST" class="form_class">
+    <form action="/employee/edit-stock/edit-category/{{category.category_id}}?method=put" method="POST" class="form_class" enctype="multipart/form-data">
         <div class="profile_container">
 
             <div>
                 <div class="form_input_container">
                     <label for="category_name">Category Name</label>
-                    <input type="text" name="category_name" id="category_name" value="{{category_info.title}}">
+                    <input type="text" name="category_name" id="category_name" value="{{category.title}}">
+                    <span class="form_error_msg">{{errors.title}}</span>  
                 </div>
     
                 <div class="form_input_container">
                     <label for="category_description">Category Description</label>
-                    <textarea name="category_description" id="category_description" cols="30" rows="10">{{#if category_info.description}}{{category_info.description}}{{else}}{{/if}}</textarea>
+                    <textarea name="category_description" id="category_description" cols="30" rows="10">{{#if category.description}}{{category.description}}{{else}}{{/if}}</textarea>
+                    <span class="form_error_msg">{{errors.description}}</span>   
                 </div>
 
                 <div class="form_input_container">
-                    <label for="category_photo">Category Image Path</label>
-                    <input type="text" name="category_photo" id="category_photo" value="{{category_info.image_path}}">
+                    <label for="category_img">Category Image Path (Or Upload Image File Below)</label>
+                    <input type="text" name="category_img" id="category_img" value="{{category.image_path}}">
+                    <span class="form_error_msg">{{errors.image_path}}</span>  
+                </div>
+
+                <div class="form_input_container">
+                    <label for="category_img_upload">Category Image Upload (Or Enter Image Directory Above)</label>
+                    <input type="file" name="category_img_upload" id="category_img_upload">
+                    <span class="form_error_msg">{{errors.upload_image}}</span>  
                 </div>
 
             </div>
 
             <div>
+
                 <div>
 
                     <div class="form_input_container">
                         <h3>Category Created and Added:</h3>
-                        <p>{{category_info.date_created}}</p>
+                        <p>{{category.date_created}}</p>
                     </div>
 
                     <div class="form_input_container">
                         <h3>Category Last Updated:</h3>
-                        <p>{{category_info.last_modified}}</p>
+                        <p>{{category.last_modified}}</p>
                     </div>
 
                     <div>

@@ -1,15 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const app = express(); 
 const Product_model = require("../models/MYSQL_models/Product_mdl.js");
 const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
 const Inventory = require("../models/POJO/Inventory.js");
 const Shipment = require("../models/POJO/Shipment.js");
-const {add_category_form,add_product_form} = require("../middleware/Validate_mw.js");
+const {add_category_form,add_product_form,
+    edit_update_product_form,edit_update_category_form} = require("../middleware/Validate_mw.js");
 const General_model = require("../models/MYSQL_models/General_mdl.js");
 const Shipment_model = require("../models/MYSQL_models/Shipment_mdl.js");
 const Inventory_model = require("../models/MYSQL_models/Inventory_mdl.js");
+const { v4: uuidv4 } = require('uuid');
+const fs = require("fs");
+const image_uploader = require("../middleware/Image_Upload_mw.js")
 
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
@@ -66,7 +71,19 @@ router.get("/edit-stock/products",function(req,res){
     .then((products)=>{
 
         //console.log("FROM GET ALL PRODUCTS",products);
+        for(let i=0; i<products.length; i++)
+        {
+            if(products[i].is_best_seller == 1)
+            {
+                products[i].is_best_seller = "Yes";
+            }
 
+            else
+            {
+                products[i].is_best_seller = "No";
+            };
+        };
+            
         res.render("employee/edit_stock_products",{
 
             title: "View, add and edit products",
@@ -148,7 +165,7 @@ router.post("/edit-stock/restock",function(req,res){
     General_model.mysql_transaction()
     .then(()=>{
 
-        return Shipment_model.create_shipment(1);
+        return Shipment_model.create_shipment(req.session.user_info.user_id);
     })
     .then(()=>{
 
@@ -156,7 +173,7 @@ router.post("/edit-stock/restock",function(req,res){
     })
     .then((data)=>{
 
-        console.log("LAST SHIPMENT ID DATA",data);
+        //console.log("LAST SHIPMENT ID DATA",data);
         const last_shipment_id = data[0][0]['LAST_INSERT_ID()'];
 
         return Inventory_model.product_restock(restocked_product.product_code,last_shipment_id,
@@ -165,11 +182,14 @@ router.post("/edit-stock/restock",function(req,res){
     .then((shipment_data)=>{
 
         console.trace("SHIPMENT DATA",shipment_data);
-        return Product_model.increase_quantity(created_inventory.restock_quantity,restocked_product.product_code)
+        
+        return Product_model.increase_quantity(created_inventory.restock_quantity,restocked_product.product_code);
     })
     .then(()=>{
 
         General_model.mysql_commit();
+    })
+    .then(()=>{
 
         if(req.body.supplier.length > 1) 
         {
@@ -207,6 +227,8 @@ router.get("/edit-stock/add-categories",function(req,res){
 
 router.post("/edit-stock/add-categories",add_category_form,function(req,res){ 
 
+    image_uploader(req.uploaded_image, req.created_category.image_path)
+
     console.log("VALIDATED CREATE CATEGORY");
     Category_model.create_categories(req.created_category)
     .then(()=>{
@@ -234,6 +256,8 @@ router.get("/edit-stock/add-products",function(req,res){
     Category_model.get_all_categories()
     .then((categories)=>{
 
+        res.locals.categories = categories
+
         res.render("employee/add_products",{
 
             title: "Add new products to the store",
@@ -241,21 +265,72 @@ router.get("/edit-stock/add-products",function(req,res){
             body_id: "edit_stock_body",
             main_id: "edit_stock_main",
             my_stock_active_link: "active_link",
-            categories,
         });
     })
     .catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/add-products: ${err}`));
+});
+
+router.get("/edit-stock/add-products/data",function(req,res){ 
+
+    Category_model.get_all_categories()
+    .then((data)=>{
+
+        res.json(data);
+    })
 });
 
 router.post("/edit-stock/add-products",add_product_form,function(req,res){ 
 
     //Product_model.create_product();
     console.log("VALIDATED CREATE PRODUCT");
+    
+    image_uploader(req.uploaded_image, req.created_product.image_path);
+    /*const uuid = [];
+    
+    if(req.uploaded_image)
+    {
+        for(let i=0; i<req.uploaded_image.length; i++)
+        {
+            uuid[i] = uuidv4();
+        }
+    }
+    
+    req.created_product.image_path.forEach((element,index) => {
+        
+        if(!element || element == "" || element == undefined)
+        {
+            console.log("IMAGE PATH DOES NOT EXIST!!!")
+            req.created_product.image_path[index] = '/img/Products/default_product.png'; 
+        };
 
+        if(fs.existsSync(`public${element}`))
+        {
+            console.log("THIS IMAGE FILE EXISTS");
+        }
+
+        else
+        {
+            req.created_product.image_path[index] = '/img/Products/default_product.png'; 
+        };
+    });
+
+    if(req.uploaded_image)
+    {
+        req.uploaded_image.forEach((element,index) => {
+            if(element)
+            {
+                const new_file_name = `${uuid[index]}_${element.name}`
+                
+                element.mv(`public/img/Uploads/Products_upl/${new_file_name}`);
+                req.created_product.image_path[index] = `/img/Uploads/Products_upl/${new_file_name}`;
+            }
+        });
+    };*/
+    
     Category_model.get_categories_by_names_check(req.created_product.category.title) //body.product_category)
     .then((selected_categories)=>{
         
-        return Product_model.create_products(req.created_product,selected_categories)
+        return Product_model.create_products(req.created_product,selected_categories);
     })
     .then(()=>{
 
@@ -279,42 +354,112 @@ router.post("/edit-stock/add-products",add_product_form,function(req,res){
 
 //*****EDIT CATEGORY
 
-router.get("/edit-stock/edit-category",function(req,res){ 
+router.get("/edit-stock/edit-category/:id",function(req,res){ 
 
-    res.render("employee/edit_category",{
+    Category_model.get_category_by_name_id(null,req.params.id)
+    .then((category)=>{
 
-        title: "Edit your selected category here",
-        html_id: "edit_stock_html",
-        body_id: "edit_stock_body",
-        main_id: "edit_stock_main",
-        my_stock_active_link: "active_link",
-    });
+        res.locals.category = category;
+
+        res.render("employee/edit_category",{
+
+            title: "Edit your selected category here",
+            html_id: "edit_stock_html",
+            body_id: "edit_stock_body",
+            main_id: "edit_stock_main",
+            my_stock_active_link: "active_link",
+        });
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/edit-category/:id: ${err}`));
 });
 
-router.put("/edit-stock/edit-category/:id",function(req,res){
+router.put("/edit-stock/edit-category/:id",edit_update_category_form,function(req,res){
 
-    req.flash("message",`Successfully updated category '${req.body.category_name}'!`);
-    res.redirect("/employee/edit-stock/categories");
+    //Product_model.edit_update_product(req.params)
+    req.edited_category.image_path = image_uploader(req.uploaded_image, req.edited_category.image_path);
+    console.log("REQ PARAMS CATEGORIES",req.params);
+
+    Category_model.edit_update_category(req.edited_category.title, req.edited_category.description,
+        req.edited_category.image_path, req.params.id)
+    .then(()=>{
+
+        req.flash("message",`Successfully updated category '${req.body.category_name}'!`);
+        res.redirect("/employee/edit-stock/categories");
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: PUT /edit-stock/edit-category/:id: ${err}`));
 })
 
 //*****EDIT PRODUCT
 
-router.get("/edit-stock/edit-product",function(req,res){ 
+router.get("/edit-stock/edit-product/:id",function(req,res){ 
 
-    res.render("employee/edit_product",{
+    Category_model.get_all_categories()
+    .then((categories)=>{
 
-        title: "Edit your selected product here",
-        html_id: "edit_stock_html",
-        body_id: "edit_stock_body",
-        main_id: "edit_stock_main",
-        my_stock_active_link: "active_link",
-    });
+        res.locals.categories = categories;
+
+        return Product_model.get_product_by_name_code(null,req.params.id)
+    })
+    .then((product)=>{
+
+        if(product.is_best_seller == 1)
+        {
+            product.is_best_seller = "Yes";
+        }
+
+        else if(product.is_best_seller == 0)
+        {
+            product.is_best_seller = "No";
+        };
+
+        //console.log(req.app.locals);
+        console.log("PRODUCT PARAMS ID",product);
+        console.log("PRODUCT SELLING PRICE",product.selling_price,"PRODUCT QUANTITY",product.current_quantity);
+
+        res.locals.product = product;
+
+        res.render("employee/edit_product",{
+
+            title: "Edit your selected product here",
+            html_id: "edit_stock_html",
+            body_id: "edit_stock_body",
+            main_id: "edit_stock_main",
+            my_stock_active_link: "active_link",
+        });
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: GET /edit-stock/edit-product/:id: ${err}`));
 });
 
-router.put("/edit-stock/edit-product/:id",function(req,res){
+router.put("/edit-stock/edit-product/:id",edit_update_product_form,function(req,res){
 
-    req.flash("message",`Successfully updated product '${req.body.product_name}' (code: ${req.body.product_code})!`);
-    res.redirect("/employee/edit-stock/products");
+    //console.log("REQ PARAMS PRODUCTS",req.params);
+    //console.log("REQ PARAM FILE",req.uploaded_image,"REQ PARAM BODY",req.edited_product)
+
+    req.edited_product.image_path = image_uploader(req.uploaded_image, req.edited_product.image_path);
+
+    //console.log("TEST",req.edited_product.is_best_seller,req.edited_product.category.title,
+    //    req.edited_product.product_code)
+    
+    Product_model.edit_update_product(req.edited_product.min_qty, req.edited_product.max_qty,
+        req.edited_product.selling_price, req.edited_product.cost_price, req.edited_product.current_quantity,
+        req.edited_product.title, req.edited_product.description, req.edited_product.image_path,
+        req.edited_product.is_best_seller, req.edited_product.category.title, req.params.id)
+    .then(()=>{
+
+        /*const uuid = uuidv4();
+
+        if(req.files.product_img_upload)
+        {
+            const new_file_name = `${uuid}_${req.files.product_img_upload.name}`
+            
+            req.files.product_img_upload.mv(`public/img/Uploads/Products_upl/${new_file_name}`);
+            req.body.product_img = `/img/Uploads/Products_upl/${new_file_name}`;
+        };*/
+
+        req.flash("message",`Successfully updated product '${req.body.product_name}' (code: ${req.body.product_code})!`);
+        res.redirect("/employee/edit-stock/products");
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: PUT /edit-stock/edit-product/:id: ${err}`));
 })
 
 module.exports = router;

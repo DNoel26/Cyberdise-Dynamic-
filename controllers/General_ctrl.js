@@ -12,27 +12,33 @@ const Employee = require("../models/POJO/Employee.js");
 
 const {customer_register_form} = require("../middleware/Validate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
-
+const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 
 //*****HOME CONTROLS
 
 router.get("/",function(req,res){
 
     console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info);
-    res.render("general/home",{
 
-        title: "Homepage: See bestsellers and available deals today",
-        html_id: "home_page_html",
-        body_id: "home_page_body",
-        main_id: "home_page_main",
-        main_class: ["scroll_snap_start_pos "],
-        home: true,
-        home_active_link: "active_link",
-        best_sellers: ["Electronics","Food"],
-        message: req.flash("message"),
-        trial: "<h1>LETS GO</h1>"
-    });
-    
+    Category_model.get_all_categories()
+    .then(()=>{
+
+        res.render("general/home",{
+
+            title: "Homepage: See bestsellers and available deals today",
+            html_id: "home_page_html",
+            body_id: "home_page_body",
+            main_id: "home_page_main",
+            main_class: ["scroll_snap_start_pos "],
+            home: true,
+            home_active_link: "active_link",
+            best_sellers: ["Electronics","Food"],
+            message: req.flash("message"),
+            trial: "<h1>LETS GO</h1>"
+        });
+    })
+    .catch(err=>`Error in General_ctrl: Error on GET / - all routes: ${err}`);
+      
     //res.send("HOME 2");
 });
 

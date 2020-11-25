@@ -7,7 +7,7 @@ const helper  = exphbs.create({
 
         if_eq(a,b, options)
         {
-            if(a === b) 
+            if(a == b) 
             {
                 //console.log("if main this",options.fn(a),options.fn(b),options.fn(this));
                 return options.fn(this);
@@ -20,22 +20,24 @@ const helper  = exphbs.create({
             };
         },
 
-        if_true(a,b, options)
+        if_true(a,b)
         {
-            if(a === b) 
+            if(a == b) 
             {
-                return options.fn(this);
+                console.log("TRUE",a,"and",b);
+                return true;
             }
 
             else
             {
-                return options.inverse(this);
+                console.log("TRUE",a,"and",b);
+                return false;
             };
         },
 
         if_not(a,options)
         {
-            if(a === null || a === undefined || a === "" || a === false) 
+            if(a == null || a == undefined || a == "" || a == false) 
             {
                 //console.log("IF NOT IF",a)
                 return options.fn(this);
@@ -48,9 +50,19 @@ const helper  = exphbs.create({
             };
         },
 
+        for_each_sel()
+        {
+
+        },
+
+        calc_stock_val(a,b)
+        {
+            return parseFloat(a * b).toFixed(2);
+        },
+
         help_test(a,options)
         {
-            if(a === "male")
+            if(a == "male")
             {
                 return a = "DOG"
             }

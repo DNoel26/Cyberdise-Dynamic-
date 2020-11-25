@@ -33,12 +33,37 @@
         </div>
         
         <div id="products_section">
+            <div class="products_display">
+                <div>
+                    <a href="/products/product-overview">
+                        <img class="product_img" src="/img/fake_db_imgs/programmer_jersey.jpg" alt="" title="">
+                    </a>
+                </div>
+                <div>
+                    <div class="rating_div">
+                        <div class="rw-ui-container"></div> <!--REVIEW RATING WIDGET-->
+                    </div>
+                    <h4 class="product_name">
+                        Alexa Echo
+                    </h4>
+                    <h4 class="product_price">
+                        From $109.99
+                    </h4>  
+                </div>
+                <a class="button_class product_button" href="/products/product-overview">
+                    See Full Details
+                </a>
+                <div class="product_pos_num">
+                    <h2>NAN</h2>
+                </div>
+            </div>
             <!--- HBS --->
             {{#each products}}
+
                 <div class="products_display">
                     <div>
-                        <a href="/products/product-overview">
-                            <img class="product_img" src="/img/fake_db_imgs/{{this.src}}" alt="" title="">
+                        <a href="/products/product-overview/{{this.product_code}}">
+                            <img class="product_img" src="{{this.image_path}}" alt="" title="">
                         </a>
                     </div>
                     <div>
@@ -49,21 +74,22 @@
                             {{this.title}}
                         </h4>
                         <h4 class="product_price">
-                            From {{this.price}}
+                            From ${{this.selling_price}}
                         </h4>  
                     </div>
-                    <a class="button_class product_button" href="/products/product-overview">
+                    <a class="button_class product_button" href="/products/product-overview/{{this.product_code}}">
                         See Full Details
                     </a>
                     <div class="product_pos_num">
                         <h3>{{@index}}</h3>
                     </div>
-                    {{#if best_seller}}
+                    {{#if is_best_seller}}
                         <div class="best_seller_tag"> 
                             <h3><i class="fas fa-medal"></i></h3>
                         </div>
-                    {{/if}} input
+                    {{/if}} 
                 </div>
+
             {{/each}}
             <!--- HBS --->
             <div class="products_display">
@@ -86,6 +112,9 @@
                 <a class="button_class product_button" href="/products/product-overview">
                     See Full Details
                 </a>
+                <div class="product_pos_num">
+                    <h2>NAN</h2>
+                </div>
             </div>
             <div class="products_display">
                 <div>
@@ -107,6 +136,9 @@
                 <a class="button_class product_button" href="/products/product-overview">
                     See Full Details
                 </a>
+                <div class="product_pos_num">
+                    <h2>NAN</h2>
+                </div>
             </div>
             <div class="products_display">
                 <div>
@@ -128,27 +160,9 @@
                 <a class="button_class product_button" href="/products/product-overview">
                     See Full Details
                 </a>
-            </div>
-            <div class="products_display">
-                <div>
-                    <a href="/products/product-overview">
-                        <img class="product_img" src="/img/fake_db_imgs/programmer_jersey.jpg" alt="" title="">
-                    </a>
+                <div class="product_pos_num">
+                    <h2>NAN</h2>
                 </div>
-                <div>
-                    <div class="rating_div">
-                        <div class="rw-ui-container"></div> <!--REVIEW RATING WIDGET-->
-                    </div>
-                    <h4 class="product_name">
-                        Alexa Echo
-                    </h4>
-                    <h4 class="product_price">
-                        From $109.99
-                    </h4>  
-                </div>
-                <a class="button_class product_button" href="/products/product-overview">
-                    See Full Details
-                </a>
             </div>
         </div>
         <div class="pagination">

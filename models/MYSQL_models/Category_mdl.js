@@ -123,6 +123,62 @@ const Category_model =
         })
     },
 
+    get_category_by_name_id(category_name,category_id)
+    {
+        return new Promise((resolve,reject)=>{
+            
+            this.SQL = `SELECT *
+            FROM category 
+            WHERE title = ? OR category_id = ?`;
+            db.connection.query(this.SQL, [category_name,category_id])
+            .then(([rows,fields])=>{
+                
+                let selected_categories = [];
+
+                if(rows.length > 0)
+                {
+                    rows.forEach(row => {
+
+                        const selected_category = new Category;
+
+                        selected_category.category_id = row.category_id;
+                        selected_category.title = row.title;
+                        selected_category.description = row.description;
+                        selected_category.image_path = row.image_path;
+                        selected_category.date_created = row.date_created;
+                        selected_category.last_modified = row.last_modified;
+
+                        selected_categories.push(selected_category);
+                    });  
+                }
+
+                else
+                {
+                    selected_categories = null;
+                }
+
+                if(selected_categories != null)
+                {
+                    selected_categories.forEach(category => {
+                        
+                        console.log("SELECTED CATEGORY ARRAY -",category.category_id,"-",category.title);
+                    });
+                }; 
+
+                if(selected_categories.length == 1)
+                {
+                    selected_categories = selected_categories[0];
+                };
+
+                resolve(selected_categories);
+            })
+            .catch((err)=>{
+
+                reject(`Error in Category_mdl.js: get_category_by_name_id(): ${err}`);
+            });
+        })
+    },
+
     get_categories_by_ids(category_id_arr)
     {
         return new Promise((resolve,reject)=>{
@@ -170,6 +226,26 @@ const Category_model =
                 reject(`Error in Category_mdl.js: get_categories_by_ids(): ${err}`);
             });
         })
+    },
+
+    edit_update_category(title,description,image_path,category_id)
+    {
+        return new Promise((resolve,reject)=>{
+
+            this.SQL = `UPDATE category
+                SET title = ?, description = ?, image_path = ?
+                WHERE category_id = ?;`;
+            db.connection.query(this.SQL, [title,description,image_path,category_id])
+            .then(()=>{
+                
+                console.log(`CATEGORY UPDATED IN Category_mdl - TO BE RESOLVED`);
+                resolve();
+            })
+            .catch((err)=>{
+                
+                reject(`Error in Category_mdl.js: edit_update_category(): ${err}`);
+            });
+        });
     },
 }
 

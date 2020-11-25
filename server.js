@@ -29,6 +29,7 @@ const {is_authorized_customer,is_authorized_employee} = require("./middleware/Au
 const is_auth = require("./middleware/Authenticate_mw.js");
 const User_model = require("./models/MYSQL_models/User_mdl.js");
 const http_req = require("./middleware/Http_method_handler_mw.js");
+const Category_model = require("./models/MYSQL_models/Category_mdl.js");
 
 const app = express();
 
@@ -67,8 +68,29 @@ app.use((req,res,next)=>{
 
     res.locals.user_info = req.session.user_info;
     res.locals.message = req.flash("message");
+    //res.locals.categories_info = req.session.categories_info;
+    //res.locals.categories_info =
 
     next();
+})
+app.use(file_upload({ 
+
+    parseNested: true, //Needed for submitting input arrays while form enctype is multipart! Array index must be explicity assigned as well
+    limits: { fileSize: 5 * 1024 * 1024 },
+    //abortOnLimit: true
+}));
+
+//app.locals.stock_val = (sell_price,quantity)=>(parseFloat(sell_price) * parseFloat(quantity)); 
+
+app.all("/*",(req,res,next)=>{
+
+    Category_model.get_all_categories()
+    .then((categories)=>{
+
+        res.locals.categories = categories;
+        next();
+    })
+    .catch(err=>`Error in Server: Error on all routes: ${err}`);
 })
 
 //app.use("/",Testing_Controller); //FOR TESTING ONLY!

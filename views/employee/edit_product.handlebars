@@ -1,12 +1,12 @@
 <section class="width_container">
     <div class="greeting_msg">
         {{> database_welcome_msg}}
-        <p>Edit Product '{{product_info.title}}' (code: {{product_info.product_code}}) Below</p>
+        <p>Edit Product '{{product.title}}' - Code: {{product.product_code}} - Below</p>
     </div>
 </section>
 <section class="width_container">
     <div class="table_container">
-        <table>
+        <table class="edit_table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -20,94 +20,144 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{product_info.title}}</td>
-                    <td>{{product_info.description}}</td>
-                    <td>{{product_info.category.title}}</td>
-                    <td>${{product_info.selling_price}}</td>
-                    <td>{{product_info.current_quantity}}</td>
-                    <td>{{product_info.is_best_seller}}</td>
-                    <td><img src="{{product_info.image_path}}" alt="" width="128px" height="128px"></td>
+                    <td>{{product.title}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.category.title}}</td>
+                    <td>${{product.selling_price}}</td>
+                    <td>{{product.current_quantity}}</td>
+                    <td>{{product.is_best_seller}}</td>
+                    <td><img src="{{product.image_path}}" alt="" width="128px" height="128px"></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <form action="/employee/edit-stock/edit-product/:id?method=put" method="POST" class="form_class">
+    <form action="/employee/edit-stock/edit-product/{{product.product_code}}?method=put" method="POST" class="form_class" enctype="multipart/form-data">
         <div class="profile_container">
             
             <div>
                 <div class="form_input_container">
                     <label for="product_code">Product Code (Not Authorized to Change)</label>
-                    <input readonly type="text" name="product_code" id="product_code" value="{{product_info.product_code}}">
+                    <input readonly type="text" name="product_code" id="product_code" value="{{product.product_code}}">
+                    <span class="form_error_msg"></span>  
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_name">Product Name</label>
-                    <input type="text" name="product_name" id="product_name" value="{{product_info.title}}">
+                    <input type="text" name="product_name" id="product_name" value="{{product.title}}">
+                    <span class="form_error_msg">{{errors.title}}</span>  
                 </div>
     
                 <div class="form_input_container">
                     <label for="product_category">Product Category</label>
-                    <input type="text" name="product_category" id="product_category" value="{{product_info.category.title}}">
+                    <select name="product_category" id="product_category">
+
+                        {{#if product.category.title}}
+                            
+                            {{#each categories}}
+
+                                {{#if_eq ../product.category.title this.title}}
+                                    <option selected value="{{this.title}}">{{this.title}}</option>
+                                {{else}}
+                                    <option value="{{this.title}}">{{this.title}}</option>
+                                {{/if_eq}}
+                                
+                            {{/each}}
+
+                        {{else}}
+                            <option value="none">No Categories Found</option>
+                        {{/if}}
+
+                    </select>
+                    <span class="form_error_msg"></span>    
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_quantity">Product Quantity in Stock (Not Authorized to Change: Order from Supplier to Restock)</label>
-                    <input readonly type="number" value="{{product_info.current_quantity}}" name="product_quantity" id="product_quantity">
+                    <input readonly type="number" value="{{product.current_quantity}}" name="product_quantity" id="product_quantity">
+                    <span class="form_error_msg"></span>  
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_quantity_min">Product Quantity Minimum</label>
-                    <input  type="number" min="1" value="{{product_info.min_qty}}" name="product_quantity_min" id="product_quantity_min">
+                    <input  type="number" min="0" value="{{product.min_qty}}" name="product_min_quantity" id="product_quantity_min">
+                    <span class="form_error_msg">{{errors.min_qty}}</span>  
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_quantity_max">Product Quantity Maximum</label>
-                    <input  type="number" min="1" value="{{product_info.max_qty}}" name="product_quantity_max" id="product_quantity_max">
+                    <input  type="number" min="0" value="{{product.max_qty}}" name="product_max_quantity" id="product_quantity_max">
+                    <span class="form_error_msg">{{errors.max_qty}}</span>  
                 </div>
 
                 <div class="form_input_container">
-                    <label for="product_price">Product Selling Price</label>
-                    <input type="number" step="0.01" value="{{product_info.selling_price}}" min="1" name="product_price" id="product_price">
+                    <label for="product_cost_price">Product Cost Price (Estimated)</label>
+                    <input type="number" step="0.01" value="{{product.cost_price}}" min="0" name="product_cost_price" id="product_cost_price">
+                    <span class="form_error_msg">{{errors.cost_price}}</span>  
                 </div>
 
                 <div class="form_input_container">
-                    <label for="product_img">Product Image Path</label>
-                    <input type="text" name="product_img" id="product_img" value="{{product_info.image_path}}">
+                    <label for="product_selling_price">Product Selling Price</label>
+                    <input type="number" step="0.01" value="{{product.selling_price}}" min="0" name="product_selling_price" id="product_selling_price">
+                    <span class="form_error_msg">{{errors.selling_price}}</span>  
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_img">Product Image Path (Or Upload Image File Below)</label>
+                    <input type="text" name="product_img" id="product_img" value="{{product.image_path}}">
+                    <span class="form_error_msg">{{errors.image_path}}</span>  
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_img_upload">Product Image Upload (Or Enter Image Directory Above)</label>
+                    <input type="file" name="product_img_upload" id="product_img_upload">
+                    <span class="form_error_msg">{{errors.upload_image}}</span>  
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_bestseller">Bestseller Status</label>
                     <select name="product_bestseller" id="product_bestseller">
-                        <option {{#if_eq product_info.is_best_seller 0}} selected {{else}} {{/if_eq}} value="no">No</option>
-                        <option {{#if_eq product_info.is_best_seller 1}} selected {{else}} {{/if_eq}} value="yes">Yes</option>
+                        <option {{#if_eq product.is_best_seller 0}} selected {{else}} {{/if_eq}} value="No">No</option>
+                        <option {{#if_eq product.is_best_seller 1}} selected {{else}} {{/if_eq}} value="Yes">Yes</option>
                     </select>
+                    <span class="form_error_msg"></span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_description">Product Description</label>
-                    <textarea name="product_description" id="product_description" cols="100" rows="25">{{#if product_info.description}}{{product_info.description}}{{else}}{{/if}}</textarea>
+                    <textarea name="product_description" id="product_description" cols="100" rows="25">{{#if product.description}}{{product.description}}{{else}}{{/if}}</textarea>
+                    <span class="form_error_msg">{{errors.description}}</span>  
                 </div>
             </div>
 
             <div>
                 <div class="form_input_container">
                     <h3>Estimated Cost Price:</h3>
-                    <p>${{product_info.cost_price}}</p>
+                    <p>${{product.cost_price}}</p>
                 </div>
 
                 <div class="form_input_container">
                     <h3>Estimated Stock Value (Selling Price):</h3>
-                    <p>${{stock_val}}</p>
+                    <p>${{calc_stock_val product.selling_price product.current_quantity}}</p>
                 </div>
 
                 <div class="form_input_container">
                     <h3>Product Created and Added:</h3>
-                    <p>{{product_info.date_created}}</p>
+                    <p>{{product.date_created}}</p>
                 </div>
 
                 <div class="form_input_container">
                     <h3>Product Last Updated:</h3>
-                    <p>{{product_info.last_modified}}</p>
+                    <p>{{product.last_modified}}</p>
+                </div>
+
+                <div>
+                    <input type="hidden" name="product_category_id">
+                    <input type="hidden" name="product_category_description">
+                    <input type="hidden" name="product_category_image_path">
+                    <input type="hidden" name="product_category_date_created">
+                    <input type="hidden" name="product_category_last_modified">
+                    <input type="hidden" name="product_date_created">
+                    <input type="hidden" name="product_last_modified">
                 </div>
 
                 <div>

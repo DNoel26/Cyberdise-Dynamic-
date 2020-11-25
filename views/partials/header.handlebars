@@ -43,10 +43,24 @@
         <form class="header_form_class" action="" method="GET">
             <div>
                 <label class="label" for="category_list">Select a Product Category</label>
-                <select class="" name="category_list" id="category_list">
-                    <option value="electronics">Electronics</option>
-                    <option value="supplements">Supplements</option>
-                    <option value="toys">Toys</option>
+                <select class="top_search_categories" name="category_list" id="category_list">
+
+                    {{#if categories}}
+
+                        <option value="all">All</option>
+                    
+                        {{#each categories}}
+
+                            <option value="{{this.title}}">{{this.title}}</option>
+
+                        {{/each}}
+
+                    {{else}}
+
+                        <option value="none">No Categories Found</option>
+
+                    {{/if}}
+
                 </select>
             </div>
             <div>

@@ -1,32 +1,45 @@
 <section class="width_container">
-    <div>
-        <div class="product_hero_overview">
-            <img src="/img/fake_db_imgs/echo_dot.png" alt="">
+    {{#if product}}
+        <div>
+            <div class="product_hero_overview">
+                <img src="{{product.image_path}}" alt="">
+            </div>
+            <div class="product_overview">
+                <div>
+                    <h2>{{product.title}} This Item Name</h2>
+                </div>
+                <div>
+                    <p>{{product.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur ad maxime culpa accusantium, voluptate temporibus!</p>
+                </div>
+                <div>
+                    <h3>{{product.selling_price}} $10.00</h3>
+                </div>
+                <div>
+                    <p>{{product.title}} In Stock</p>
+                </div>
+                <div class="product_quantity">
+                    <button type="button"><i class="fas fa-minus"></i></button>
+                    <p>Qty</p>
+                    <button type="button"><i class="fas fa-plus"></i></button>
+                </div>
+                <div>
+                    <form action="/customer/my-cart" method="POST">
+                        <button type="submit" class="button_class product_button">Add to Cart</button>
+                    </form>
+                    <form action="/customer/confirm-purchase" method="POST">
+                        <button type="submit" class="button_class product_button">Buy Now</button>
+                    </form>    
+                </div>  
+            </div>
         </div>
-        <div class="product_overview">
-            <div>
-                <h2>This Item Name</h2>
-            </div>
-            <div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur ad maxime culpa accusantium, voluptate temporibus!</p>
-            </div>
-            <div>
-                <h3>$10.00</h3>
-            </div>
-            <div>
-                <p>In Stock</p>
-            </div>
-            <div class="product_quantity">
-                <button type="button"><i class="fas fa-minus"></i></button>
-                <p>10</p>
-                <button type="button"><i class="fas fa-plus"></i></button>
-            </div>
-            <div>
-                <form action="" method="get">
-                    <button class="button_class product_button">Add to Cart</button>
-                    <button type="submit" class="button_class product_button">Buy Now</button>
-                </form>    
-            </div>  
+    {{else}}
+
+        <div class="no_product_msg">
+            <h2>Product Not Available</h2>
         </div>
-    </div>
+        <form action="/products/all-products">
+            <button type="submit" class="button_class product_button no_product_btn">Return to Products Section</button>
+        </form>  
+
+    {{/if}}
 </section>

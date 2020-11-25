@@ -42,6 +42,8 @@ const App =
         const pagination = document.querySelectorAll(".pagination");
         const products_display = document.querySelectorAll("#products_page_html .products_display");
         const products_section = document.querySelector("#products_page_html #products_section");
+        //const products_display = document.getElementsByClassName("products_display");
+        //const products_section = document.getElementById("products_section");
         const products_next_btn = document.querySelectorAll("#products_page_html .products_next_btn");
         const products_prev_btn = document.querySelectorAll("#products_page_html .products_prev_btn");
         const products_page_btn = document.querySelectorAll("#products_page_html .products_page_btn");
@@ -68,6 +70,7 @@ const App =
         const new_product = document.querySelectorAll(".new_product");
         const new_order_list = document.querySelector("#new_order_list");
         const new_order = document.querySelectorAll(".new_order");
+        const hidden_counter_products = document.getElementById("hidden_counter_products");
 
         //const product_code_dropdown = document.querySelectorAll("#new_order_list .product_codes");
         //const product_name_sel = document.querySelectorAll("#new_order_list .product_names");
@@ -78,6 +81,7 @@ const App =
         const product_cost_price_sel = document.getElementsByClassName("product_cost_prices");
         const product_subtotal_price_sel = document.getElementsByClassName("product_subtotal_prices");
         const product_total_price_sel = document.getElementsByClassName("product_total_price");
+        const category_name_dropdown = document.getElementsByClassName("product_categories");
 
         //const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
         //const text_areas = document.querySelectorAll("textarea");
@@ -593,6 +597,11 @@ const App =
 
                 for(let i = ((curr_page - 1) * items_per_page); i < (curr_page * items_per_page); i++)
                 {
+                    if(i >= products_display.length && (products_display.length < items_per_page))
+                    {
+                        break;
+                    }
+
                     console.log("product index", i);
                     products_section.appendChild(products_display[i]);
                 }
@@ -1147,22 +1156,32 @@ const App =
     
                     <div class="form_input_container">
                         <label for="category_name[${form_i-1}]">Category Name</label>
-                        <input type="text" name="category_name[]" id="category_name[${form_i-2}]" value="">
+                        <input type="text" name="category_name[${form_i-2}]" id="category_name[${form_i-2}]" value="">
+                        <span class="form_error_msg"></span> 
                     </div>
         
                     <div class="form_input_container">
                         <label for="category_description[${form_i-2}]">Category Description</label>
-                        <textarea name="category_description[]" id="category_description[${form_i-2}]" cols="30" rows="10"></textarea>
+                        <textarea name="category_description[${form_i-2}]" id="category_description[${form_i-2}]" cols="30" rows="10"></textarea>
+                        <span class="form_error_msg"></span> 
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="category_img_upload[${form_i-2}]">Category Image Upload</label>
+                        <input type="file" name="category_img_upload[${form_i-2}]" id="category_img_upload[${form_i-2}]">
+                        <span class="form_error_msg"></span> 
                     </div>
     
                     <div class="form_input_container">
                         <label for="category_photo[${form_i-2}]">Category Photo Image Path</label>
-                        <input type="text" name="category_photo[]" id="category_photo[${form_i-2}]" value="/img/Category/default_category.jpg">
+                        <input type="text" name="category_photo[${form_i-2}]" id="category_photo[${form_i-2}]" value="/img/Category/default_category.jpg">
+                        <span class="form_error_msg"></span> 
                     </div>
 
                     <div class="form_input_container">
                         <h3>Category Image</h3>
                         <img src="/img/Category/default_category.jpg" alt="" width="256px" height="256px">
+                        <span class="form_error_msg"></span> 
                     </div>
                 `
                     
@@ -1264,6 +1283,9 @@ const App =
                 sessionStorage.setItem("product_select_val_storage",JSON.stringify(product_select_val_storage));
             });*/
 
+            hidden_counter_products.value = form_i - 1;
+            console.log(hidden_counter_products.value);
+
             new_product_list.addEventListener("input",()=>{
 
                 const new_product_list_inputs = document.querySelectorAll("#new_product_list input");
@@ -1331,176 +1353,250 @@ const App =
                 }
             });
 
-            remove_product_btn.addEventListener("click",()=>{
-
-                console.log("REMOVE FORM INDEX",form_i);
-                console.log(new_product_list.children.length,"children");
-                let remove_product = new_product_list.children[new_product_list.children.length - 1];
-                //let remove_category = new_category_list[new_category_list.children[0].length - 1];
+            fetch("/employee/edit-stock/add-products/data")
+            .then((response)=>{
                 
-                add_products.pop();
-                new_product_list.removeChild(remove_product);
-                if(form_i == 3)
-                {
-                    add_products.pop();
-                }
-
-                if(form_i > 2)
-                {
-                    form_i--;
-                };
-                
-                if(form_i <= 2)
-                {
-                    remove_product_btn.classList.add("remove_element");
-                    form_i = 2;
-                };
-
-                if(form_i <= 5)
-                {
-                    add_product_btn.classList.remove("remove_element");
-                };
-
-                sessionStorage.setItem("add_products",JSON.stringify(add_products));
-                sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
-
-                sessionStorage.setItem("product_form_index",form_i);
-                console.log("REMOVE FORM AFTER INDEX",form_i);
-                console.log(new_product_list.children.length,"children");
+                return response.json();
             })
+            .then((data)=>{
 
-            add_product_btn.addEventListener("click",()=>{
+                console.log(data);
 
-                console.log("ADD FORM INDEX",form_i);
-                console.log(new_product_list.children.length,"children");
-                console.log(new_product[0]);
+                let category_names = [];
 
-                if(remove_product_btn.classList.contains("remove_element"))
+                function update_product_names()
                 {
-                    remove_product_btn.classList.remove("remove_element");
-                }      
+                    /*for(let i=0; i<category_name_dropdown.length; i++)
+                    {
+                        data.forEach((element,index) => {
+                        
+                            for(let j=0; j<category_name_dropdown[i].length; j++)
+                            {   
+                                if(category_name_dropdown[i].children[j].selected && category_name_dropdown[i].children[j].value == data[index].category.title)
+                                {
+                                    product_name_sel[i].innerHTML = data[index].title;
+                                    product_cost_price_sel[i].innerHTML = "$" + parseFloat(data[index].cost_price);
+                                    product_subtotal_price_sel[i].innerHTML = "$" + parseFloat(data[index].cost_price * product_quantity_sel[i].value);
+                                }
 
-                if(form_i == 2 && !sessionStorage.getItem("product_form_index"))
-                {
-                    add_products.push(new_product[0]);
-                    new_product_list.appendChild(new_product[0]);
+                                else if(product_code_dropdown[i].children[j].selected && product_code_dropdown[i].children[j].value == "")
+                                {
+                                    product_name_sel[i].innerHTML = "No Product Code Selected";
+                                    product_cost_price_sel[i].innerHTML = "$---";
+                                    product_subtotal_price_sel[i].innerHTML = "$---";
+                                }
+                            };
+                        });  
+                    }*/
                 };
 
-                if(form_i < 6)
-                {
-                    form_i++;
-                }
-
-                if(form_i >= 6)
-                {
-                    form_i = 6;
-
-                    if(!add_product_btn.classList.contains("remove_element"))
-                    {
-                        add_product_btn.classList.add("remove_element");
-                    } 
-                }
-
-                let add_product = document.createElement("div");
-                add_product.setAttribute("class","new_product");
-                add_product.innerHTML = 
-                `  
-                    <h2>Product ${form_i-1}</h2>
-
-                    <div class="form_input_container">
-                        <label for="product_name[${form_i-2}]">Product Name</label>
-                        <input type="text" name="product_name[]" id="product_name[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span>     
-                    </div>
-        
-                    <div class="form_input_container">
-                        <label for="product_category[${form_i-2}]">Product Category</label>
-                        <select name="product_category[]" id="product_category[${form_i-2}]">
-
-                                <option value="">Please Select a Category</option>    
-                                <option value="Electronics">Electronics</option>
-                                <option value="Apparel">Apparel</option>
-                                <option value="Appliances">Appliances</option>
-                                <option value="Beauty">Beauty</option>
-                                <option value="Books">Books</option>
-
-                        </select>
-                        <span class="form_error_msg"></span>     
-                    </div>
+                document.addEventListener("readystatechange",()=>{
                     
-                    <div class="form_input_container">
-                        <label for="product_quantity[${form_i-2}]">Product Quantity (Currently In Stock)</label>
-                        <input type="number" min="1" name="product_quantity[]" id="product_quantity[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_min_quantity[${form_i-2}]">Product Quantity (Min Threshold)</label>
-                        <input type="number" min="1" name="product_min_quantity[]" id="product_min_quantity[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_max_quantity[${form_i-2}]">Product Quantity (Max Threshold)</label>
-                        <input type="number" min="1" name="product_max_quantity[]" id="product_max_quantity[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_cost_price[${form_i-2}]">Product Cost Price (Estimated)</label>
-                        <input type="number" step="0.01" min="1" name="product_cost_price[]" id="product_cost_price[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_selling_price[${form_i-2}]">Product Selling Price</label>
-                        <input type="number" step="0.01" min="1" name="product_selling_price[]" id="product_selling_price[${form_i-2}]" value="">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_img[${form_i-2}]">Product Image URL</label>
-                        <input type="text" name="product_img[]" id="product_img[${form_i-2}]" value="/img/Products/default_product.png">
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <h3>Product Image</h3>
-                        <img src="/img/Products/default_product.png" alt="" width="256px" height="256px">
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_bestseller[${form_i-2}]">Bestseller Status</label>
-                        <select name="product_bestseller[]" id="product_bestseller[${form_i-2}]">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                        <span class="form_error_msg"></span> 
-                    </div>
-
-                    <div class="form_input_container">
-                        <label for="product_description[${form_i-2}]">Product Description</label>
-                        <textarea name="product_description[]" id="product_description[${form_i-2}]" cols="100" rows="25"></textarea>
-                        <span class="form_error_msg"></span> 
-                    </div>
-                `
-                    
-                console.log("ADD PRODUCT",add_product);
-                add_products.push(add_product);
-                new_product_list.appendChild(add_product);
+                    update_product_names();
+                });
+                new_product_list.addEventListener("change",update_product_names);
                 
-                console.log("PRODUCTS",add_product);
-                console.log("PRODUCTS");
+                console.log(category_name_dropdown);   
+                console.log(category_name_dropdown[0].children);
+                console.log(category_name_dropdown[0].childNodes);   
 
-                sessionStorage.setItem("add_products",JSON.stringify(add_products));
-                sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
+                remove_product_btn.addEventListener("click",()=>{
 
-                console.log(new_product_list.children.length);
-                sessionStorage.setItem("product_form_index",form_i);
-                console.log("ADD FORM INDEX AFTER",form_i);
-                console.log(new_product_list.children.length,"children");
-            });
-        }; //edit-stock/add-products
+                    console.log("REMOVE FORM INDEX",form_i);
+                    console.log(new_product_list.children.length,"children");
+                    let remove_product = new_product_list.children[new_product_list.children.length - 1];
+                    //let remove_category = new_category_list[new_category_list.children[0].length - 1];
+                    
+                    add_products.pop();
+                    new_product_list.removeChild(remove_product);
+                    if(form_i == 3)
+                    {
+                        add_products.pop();
+                    }
+    
+                    if(form_i > 2)
+                    {
+                        form_i--;
+                    };
+                    
+                    if(form_i <= 2)
+                    {
+                        remove_product_btn.classList.add("remove_element");
+                        form_i = 2;
+                    };
+    
+                    if(form_i <= 5)
+                    {
+                        add_product_btn.classList.remove("remove_element");
+                    };
+    
+                    sessionStorage.setItem("add_products",JSON.stringify(add_products));
+                    sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
+    
+                    sessionStorage.setItem("product_form_index",form_i);
+                    console.log("REMOVE FORM AFTER INDEX",form_i);
+                    console.log(new_product_list.children.length,"children");
+    
+                    hidden_counter_products.value = form_i - 1;
+                    console.log(hidden_counter_products.value);
+
+                    new_product_list.dispatchEvent(new Event('change'));
+                })
+    
+                add_product_btn.addEventListener("click",()=>{
+    
+                    const category_name_dropdown = document.getElementsByClassName("product_categories");
+
+                    console.log("ADD FORM INDEX",form_i);
+                    console.log(new_product_list.children.length,"children");
+                    console.log(new_product[0]);
+    
+                    if(remove_product_btn.classList.contains("remove_element"))
+                    {
+                        remove_product_btn.classList.remove("remove_element");
+                    }      
+    
+                    if(form_i == 2 && !sessionStorage.getItem("product_form_index"))
+                    {
+                        add_products.push(new_product[0]);
+                        new_product_list.appendChild(new_product[0]);
+                    };
+    
+                    if(form_i < 6)
+                    {
+                        form_i++;
+                    }
+    
+                    if(form_i >= 6)
+                    {
+                        form_i = 6;
+    
+                        if(!add_product_btn.classList.contains("remove_element"))
+                        {
+                            add_product_btn.classList.add("remove_element");
+                        } 
+                    }
+    
+                    let add_product = document.createElement("div");
+                    add_product.setAttribute("class","new_product"); //_${form_i-2}
+                    add_product.innerHTML = 
+                    `  
+                        <h2>Product ${form_i-1}</h2>
+    
+                        <div class="form_input_container">
+                            <label for="product_name[${form_i-2}]">Product Name</label>
+                            <input type="text" name="product_name[${form_i-2}]" id="product_name[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span>     
+                        </div>
+            
+                        <div class="form_input_container">
+                            <label for="product_category[${form_i-2}]">Product Category</label>
+                            <select class="product_categories" name="product_category[${form_i-2}]" id="product_category[${form_i-2}]">
+    
+                                <option value="">Please Select a Category</option>    
+    
+                            </select>
+                            <span class="form_error_msg"></span>     
+                        </div>
+                        
+                        <div class="form_input_container">
+                            <label for="product_quantity[${form_i-2}]">Product Quantity (Currently In Stock)</label>
+                            <input type="number" min="1" name="product_quantity[${form_i-2}]" id="product_quantity[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_min_quantity[${form_i-2}]">Product Quantity (Min Threshold)</label>
+                            <input type="number" min="1" name="product_min_quantity[${form_i-2}]" id="product_min_quantity[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_max_quantity[${form_i-2}]">Product Quantity (Max Threshold)</label>
+                            <input type="number" min="1" name="product_max_quantity[${form_i-2}]" id="product_max_quantity[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_cost_price[${form_i-2}]">Product Cost Price (Estimated)</label>
+                            <input type="number" step="0.01" min="1" name="product_cost_price[${form_i-2}]" id="product_cost_price[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_selling_price[${form_i-2}]">Product Selling Price</label>
+                            <input type="number" step="0.01" min="1" name="product_selling_price[${form_i-2}]" id="product_selling_price[${form_i-2}]" value="">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_img[${form_i-2}]">Product Image URL</label>
+                            <input type="text" name="product_img[${form_i-2}]" id="product_img[${form_i-2}]" value="/img/Products/default_product.png">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_img_upload[${form_i-2}]">Product Image Upload</label>
+                            <input type="file" name="product_img_upload[${form_i-2}]" id="product_img_upload[${form_i-2}]">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <h3>Product Image</h3>
+                            <img src="/img/Products/default_product.png" alt="" width="256px" height="256px">
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_bestseller[${form_i-2}]">Bestseller Status</label>
+                            <select name="product_bestseller[${form_i-2}]" id="product_bestseller[${form_i-2}]">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span class="form_error_msg"></span> 
+                        </div>
+    
+                        <div class="form_input_container">
+                            <label for="product_description[${form_i-2}]">Product Description</label>
+                            <textarea name="product_description[${form_i-2}]" id="product_description[${form_i-2}]" cols="100" rows="25"></textarea>
+                            <span class="form_error_msg"></span> 
+                        </div>
+                    `
+                        
+                    console.log("ADD PRODUCT",add_product);
+                    add_products.push(add_product);
+                    new_product_list.appendChild(add_product);
+                    
+                    console.log("PRODUCTS",add_product);
+                    console.log("PRODUCTS");
+
+                    data.forEach((element,index) => {
+                        
+                        const category_name_option = document.createElement("option");
+                        category_name_option.setAttribute("value",`${element.title}`);
+                        category_name_option.innerHTML = category_name_option.value;
+                        console.log(category_name_option);
+                        category_name_dropdown[form_i-2].appendChild(category_name_option);
+                        console.log("DATA OPTIONS",element,index);
+                    });
+
+                    sessionStorage.setItem("add_products",JSON.stringify(add_products));
+                    sessionStorage.setItem("new_product_list",JSON.stringify(new_product_list.innerHTML));
+    
+                    console.log(new_product_list.children.length);
+                    sessionStorage.setItem("product_form_index",form_i);
+                    console.log("ADD FORM INDEX AFTER",form_i);
+                    console.log(new_product_list.children.length,"children");
+    
+                    hidden_counter_products.value = form_i - 1;
+                    console.log(hidden_counter_products.value);
+                    //new_product_list.dispatchEvent(new Event('input'));
+                    console.log(category_name_dropdown);
+                });
+             //edit-stock/add-products
+            })
+            .catch(err => console.log(`Cannot get data for product form: ${err}`));
+        }
 
         if(window.location.pathname == "/employee/edit-stock/restock")
         {
@@ -1838,7 +1934,7 @@ const App =
                     console.log(product_code_dropdown);
                 });
             })
-            .catch(err => console.log(`Cannot get data: ${err}`));    
+            .catch(err => console.log(`Cannot get data for restock order form: ${err}`));    
         }; //edit-stock/restock
     }, //end of init()
 };

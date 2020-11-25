@@ -8,29 +8,35 @@
     <!--<div class="create_success_msg">
         <p>Product added successfully! Add another or return to the dashboard</p>
     </div>-->
-    <form action="/employee/edit-stock/add-products" method="POST" class="form_class">
+    <form action="/employee/edit-stock/add-products" method="POST" class="form_class" enctype="multipart/form-data">
         <div id="new_product_list">
             <div class="new_product">
                 <h2>Product 1</h2>
 
                 <div class="form_input_container">
+                    <input id="hidden_counter_products" type="hidden" name="counter_products" value="1">
+                </div>
+
+                <div class="form_input_container">
                     <label for="product_name[0]">Product Name</label>
-                    <input type="text" name="product_name[]" id="product_name[0]" value="{{created_product.title}}">
+                    <input type="text" name="product_name[0]" id="product_name[0]" value="{{created_product.title}}">
                     <span class="form_error_msg">{{errors.title}}</span>     
                 </div>
     
                 <div class="form_input_container">
                     <label for="product_category[0]">Product Category</label>
-                    <select name="product_category[]" id="product_category[0]">
+                    <select class="product_categories" name="product_category[0]" id="product_category[0]">
 
                         {{#if categories}}
-                            <option value="">Please Select a Category</option>    
-                        {{/if}}
-                        {{#each categories}}
-                            <option value="{{this.title}}">{{this.title}}</option>
+                            <option value="">Please Select a Category</option> 
+
+                            {{#each categories}}
+                                <option value="{{this.title}}">{{this.title}}</option>   
+                            {{/each}}
+
                         {{else}}
                             <option value="none">No Categories Found</option>
-                        {{/each}}
+                        {{/if}}
 
                     </select>
                     <!--<input type="text" name="product_category[]" id="product_category[0]" value="{{created_product.category.title}}">-->
@@ -39,59 +45,67 @@
                 
                 <div class="form_input_container">
                     <label for="product_quantity[0]">Product Quantity (Currently In Stock)</label>
-                    <input type="number" min="1" name="product_quantity[]" id="product_quantity[0]" value="{{created_product.current_quantity}}">
+                    <input type="number" min="0" name="product_quantity[0]" id="product_quantity[0]" value="{{created_product.current_quantity}}">
                     <span class="form_error_msg">{{errors.current_quantity}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_min_quantity[0]">Product Quantity (Min Threshold)</label>
-                    <input type="number" min="1" name="product_min_quantity[]" id="product_min_quantity[0]" value="{{created_product.min_qty}}">
+                    <input type="number" min="0" name="product_min_quantity[0]" id="product_min_quantity[0]" value="{{created_product.min_qty}}">
                     <span class="form_error_msg">{{errors.min_qty}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_max_quantity[0]">Product Quantity (Max Threshold)</label>
-                    <input type="number" min="1" name="product_max_quantity[]" id="product_max_quantity[0]" value="{{created_product.max_qty}}">
+                    <input type="number" min="0" name="product_max_quantity[0]" id="product_max_quantity[0]" value="{{created_product.max_qty}}">
                     <span class="form_error_msg">{{errors.max_qty}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_cost_price[0]">Product Cost Price (Estimated)</label>
-                    <input type="number" step="0.01" min="1" name="product_cost_price[]" id="product_cost_price[0]" value="{{created_product.cost_price}}">
+                    <input type="number" step="0.01" min="0" name="product_cost_price[0]" id="product_cost_price[0]" value="{{created_product.cost_price}}">
                     <span class="form_error_msg">{{errors.cost_price}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_selling_price[0]">Product Selling Price</label>
-                    <input type="number" step="0.01" min="1" name="product_selling_price[]" id="product_selling_price[0]" value="{{created_product.selling_price}}">
+                    <input type="number" step="0.01" min="0" name="product_selling_price[0]" id="product_selling_price[0]" value="{{created_product.selling_price}}">
                     <span class="form_error_msg">{{errors.selling_price}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_img[0]">Product Image URL</label>
-                    <input type="text" name="product_img[]" id="product_img[0]" value="{{#if created_product.image_path}}{{created_product.image_path}}{{else}}/img/Products/default_product.png{{/if}}">
+                    <input type="text" name="product_img[0]" id="product_img[0]" value="{{#if created_product.image_path}}{{created_product.image_path}}{{else}}/img/Products/default_product.png{{/if}}">
                     <span class="form_error_msg">{{errors.image_path}}</span> 
+                </div>
+
+                <div class="form_input_container">
+                    <label for="product_img_upload[0]">Product Image Upload</label>
+                    <input type="file" name="product_img_upload[0]" id="product_img_upload[0]">
+                    <span class="form_error_msg">{{errors.upload_image}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <h3>Product Image</h3>
                     <img src={{#if created_product.image_path}}"{{created_product.image_path}}"{{else}}"/img/Products/default_product.png"{{/if}} alt="" width="256px" height="256px">
+                    <span class="form_error_msg"></span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_bestseller[0]">Bestseller Status</label>
-                    <select name="product_bestseller[]" id="product_bestseller[0]">
-                        <option {{#if_eq created_product.is_best_seller "no"}} selected {{else}} {{/if_eq}} value="no">No</option>
-                        <option {{#if_eq created_product.is_best_seller "yes"}} selected {{else}} {{/if_eq}} value="yes">Yes</option>
+                    <select name="product_bestseller[0]" id="product_bestseller[0]">
+                        <option {{#if_eq created_product.is_best_seller "no"}} selected {{else}} {{/if_eq}} value="No">No</option>
+                        <option {{#if_eq created_product.is_best_seller "yes"}} selected {{else}} {{/if_eq}} value="Yes">Yes</option>
                     </select>
                     <span class="form_error_msg">{{errors.is_best_seller}}</span> 
                 </div>
 
                 <div class="form_input_container">
                     <label for="product_description[0]">Product Description</label>
-                    <textarea name="product_description[]" id="product_description[0]" cols="100" rows="25">{{#if created_product.description}}{{created_product.description}}{{else}}{{/if}}</textarea>
+                    <textarea name="product_description[0]" id="product_description[0]" cols="100" rows="25">{{#if created_product.description}}{{created_product.description}}{{else}}{{/if}}</textarea>
                     <span class="form_error_msg">{{errors.description}}</span> 
                 </div>
+
             </div> 
         </div>
         <div>

@@ -406,7 +406,12 @@ img
     font-weight: 900;
     font-size: 0.75rem;
     letter-spacing: 0.1rem;
-    margin-bottom: 16px;                                    /* FORM ERROR MESSAGE TOGGLE */
+    margin-bottom: 16px;                                  /* FORM ERROR MESSAGE TOGGLE */
+}
+
+input span
+{
+    margin-bottom: 16px;
 }
 
 .floating_icons
@@ -606,7 +611,7 @@ a
 
 .form_class span
 {
-    margin-left: 4px;   
+    margin-left: 4px;  
 }
 
 .form_class h2, .form_class h3
@@ -860,7 +865,7 @@ nav
 
 #bottom_nav select, #bottom_nav select:hover
 {
-    max-width: 150px;
+    max-width: max-content;
     cursor: pointer;
 }
 
@@ -2291,7 +2296,7 @@ input:focus, select:focus
 
 #signup_form span /*.form_error_msg*/, #login_form span /*.form_error_msg*/
 {
-    display: block;
+    /*display: block;*/
     font-weight: 900;
     margin-top: 8px;
     margin-bottom: 8px;
@@ -2489,6 +2494,7 @@ input:focus, select:focus
 {
     height: 260px;
     transition: 0.4s;
+    padding: 8px;
     /*border: 1px solid red;*/
 }
 
@@ -2499,6 +2505,34 @@ input:focus, select:focus
     transition: 0.4s;
     border-bottom: none;
     /*border: 1px solid red;*/
+}
+
+.product_hero_overview
+{
+    display: grid;
+    justify-items: left;
+    margin-top: 48px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 0;
+    padding-right: 96px;
+}
+
+.no_product_msg
+{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr !important;
+    height: 60vh !important;
+    width: 100% !important;
+    margin: auto !important;
+    justify-items: center !important;
+    align-items: center !important;
+}
+
+.no_product_btn
+{
+    margin-bottom: 256px;
 }
 
 .products_display > div:nth-child(1)
@@ -2537,7 +2571,7 @@ input:focus, select:focus
 {
     /*width: 50%;*/
     margin: auto;
-    margin-top: 25%;
+    margin-top: 8.5%;
     justify-self: center;
     font-size: 0.8rem;
     /*border-bottom: 0px solid lightgrey;
@@ -2966,6 +3000,12 @@ table
     table-layout: auto;
 }
 
+table img
+{
+    width: auto;
+    object-fit: cover;
+}
+
 th
 {
     background-color: var(--bg_color_2);
@@ -2975,6 +3015,16 @@ th
 th, td
 {
     padding: 8px;
+}
+
+td:nth-last-of-type(2), .edit_table td:last-of-type
+{
+    background-color: rgba(0, 0, 0, 0.18);
+}
+
+.edit_table td:nth-last-of-type(2)
+{
+    background: none;
 }
 
 .table_container

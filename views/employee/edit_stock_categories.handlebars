@@ -18,7 +18,7 @@
                 <tr>
                     <th>Category Name</th>
                     <th>Category Description</th>
-                    <th>Category Image Path</th>
+                    {{!--<th>Category Image Path</th>--}}
                     <th>Category Image</th>
                     <th class="edit_th">Edit/Delete</th>
                 </tr>   
@@ -30,16 +30,16 @@
                     <tr>
                         <td>{{this.title}}</td>
                         <td>{{this.description}}</td>
-                        <td>{{this.image_path}}</td>
+                        {{!--<td>{{this.image_path}}</td>--}}
                         <td><img src="{{this.image_path}}" alt="" width="128px" height="128px"></td>
-                        <td class="edit_td"><a href="/employee/edit-stock/edit-category" class="button_class"><i class="far fa-plus-square"></i></a></td>
+                        <td class="edit_td"><a href="/employee/edit-stock/edit-category/{{this.category_id}}" class="button_class"><i class="far fa-plus-square"></i></a></td>
                     </tr> 
 
                 {{else}}
 
                     <tr>
-                        <td colspan="4">No Categories Available</td>
-                        <td class="edit_td"><a href="/employee/edit-stock/edit-category" class="button_class"><i class="far fa-plus-square"></i></a></td>
+                        <td colspan="3">No Categories Available</td>
+                        <td class="edit_td"><a href="" class="button_class"><i class="far fa-plus-square"></i></a></td>
                     </tr>
 
                 {{/each}}

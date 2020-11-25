@@ -5,6 +5,7 @@ const Employee = require("../POJO/Employee.js");
 const User = require("../POJO/User.js");
 const Product = require("../POJO/Product.js");
 const Category = require("../POJO/Category.js");
+const { response } = require("express");
 
 const Product_model =
 { 
@@ -229,6 +230,11 @@ const Product_model =
                     });
                 }; 
 
+                if(selected_products.length == 1)
+                {
+                    selected_products = selected_products[0];
+                };
+
                 resolve(selected_products);
             })
             .catch((err)=>{
@@ -240,30 +246,62 @@ const Product_model =
 
     increase_quantity(add_quantities,product_codes)
     {
-        const i = new Promise((resolve,reject)=>{
+        return new Promise((resolve,reject)=>{
 
-            let product_arr = [];
-            
+            const product_arr = [];
+            let queries = "";
+                
             for(let i=0; i < product_codes.length; i++)
             {
-                let product_arr_sub = [];
+                const product_arr_sub = [];
                 product_arr_sub[0] = add_quantities[i];
                 product_arr_sub[1] = product_codes[i];
-            
-                product_arr[i] = product_arr_sub;
-            }
 
-            this.SQL = `UPDATE product
-            SET quantity = quantity + ?
-            WHERE product_code = ?;`;
-            db.connection.query(this.SQL, [add_quantities], [product_codes])
+                product_arr[i] = product_arr_sub;
+
+                queries += mysql.format(`UPDATE product
+                                SET quantity = (quantity + ?)
+                                WHERE product_code = ?; `, product_arr[i]);
+            };
+
+            this.SQL = queries;
+            db.connection.query(this.SQL)
             .then(()=>{
                 
+                console.log(`Resolved`);
                 resolve();
             })
             .catch((err)=>{
-
+                
                 reject(`Error in Product_mdl.js: increase_quantity(): ${err}`);
+            });
+        });
+    },
+
+    edit_update_product(min,max,selling_price,cost_price,quantity,
+        title,description,image_path,is_best_seller,category_title,product_code)
+    {
+        return new Promise((resolve,reject)=>{
+
+            console.log("DB INPUT LOGGER - 1",min,"2",max,"3",selling_price,"4",cost_price,"5",quantity,"6",
+            title,"7",description,"8",image_path,"9",is_best_seller,"10",category_title,"11",product_code);
+
+            this.SQL = `UPDATE product p
+                INNER JOIN category c ON p.category_id_fk = c.category_id
+                SET min = ?, max = ?, selling_price = ?, cost_price = ?, quantity = ?,
+                p.title = ?, p.description = ?, p.image_path = ?, is_best_seller = ?,
+                category_id_fk = (SELECT category_id FROM category WHERE title = ?)
+                WHERE product_code = ?;`;
+            db.connection.query(this.SQL, [min,max,selling_price,cost_price,quantity,
+                title,description,image_path,is_best_seller,category_title,product_code])
+            .then(()=>{
+                
+                console.log(`PRODUCT UPDATED IN Product_mdl - TO BE RESOLVED`);
+                resolve();
+            })
+            .catch((err)=>{
+                
+                reject(`Error in Product_mdl.js: edit_update_product(): ${err}`);
             });
         });
     },

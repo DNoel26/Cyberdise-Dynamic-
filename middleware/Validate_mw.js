@@ -10,6 +10,8 @@ const User = require("../models/POJO/User.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
 const { create_products } = require("../models/MYSQL_models/Product_mdl.js");
+const { v4: uuidv4 } = require('uuid');
+const fileUpload = require("express-fileupload");
 
 exports.customer_register_form = (req,res,next)=>{
 
@@ -440,14 +442,14 @@ exports.add_category_form = (req,res,next)=>{
     created_category.description = req.body.category_description;
     created_category.image_path = req.body.category_photo;
 
+    const uploaded_image = req.files.category_img_upload;
+
     console.log("0 - CREATED CATEGORY");
     console.log("1",created_category,"OBJECT KEYS",Object.keys(created_category));
     console.log("2",created_category.title);
     console.log("3",created_category.title,created_category.description);
     console.log("4 - CREATED CATEGORY",created_category.title[0],created_category.title[1]);
     console.log("5",req.body);
-
-    req.created_category = created_category;
     
     let is_error = false;
 
@@ -484,6 +486,24 @@ exports.add_category_form = (req,res,next)=>{
             errors.image_path[index] = "You must upload an image";
         };
     });
+
+    if(uploaded_image)
+    {
+        uploaded_image.forEach((element,index) => {
+        
+            if(!element.mimetype.includes('image'))
+            {
+                is_error = true;
+                errors.upload_image[index] = "File must be an image";
+            }
+
+            else if(element.truncated)
+            {
+                is_error = true;
+                errors.upload_image[index] = "File size is too large. Maximum of 5mb allowed";
+            };
+        });
+    };
 
     //console.log(req.body);
 
@@ -572,6 +592,9 @@ exports.add_category_form = (req,res,next)=>{
         
             else
             {
+                req.created_category = created_category;
+                req.uploaded_image = uploaded_image;
+                
                 console.log("NO ISSUES IN CREATING CATEGORY")
                 next();
             };
@@ -582,34 +605,16 @@ exports.add_category_form = (req,res,next)=>{
 
 exports.add_product_form = (req,res,next)=>{
 
-    /*req.body.product_bestseller.forEach(element => {
-        
-        console.log("BEST SELLER ELEMENT",element);
-        if(element == "yes")
-        {
-            element = 1;
-        }
+    console.log("1",req.body,"length",req.body.length);
+    console.log("2",req.files);
+    //console.log("3",req.body.product_bestseller);
+    //console.log("4",req.body.product_bestseller[0]);
 
-        else
-        {
-            element = 0;
-        }
+    //const hidden_counter_products = req.body.counter_products;
+    //console.log("HIDDEN PRODUCT COUNTER",hidden_counter_products);
 
-        console.log("BEST SELLER ELEMENT AFTER",element);
-    });*/
-
-    for(let i=0; i<req.body.product_bestseller.length; i++)
-    {
-        if(req.body.product_bestseller[i] == "yes")
-        {
-            req.body.product_bestseller[i] = 1;
-        }
-
-        else
-        {
-            req.body.product_bestseller[i] = 0;
-        }
-    }
+    //console.log(Object.entries(req.body));
+    //console.log(Object.keys(req.body).length);
 
     const created_product = new Product;
     const queried_category = new Category;
@@ -627,13 +632,17 @@ exports.add_product_form = (req,res,next)=>{
     created_product.is_best_seller = req.body.product_bestseller;
     created_product.description = req.body.product_description;
 
-    console.log("0 - CREATED PRODUCT");
-    console.log("1",created_product,"OBJECT KEYS",Object.keys(created_product));
-    console.log("2",created_product.category,created_product.category.title);
-    console.log("3",created_product.title,created_product.description);
-    console.log("4 - CREATED CATEGORY",created_product.title[0],created_product.title[1]);
-    console.log("5",req.body);
-    
+    const uploaded_image = req.files.product_img_upload;
+
+    console.log("UPLOADED PHOTO",uploaded_image);
+
+    //console.log("0 - CREATED PRODUCT");
+    //console.log("1",created_product,"OBJECT KEYS",Object.keys(created_product));
+    //console.log("2",created_product.category,created_product.category.title);
+    //console.log("3",created_product.title,created_product.description);
+    //console.log("4 - CREATED CATEGORY",created_product.title[0],created_product.title[1]);
+    //console.log("5",req.body);
+
     let is_error = false;
 
     const errors = 
@@ -648,6 +657,7 @@ exports.add_product_form = (req,res,next)=>{
         image_path: [],
         is_best_seller: [],
         description: [],
+        upload_image: [],
     };
 
     created_product.title.forEach((element,index) => {
@@ -729,33 +739,39 @@ exports.add_product_form = (req,res,next)=>{
 
     created_product.image_path.forEach((element,index) => {
         
-        if(element == "")
+        if(element == "" && !uploaded_image[index])
         {
             is_error = true;
-            errors.image_path[index] = "You must upload an image";
+            errors.image_path[index] = "You must enter an image directory";
         };
     });
 
-    console.log("6 BEFORE - IS BEST SELLER",created_product.is_best_seller);
+    if(uploaded_image)
+    {
+        uploaded_image.forEach((element,index) => {
+        
+            if(!element.mimetype.includes('image'))
+            {
+                is_error = true;
+                errors.upload_image[index] = "File must be an image";
+            }
+
+            else if(element.truncated)
+            {
+                is_error = true;
+                errors.upload_image[index] = "File size is too large. Maximum of 5mb allowed";
+            };
+        });
+    };
+
+    //console.log("6 BEFORE - IS BEST SELLER",created_product.is_best_seller);
 
     created_product.is_best_seller.forEach((element,index) => {
         
-        if(element == "")
+        if(element === "")
         {
             is_error = true;
             errors.is_best_seller[index] = "You must select a bestseller status";
-        };
-
-        if(element == "no")
-        {
-            console.log("BEST SELLER NO",element);
-            element = 0;
-        }
-
-        else if(element == "yes")
-        {
-            console.log("BEST SELLER YES",element);
-            element = 1;
         };
     });
 
@@ -770,34 +786,41 @@ exports.add_product_form = (req,res,next)=>{
         };
     });
 
-    req.created_product = created_product;
     //console.log(req.body);
 
     if(is_error)
     {
-        if(created_product.title.length == 1)
-        {
-            res.render("employee/add_products",{
+        Category_model.get_all_categories()
+        .then((categories)=>{
 
-                title: "Add new products to the store",
-                html_id: "edit_stock_html",
-                body_id: "edit_stock_body",
-                main_id: "edit_stock_main",
-                my_stock_active_link: "active_link",
-                errors,
-                created_product,
-            });
-        }
-        
-        else if(created_product.title.length > 1)
-        {
-            console.log("MULTI SUBMIT CREATED PRODUCT ERROR")
-            res.status(200).json({
+            res.locals.categories = categories;
 
-                errors: errors,
-                message: "Error message when add product form field is empty", 
-            }); 
-        };
+            if(created_product.title.length == 1)
+            {
+                res.render("employee/add_products",{
+
+                    title: "Add new products to the store",
+                    html_id: "edit_stock_html",
+                    body_id: "edit_stock_body",
+                    main_id: "edit_stock_main",
+                    my_stock_active_link: "active_link",
+                    //categories_info,
+                    errors,
+                    created_product,
+                });
+            }
+
+            else if(created_product.title.length > 1)
+            {
+                console.log("MULTI SUBMIT CREATED PRODUCT ERROR")
+                res.status(200).json({
+
+                    errors: errors,
+                    message: "Error message when add product form field is empty", 
+                }); 
+            };
+        })
+        .catch(err=>console.log(`Error in Validate_mw: add_product_form(): ${err}`)); 
     }
 
     else
@@ -832,37 +855,309 @@ exports.add_product_form = (req,res,next)=>{
                 //if(selected_categories.title == created_category.title)
                 if(is_error == true)
                 {
-                    if(created_product.title.length == 1)
-                    {
-                        res.render("employee/add_products",{
+                    Category_model.get_all_categories()
+                    .then((categories)=>{
 
-                            title: "Add new products to the store",
-                            html_id: "edit_stock_html",
-                            body_id: "edit_stock_body",
-                            main_id: "edit_stock_main",
-                            my_stock_active_link: "active_link",
-                            errors,
-                            created_product,
-                        });
-                    }
+                        res.locals.categories = categories;
 
-                    else if(created_product.title.length > 1)
-                    {
-                        res.status(200).json({
+                        if(created_product.title.length == 1)
+                        {
+                            res.render("employee/add_products",{
 
-                            errors: errors,
-                            message: "Error message when any add product title already exists", 
-                        }); 
-                    };
+                                title: "Add new products to the store",
+                                html_id: "edit_stock_html",
+                                body_id: "edit_stock_body",
+                                main_id: "edit_stock_main",
+                                my_stock_active_link: "active_link",
+                                //categories_info,
+                                errors,
+                                created_product,
+                            });
+                        }
+
+                        else if(created_product.title.length > 1)
+                        {
+                            res.status(200).json({
+
+                                errors: errors,
+                                message: "Error message when any add product title already exists", 
+                            }); 
+                        };
+                    })
+                    .catch(err=>console.log(`Error in Validate_mw: add_product_form() (2nd validation error render): ${err}`));      
                 }    
             }
         
             else
             {
+                for(let i=0; i<created_product.is_best_seller.length; i++)
+                {
+                    console.log(`BESTSELLER LOOP ${i}`);
+
+                    if(created_product.is_best_seller[i] == "Yes" || created_product.is_best_seller[i] == "yes")
+                    {
+                        created_product.is_best_seller[i] = 1;
+                    }
+
+                    else if(created_product.is_best_seller[i] == "No" || created_product.is_best_seller[i] == "no")
+                    {
+                        created_product.is_best_seller[i] = 0;
+                    };
+                };
+                
+                req.created_product = created_product;
+                req.uploaded_image = uploaded_image;
                 console.log("NO ISSUES IN CREATING PRODUCT")
                 next();
             };
         })
         .catch(err=>{console.log(`Error in Validate_mw.js: add_product_form: get_products_by_names(): ${err} ${err.stack}`,console.trace(err))});
     };
+};
+
+exports.edit_update_product_form = (req,res,next)=>{
+
+    const edited_product = new Product;
+    const queried_category = new Category;
+
+    edited_product.category = queried_category;
+
+    edited_product.title = req.body.product_name;
+    edited_product.product_code = req.body.product_code;
+    queried_category.title = req.body.product_category;
+    edited_product.current_quantity = req.body.product_quantity;
+    edited_product.min_qty = req.body.product_min_quantity;
+    edited_product.max_qty = req.body.product_max_quantity;
+    edited_product.cost_price = req.body.product_cost_price;
+    edited_product.selling_price = req.body.product_selling_price;
+    edited_product.image_path = req.body.product_img;
+    edited_product.is_best_seller = req.body.product_bestseller;
+    edited_product.description = req.body.product_description;
+
+    const uploaded_image = req.files.product_img_upload;
+    console.log("EDITED PRODUCT",edited_product);
+
+    let is_error = false;
+
+    const errors = 
+    {
+        title: "",
+        category_title: "",
+        current_quantity: "",
+        min_qty: "",
+        max_qty: "",
+        cost_price: "",
+        selling_price: "",
+        image_path: "",
+        is_best_seller: "",
+        description: "",
+        upload_image: "",
+    };
+ 
+    if(edited_product.title == "")
+    {
+        is_error = true;
+        errors.title = "Cannot update product name if field is empty";
+    };
+
+    if(edited_product.current_quantity == "")
+    {
+        is_error = true;
+        errors.current_quantity = "Cannot update product quantity if field is empty";
+    };
+    
+    if(edited_product.min_qty == "" || edited_product.min_qty == null)
+    {
+        is_error = true;
+        errors.min_qty = "Cannot update product minimum quantity if field is empty";
+    };
+
+    if(edited_product.max_qty == "" || edited_product.max_qty == null)
+    {
+        is_error = true;
+        errors.max_qty = "Cannot update product maximum quantity if field is empty";
+    };
+
+    if(edited_product.cost_price == "")
+    {
+        is_error = true;
+        errors.cost_price = "Cannot update product cost price if field is empty";
+    };
+
+    if(edited_product.selling_price == "")
+    {
+        is_error = true;
+        errors.selling_price = "Cannot update product selling price if field is empty";
+    };
+
+    if(edited_product.image_path == "" && !uploaded_image)
+    {
+        is_error = true;
+        errors.image_path = "Cannot update product image if field is empty and no image is uploaded";
+    };
+
+    if(uploaded_image)
+    {
+        if(!uploaded_image.mimetype.includes('image'))
+        {
+            is_error = true;
+            errors.upload_image = "Cannot update product image if file type is not an image";
+        }
+
+        else if(uploaded_image.truncated)
+        {
+            is_error = true;
+            errors.upload_image = "File size is too large. Maximum of 5mb allowed";
+        };
+    };
+
+    if(edited_product.description == "")
+    {
+        is_error = true;
+        errors.description = "Cannot update product description if field is empty";
+    };
+
+    //let product = edited_product;
+
+    if(is_error)
+    {
+        Category_model.get_all_categories()
+        .then((categories)=>{
+
+            res.locals.categories = categories;
+
+            return Product_model.get_product_by_name_code(null,req.params.id)
+        })
+        .then((product)=>{
+
+            if(product.is_best_seller == 1)
+            {
+                product.is_best_seller = "Yes";
+            }
+
+            else if(product.is_best_seller == 0)
+            {
+                product.is_best_seller = "No";
+            };
+
+            //console.log(req.app.locals);
+            console.log("PRODUCT PARAMS ID",product);
+            console.log("PRODUCT SELLING PRICE",product.selling_price,"PRODUCT QUANTITY",product.current_quantity);
+
+            Object.assign(edited_product, product);
+            res.locals.product = edited_product;
+            
+            res.render("employee/edit_product",{
+
+                title: "Edit your selected product here",
+                html_id: "edit_stock_html",
+                body_id: "edit_stock_body",
+                main_id: "edit_stock_main",
+                my_stock_active_link: "active_link",
+                //product,
+                errors
+                //stock_val
+            });
+        })
+        .catch(err=>console.log(`Error in Validate_mw: edit_update_product_form: ${err}`));
+
+    }
+
+    else
+    {
+        if(edited_product.is_best_seller == "Yes" || edited_product.is_best_seller == "yes")
+        {
+            edited_product.is_best_seller = 1;
+        }
+
+        else if(edited_product.is_best_seller == "No" || edited_product.is_best_seller == "no")
+        {
+            edited_product.is_best_seller = 0;
+        }
+        
+        req.edited_product = edited_product;
+        req.uploaded_image = uploaded_image;
+        next();
+    }
+};
+
+exports.edit_update_category_form = (req,res,next)=>{
+
+    const edited_category = new Category;
+
+    edited_category.title = req.body.category_name;
+    edited_category.description = req.body.category_description;
+    edited_category.image_path = req.body.category_img;
+
+    const uploaded_image = req.files.category_img_upload;
+
+    let is_error = false;
+
+    const errors = 
+    {
+        title: "",
+        description: "",
+        image_path: "",
+        upload_image: "",
+    };
+ 
+    if(edited_category.title == "")
+    {
+        is_error = true;
+        errors.title = "Cannot update category name if field is empty";
+    };
+
+    if(edited_category.image_path == "" && !uploaded_image)
+    {
+        is_error = true;
+        errors.image_path = "Cannot update category image if field is empty and no image is uploaded";
+    };
+
+    if(uploaded_image)
+    {
+        if(!uploaded_image.mimetype.includes('image'))
+        {
+            is_error = true;
+            errors.upload_image = "Cannot update category image if file type is not an image";
+        }
+
+        else if(uploaded_image.truncated)
+        {
+            is_error = true;
+            errors.upload_image = "File size is too large. Maximum of 5mb allowed";
+        };
+    };
+
+    if(edited_category.description == "")
+    {
+        is_error = true;
+        errors.description = "Cannot update category description if field is empty";
+    };
+
+    if(is_error)
+    {
+        Category_model.get_category_by_name_id(null,req.params.id)
+        .then((category)=>{
+           
+            res.locals.category = category;
+
+            res.render("employee/edit_product",{
+
+                title: "Edit your selected product here",
+                html_id: "edit_stock_html",
+                body_id: "edit_stock_body",
+                main_id: "edit_stock_main",
+                my_stock_active_link: "active_link",
+                errors
+            });
+        })
+        .catch(err=>console.log(`Error in Validate_mw: edit_update_category_form: ${err}`));
+    }
+
+    else
+    {       
+        req.edited_category = edited_category;
+        req.uploaded_image = uploaded_image;
+        next();
+    }
 };
