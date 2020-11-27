@@ -21,7 +21,7 @@
                                 <!--<input type="hidden" id="testtt" name="testtt" value=""> TO TEST SENDING JSON FROM CLIENT TO SERVER-->
                                 <input type="hidden" id="country_flag_src" name="country_flag_src" value="">
                                 <div>
-                                    <img id="country_flag" {{#if user_info.country_flag_src}} src="{{user_info.country_flag_src}}" {{/if}} alt="" width="122" height="64">
+                                    <img class="edit_customer_flag" id="country_flag" {{#if user_info.country_flag_src}} src="{{user_info.country_flag_src}}" {{/if}} alt="" width="122" height="64">
                                 </div>
                                 <span class="form_error_msg">{{errors.country}}</span>   
                             </div>
@@ -29,26 +29,31 @@
                             <div class="form_input_container">
                                 <label for="postcode">Postcode</label>
                                 <input type="text" name="postcode" id="postcode" value="{{user_info.postcode}}">
+                                <span class="form_error_msg">{{errors.postcode}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="address_line_1">Address Line 1</label>
                                 <textarea name="address_line_1" id="address_line_1" cols="30" rows="3" value="{{user_info.address_line_1}}"></textarea>
+                                <span class="form_error_msg">{{errors.address_line_1}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="address_line_2">Address Line 2</label>
                                 <textarea name="address_line_2" id="address_line_2" cols="30" rows="3" value="{{user_info.address_line_2}}"></textarea>
+                                <span class="form_error_msg">{{errors.address_line_2}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="town_city">Town/City</label>
                                 <input type="text" name="town_city" id="town_city" value="{{user_info.town_city}}">
+                                <span class="form_error_msg">{{errors.town_city}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="state">State</label>
                                 <input type="text" name="state" id="state" value="{{user_info.state}}">
+                                <span class="form_error_msg">{{errors.state}}</span>  
                             </div>
                         </div>
                     </div>
@@ -62,46 +67,55 @@
                             <div class="form_input_container">
                                 <label for="first_name">First Name</label>
                                 <input type="text" name="first_name" id="first_name" value="{{user_info.first_name}}">
+                                <span class="form_error_msg">{{errors.first_name}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="last_name">Last Name</label>
                                 <input type="text" name="last_name" id="last_name" value="{{user_info.last_name}}">
+                                <span class="form_error_msg">{{errors.last_name}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="username">Username</label>
                                 <input type="text" name="username" id="username" value="{{user_info.username}}">
+                                <span class="form_error_msg">{{errors.username}}</span>  
                             </div> 
 
                             <div class="form_input_container">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" value="{{user_info.email}}">
+                                <span class="form_error_msg">{{errors.email}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="phone">Phone Number</label>
                                 <input type="tel" name="phone" id="phone" value="{{user_info.phone_num}}">
+                                <span class="form_error_msg">{{errors.phone_num}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="cc_num">Credit Card Number</label>
                                 <input type="number" name="cc_num" id="cc_num" value="{{user_info.credit_card_num}}" min="0">
+                                <span class="form_error_msg">{{errors.cc_num}}</span>  
                             </div>
 
                             <div class="form_input_container">
-                                <label for="password">Confirm Old Password</label>
-                                <input type="password" name="password" id="password" value="">
+                                <label for="old_password">Confirm Old Password</label>
+                                <input type="password" name="old_password" id="old_password" value="">
+                                <span class="form_error_msg">{{errors.password}}</span>  
                             </div>  
 
                             <div class="form_input_container">
                                 <label for="new_password">Enter New Password</label>
                                 <input type="password" name="new_password" id="new_password" value="">
+                                <span class="form_error_msg">{{errors.new_password}}</span>  
                             </div>  
 
                             <div class="form_input_container">
                                 <label for="new_confirm_password">Confirm New Password</label>
                                 <input type="password" name="new_confirm_password" id="new_confirm_password" value="">
+                                <span class="form_error_msg">{{errors.new_confirm_password}}</span>  
                             </div>  
 
                         </div>

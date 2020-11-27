@@ -2,7 +2,7 @@ const User = require("./User.js");
 
 class Customer extends User
 {
-    customer_id_fk;
+    customer_id_pk_fk;
     address_1;
     address_2;
     town_city;

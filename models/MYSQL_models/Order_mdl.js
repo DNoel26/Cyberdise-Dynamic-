@@ -10,44 +10,26 @@ const Order_model =
 {
     create_orders(orders)
     {
-        return new Promise((resolve,reject)=>{
-            
-            let order_arr = [];
-            
-            for(let i=0; i < orders.title.length; i++)
-            {
-                let product_arr_sub = [];
-                product_arr_sub[0] = product.min_qty[i];
-                product_arr_sub[1] = product.max_qty[i];
-                product_arr_sub[2] = product.selling_price[i];
-                product_arr_sub[3] = product.cost_price[i];
-                product_arr_sub[4] = product.current_quantity[i];
-                product_arr_sub[5] = product.title[i];
-                product_arr_sub[6] = product.description[i];
-                product_arr_sub[7] = product.image_path[i];
-                product_arr_sub[8] = category[i].category_id;
-                product_arr_sub[9] = product.is_best_seller[i];
+        create_cart_storage(customer_id_fk)
+        {
+            return new Promise((resolve,reject)=>{
 
-                //console.log("length",product.title.length);
-                //console.log("i",i);
-                product_arr[i] = product_arr_sub;
-            }
+                this.SQL = `INSERT INTO user_product (customer_id_fk, product_code_fk, order_quantity) VALUES (?,?,?);
+                SELECT *, p.date_created AS product_date_created, p.last_modified AS product_last_modified
+                FROM user_product up 
+                INNER JOIN product p ON p.product_code = up.product_code_fk
+                WHERE up.customer_id_fk = ? AND p.product_code = ?;`;
+                db.connection.query(this.SQL, [customer_id_fk, product_code_fk, order_quantity, customer_id_fk, product_code_fk])
+                .then(()=>{
+                    
+                    resolve();
+                })
+                .catch((err)=>{
 
-            //console.log(product_arr);
-            //product_arr = [product]
-
-            this.SQL = `INSERT IGNORE INTO product (min,max,selling_price,cost_price,quantity,title,
-                description,image_path,category_id_fk,is_best_seller) VALUES ?;`;
-            db.connection.query(this.SQL, [product_arr])
-            .then((input_data)=>{
-                
-                resolve(input_data);
-            })
-            .catch((err)=>{
-
-                reject(`Error in Project_mdl.js: create_order(): ${err}`);
+                    reject(`Error in User_Product_mdl.js: create_cart_storage(): ${err}`);
+                }); 
             });
-        })
+        };
     },
 
 };

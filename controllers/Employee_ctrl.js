@@ -5,16 +5,17 @@ const Product_model = require("../models/MYSQL_models/Product_mdl.js");
 const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 const Category = require("../models/POJO/Category.js");
 const Product = require("../models/POJO/Product.js");
-const Inventory = require("../models/POJO/Inventory.js");
+const Product_Shipment = require("../models/POJO/Product_Shipment.js");
 const Shipment = require("../models/POJO/Shipment.js");
 const {add_category_form,add_product_form,
     edit_update_product_form,edit_update_category_form} = require("../middleware/Validate_mw.js");
 const General_model = require("../models/MYSQL_models/General_mdl.js");
 const Shipment_model = require("../models/MYSQL_models/Shipment_mdl.js");
-const Inventory_model = require("../models/MYSQL_models/Inventory_mdl.js");
+const Product_Shipment_model = require("../models/MYSQL_models/Product_Shipment_mdl.js");
 const { v4: uuidv4 } = require('uuid');
 const fs = require("fs");
-const image_uploader = require("../middleware/Image_Upload_mw.js")
+const image_uploader = require("../middleware/Image_Upload_mw.js");
+
 
 
 //*****MY EMPLOYEE ACCOUNT CONTROLS
@@ -149,11 +150,12 @@ router.get("/edit-stock/restock/data",function(req,res){
 router.post("/edit-stock/restock",function(req,res){ 
 
     const created_shipment = new Shipment;
+    created_shipment.
 
     console.trace("REQ SESSION USER INFO",req.session.user_info);
     //created_shipment.employee_id = req.session.user_info.
 
-    const created_inventory = new Inventory;
+    const created_inventory = new Product_Shipment;
     const restocked_product = new Product;
 
     created_inventory.product = restocked_product;
@@ -176,7 +178,7 @@ router.post("/edit-stock/restock",function(req,res){
         //console.log("LAST SHIPMENT ID DATA",data);
         const last_shipment_id = data[0][0]['LAST_INSERT_ID()'];
 
-        return Inventory_model.product_restock(restocked_product.product_code,last_shipment_id,
+        return Product_Shipment_model.product_restock(restocked_product.product_code,last_shipment_id,
             created_inventory.supplier,created_inventory.restock_quantity);
     })
     .then((shipment_data)=>{

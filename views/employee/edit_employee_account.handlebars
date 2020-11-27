@@ -37,41 +37,49 @@
                             <div class="form_input_container">
                                 <label for="first_name">First Name</label>
                                 <input type="text" name="first_name" id="first_name" value="{{user_info.first_name}}">
+                                <span class="form_error_msg">{{errors.first_name}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="last_name">Last Name</label>
                                 <input type="text" name="last_name" id="last_name" value="{{user_info.last_name}}">
+                                <span class="form_error_msg">{{errors.last_name}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="username">Username</label>
                                 <input type="text" name="username" id="username" value="{{user_info.username}}">
+                                <span class="form_error_msg">{{errors.username}}</span>  
                             </div> 
 
                             <div class="form_input_container">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" value="{{user_info.email}}">
+                                <span class="form_error_msg">{{errors.email}}</span>  
                             </div>
 
                             <div class="form_input_container">
                                 <label for="phone">Phone Number</label>
                                 <input type="tel" name="phone" id="phone" value="{{user_info.phone_num}}">
+                                <span class="form_error_msg">{{errors.phone_num}}</span>  
                             </div>
 
                             <div class="form_input_container">
-                                <label for="password">Confirm Old Password</label>
-                                <input type="password" name="password" id="password" value="">
+                                <label for="old_password">Confirm Old Password</label>
+                                <input type="password" name="old_password" id="old_password" value="">
+                                <span class="form_error_msg">{{errors.old_password}}</span>  
                             </div>  
 
                             <div class="form_input_container">
                                 <label for="new_password">Enter New Password</label>
                                 <input type="password" name="new_password" id="new_password" value="">
+                                <span class="form_error_msg">{{errors.new_password}}</span>  
                             </div>  
 
                             <div class="form_input_container">
                                 <label for="new_confirm_password">Confirm New Password</label>
                                 <input type="password" name="new_confirm_password" id="new_confirm_password" value="">
+                                <span class="form_error_msg">{{errors.new_confirm_password}}</span>  
                             </div>
 
                         </div>

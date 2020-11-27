@@ -49,21 +49,29 @@ const Category_model =
             db.connection.query(this.SQL)
             .then(([rows,fields])=>{
                 
-                const categories = [];
+                let categories = [];
 
-                rows.forEach(row => {
+                if(rows.length > 0)
+                {
+                    rows.forEach(row => {
                     
-                    const category = new Category;
+                        const category = new Category;
+    
+                        category.category_id = row.category_id;
+                        category.title = row.title;
+                        category.description = row.description;
+                        category.image_path = row.image_path;
+                        category.date_created = row.date_created;
+                        category.last_modified = row.last_modified;
+    
+                        categories.push(category);
+                    });
+                }
 
-                    category.category_id = row.category_id;
-                    category.title = row.title;
-                    category.description = row.description;
-                    category.image_path = row.image_path;
-                    category.date_created = row.date_created;
-                    category.last_modified = row.last_modified;
-
-                    categories.push(category);
-                });
+                else
+                {
+                    categories = null;
+                }
 
                 resolve(categories);
             })

@@ -1,4 +1,4 @@
-class Inventory
+class Product_Shipment
 {
     product; //Product object instance
     shipment; //Shipment object instance
@@ -8,4 +8,4 @@ class Inventory
     last_modified;
 };
 
-module.exports = Inventory;
+module.exports = Product_Shipment;

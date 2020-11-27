@@ -22,7 +22,7 @@ const User_model =
 
                 reject(`Error in User_mdl.js: create_trigger_tester(): ${err}`);
             }); 
-        })
+        });
     },
 
     drop_trigger_test()
@@ -151,7 +151,7 @@ const User_model =
                             selected_user.last_login_date = row.last_login_date;
                             selected_user.last_login_IP = row.last_login_IP;
                             //employee specific
-                            selected_user.inventory_clerk_id_fk = row.inventory_clerk_id_fk;
+                            selected_user.inventory_clerk_id_pk_fk = row.inventory_clerk_id_pk_fk;
                             selected_user.role = row.inventory_clerk_role;
                             selected_user.date_created = row.inventory_clerk_date_created;
                             selected_user.last_modified = row.inventory_clerk_last_modified;

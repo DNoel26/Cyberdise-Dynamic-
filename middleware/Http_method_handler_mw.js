@@ -12,6 +12,12 @@ const http_req = (req,res,next)=>{
         console.log("CHANGED TO PUT IN HTTP REQ HANDLER");
     }
 
+    else if(req.query.method == "patch")
+    {
+        req.method = "PATCH";
+        console.log("CHANGED TO PATCH IN HTTP REQ HANDLER");
+    }
+
     next();
 };
 

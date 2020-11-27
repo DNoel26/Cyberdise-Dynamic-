@@ -50,6 +50,28 @@ const helper  = exphbs.create({
             };
         },
 
+        calc_cart_sub_total(a,b)
+        {
+            return parseFloat(a * b).toFixed(2);
+        },
+
+        calc_cart_total(a)
+        {
+            let total = 0;
+            
+            console.log("a",a,a[0]);
+            //console.log("b",b);
+            //console.log("c",c);
+
+            for(let i=0; i<a.length; i++)
+            {
+                total += (a[i].product.selling_price * a[i].cart_quantity); 
+            }
+
+            console.log("CART TOTAL",total)
+            return parseFloat(total).toFixed(2);
+        },
+
         for_each_sel()
         {
 

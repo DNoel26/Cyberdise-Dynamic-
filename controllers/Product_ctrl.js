@@ -1,5 +1,7 @@
 const express = require("express");
 const Product_model = require("../models/MYSQL_models/Product_mdl");
+const User_Product_model = require("../models/MYSQL_models/User_Product_mdl");
+const User_Product = require("../models/POJO/User_Product");
 const router = express.Router();
 
 //*****ALL PRODUCTS CONTROLS
@@ -73,10 +75,38 @@ router.get("/all-products",function(req,res){
 
 router.get("/product-overview/:id",function(req,res){
 
-    Product_model.get_product_by_name_code(null,req.params.id)
+    let logged_in = false;
+    let user_id;
+
+    if(req.session.user_info)
+    {
+        logged_in = true;
+        user_id = req.session.user_info.user_id;
+    }
+
+    else
+    {
+        user_id = null;
+    };
+
+    Product_model.get_product_by_name_code(null, req.params.id)
     .then((product)=>{
 
         res.locals.product = product;
+
+        if(req.session.user_info)
+        {
+            return User_Product_model.check_cart_product_partial(req.session.user_info.user_id, parseInt(req.params.id))
+        }
+    })
+    .then((cart)=>{
+
+        res.locals.cart = cart;
+
+        if(cart)
+        {
+            console.log("CART",cart,"CART PRODUCT",cart.product,"CART PRODUCT CATEGORY",cart.product.category);
+        }
 
         res.render("products/product_overview",{
 
@@ -88,6 +118,42 @@ router.get("/product-overview/:id",function(req,res){
         });
     })
     .catch(err=>console.log(`Error in Product_ctrl: GET /product/product-overview: ${err}`));
+});
+
+router.post("/product-overview/:id",function(req,res){
+
+    console.log("BODYYY POST",req.body.product_cart_quantity_add);
+
+    User_Product_model.create_cart_storage(req.session.user_info.user_id, req.params.id, req.body.product_cart_quantity_add)
+    .then(()=>{
+
+        res.redirect("/customer/my-cart");
+    })
+    .catch(err=>console.log(`Error in Product_ctrl: POST /product/product-overview/:id: ${err}`));
+});
+
+router.patch("/product-overview/add:id",function(req,res){
+
+    console.log("BODYYY PATCH ADD",req.body.product_cart_quantity_add);
+
+    User_Product_model.increase_quantity_in_cart(req.body.product_cart_quantity_add, req.session.user_info.user_id, req.params.id)
+    .then(()=>{
+
+        res.redirect("/customer/my-cart");
+    })
+    .catch(err=>console.log(`Error in Product_ctrl: PATCH /product/product-overview/add:id: ${err}`));
+});
+
+router.patch("/product-overview/return:id",function(req,res){
+
+    console.log("BODYYY PATCH RETURN",req.body.product_cart_quantity_ret);
+
+    User_Product_model.decrease_quantity_in_cart(req.body.product_cart_quantity_ret, req.session.user_info.user_id, req.params.id)
+    .then(()=>{
+
+        res.redirect("/customer/my-cart");
+    })
+    .catch(err=>console.log(`Error in Product_ctrl: PATCH /product/product-overview/return:id: ${err}`));
 });
 
 router.get("/product-overview",function(req,res){

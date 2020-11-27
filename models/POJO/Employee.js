@@ -2,7 +2,7 @@ const User = require("./User.js");
 
 class Employee extends User
 {
-    inventory_clerk_id_fk;
+    inventory_clerk_id_pk_fk;
     role; // = "employee"
     date_created;
     last_modified;

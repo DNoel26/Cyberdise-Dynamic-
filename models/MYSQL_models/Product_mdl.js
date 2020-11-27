@@ -65,37 +65,45 @@ const Product_model =
             db.connection.query(this.SQL)
             .then(([rows,fields])=>{
                 
-                const products = [];
+                let products = [];
 
-                rows.forEach(row => {
+                if(rows.length > 0)
+                {
+                    rows.forEach(row => {
                     
-                    const product = new Product;
-                    const category_on_join = new Category;
-                    product.category = category_on_join;
+                        const product = new Product;
+                        const category_on_join = new Category;
+                        product.category = category_on_join;
+    
+                        product.product_code = row.product_code;
+                        product.min_qty = row.min;
+                        product.max_qty = row.max;
+                        product.selling_price = row.selling_price;
+                        product.cost_price = row.cost_price;
+                        product.current_quantity = row.quantity;
+                        product.title = row.product_title;
+                        product.description = row.product_description;
+                        product.image_path = row.product_image_path;
+                        category_on_join.category_id = row.category_id;
+                        category_on_join.title = row.category_title;
+                        category_on_join.description = row.category_description;
+                        category_on_join.image_path = row.category_image_path;
+                        category_on_join.date_created = row.category_date_created;
+                        category_on_join.last_modified = row.category_last_modified;
+                        product.is_best_seller = row.is_best_seller;
+                        product.date_created = row.product_date_created;
+                        product.last_modified = row.product_last_modified;
+    
+                        products.push(product);
+                    });
 
-                    product.product_code = row.product_code;
-                    product.min_qty = row.min;
-                    product.max_qty = row.max;
-                    product.selling_price = row.selling_price;
-                    product.cost_price = row.cost_price;
-                    product.current_quantity = row.quantity;
-                    product.title = row.product_title;
-                    product.description = row.product_description;
-                    product.image_path = row.product_image_path;
-                    category_on_join.category_id = row.category_id;
-                    category_on_join.title = row.category_title;
-                    category_on_join.description = row.category_description;
-                    category_on_join.image_path = row.category_image_path;
-                    category_on_join.date_created = row.category_date_created;
-                    category_on_join.last_modified = row.category_last_modified;
-                    product.is_best_seller = row.is_best_seller;
-                    product.date_created = row.product_date_created;
-                    product.last_modified = row.product_last_modified;
+                    resolve(products);
+                }
 
-                    products.push(product);
-                });
-
-                resolve(products);
+                else
+                {
+                    resolve(null);
+                }
             })
             .catch((err)=>{
 

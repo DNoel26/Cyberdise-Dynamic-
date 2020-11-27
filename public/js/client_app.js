@@ -26,6 +26,8 @@ const App =
         const header_login_btn = document.querySelector("#header_login_btn");
         const header_login_submit_btn = document.querySelector("#header_login_submit_btn");
         const login_submit_btn = document.querySelector("#login_submit_btn");
+        const product_header_login = document.querySelector("#product_header_login");
+
         //const header_login_btn = document.getElementById("header_login_btn");
         const country_select = document.querySelector("select#country");
         const top_country_option = document.querySelector("select#country option#top_selection");
@@ -83,6 +85,12 @@ const App =
         const product_total_price_sel = document.getElementsByClassName("product_total_price");
         const category_name_dropdown = document.getElementsByClassName("product_categories");
 
+        const incr_product_qty = document.querySelector("#incr_product_qty");
+        const decr_product_qty = document.querySelector("#decr_product_qty");
+        const product_qty = document.querySelector("#product_qty");
+        const product_cart_quantity_add = document.querySelector("#product_cart_quantity_add");
+        const product_cart_quantity_ret = document.querySelector("#product_cart_quantity_ret");
+        
         //const new_category_list_inputs = document.querySelectorAll("#new_category_list input");
         //const text_areas = document.querySelectorAll("textarea");
 
@@ -345,7 +353,7 @@ const App =
             //doc_body.style.backgroundColor = "red";
             //header_login_btn.style.backgroundColor = "red";
 
-            if(signup_page_html !== null)
+            if(signup_page_html != null)
             {
                 login_submit_btn.addEventListener("click",()=>{
                     
@@ -366,6 +374,16 @@ const App =
                         //login_animation.classList.toggle("hide_element");
                         //modal[0].setAttribute("class","modal");
                     });
+
+                    if(window.location.pathname.includes("/products/product-overview"))
+                    {
+                        product_header_login.addEventListener("click",(e)=>{
+
+                            e.preventDefault();
+                            
+                            header_login_btn.dispatchEvent(new Event('click'));
+                        });
+                    }
                 }
                 
                 modal_close_btns[0].addEventListener("click",()=>{
@@ -964,7 +982,6 @@ const App =
             }, 200);*/
         };
 
-        
         if(window.location.pathname == "/employee/edit-stock/add-categories")
         {
             //alert("asdasda"); const username_email_login_info = JSON.parse(localStorage.getItem("username_email_login"));
@@ -1936,6 +1953,77 @@ const App =
             })
             .catch(err => console.log(`Cannot get data for restock order form: ${err}`));    
         }; //edit-stock/restock
+
+        if((window.location.pathname.includes("/products/product-overview") || window.location.pathname.includes("/customer/my-cart"))
+            && product_qty && incr_product_qty && decr_product_qty)
+        {
+            let cart_quantity = product_qty.innerHTML;
+
+            console.log(product_qty, cart_quantity);
+
+            if(product_qty && window.location.pathname.includes("/products/product-overview"))
+            {
+                product_qty.innerHTML = cart_quantity;
+            }
+            
+            if(product_cart_quantity_add && window.location.pathname.includes("/products/product-overview"))
+            {
+                product_cart_quantity_add.value = cart_quantity;
+            };
+
+            if(product_cart_quantity_ret && window.location.pathname.includes("/products/product-overview"))
+            {
+                product_cart_quantity_ret.value = cart_quantity;
+            };
+
+            incr_product_qty.addEventListener("click",()=>{
+                
+                //alert(`++ ${order_quantity}`);
+                cart_quantity++;
+
+                /*if(order_quantity > 10)
+                {
+                    order_quantity = 10;
+                };*/
+
+                product_qty.innerHTML = cart_quantity;
+                
+                if(product_cart_quantity_add && window.location.pathname.includes("/products/product-overview"))
+                {
+                    product_cart_quantity_add.value = cart_quantity;
+                };
+
+                if(product_cart_quantity_ret && window.location.pathname.includes("/products/product-overview"))
+                {
+                    product_cart_quantity_ret.value = cart_quantity;
+                };
+            });
+
+            decr_product_qty.addEventListener("click",()=>{
+
+                //alert(`-- ${order_quantity}`);
+                cart_quantity--;
+
+                if(cart_quantity < 1)
+                {
+                    cart_quantity = 1;
+                };
+
+                product_qty.innerHTML = cart_quantity;
+
+                if(product_cart_quantity_add && window.location.pathname.includes("/products/product-overview"))
+                {
+                    product_cart_quantity_add.value = cart_quantity;
+                };
+
+                if(product_cart_quantity_ret && window.location.pathname.includes("/products/product-overview"))
+                {
+                    product_cart_quantity_ret.value = cart_quantity;
+                };
+            });
+
+            console.log(cart_quantity)
+        }
     }, //end of init()
 };
 

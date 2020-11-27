@@ -3,7 +3,7 @@ class Shipment
     shipment_id;
     shipment_date;
     arrival_date;
-    inventory; //Inventory object instance
+    product_shipment; //Inventory object instance
     date_created;
     last_modified;
 }

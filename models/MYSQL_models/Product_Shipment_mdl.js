@@ -3,9 +3,9 @@ const mysql = require("mysql2");
 const Customer = require("../POJO/Customer.js");
 const Employee = require("../POJO/Employee.js");
 const User = require("../POJO/User.js");
-const Inventory = require("../POJO/Inventory.js");
+const Product_Shipment = require("../POJO/Product_Shipment.js");
 
-const Inventory_model =
+const Product_Shipment_model =
 {
     product_restock(product_codes,last_shipment_id,suppliers,restock_quantities) //,order_date)
     {
@@ -43,4 +43,4 @@ const Inventory_model =
     },
 }
 
-module.exports = Inventory_model;
+module.exports = Product_Shipment_model;

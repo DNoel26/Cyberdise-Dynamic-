@@ -2523,11 +2523,11 @@ input:focus, select:focus
     display: grid !important;
     grid-template-columns: 1fr !important;
     grid-template-rows: 1fr !important;
-    height: 60vh !important;
-    width: 100% !important;
+    width: 50% !important;
     margin: auto !important;
     justify-items: center !important;
     align-items: center !important;
+    margin-top: 128px !important;
 }
 
 .no_product_btn
@@ -2736,6 +2736,12 @@ input:focus, select:focus
     color: black;
 }
 
+.edit_customer_flag
+{
+    margin-left: 4px;
+    margin-top: 16px;
+}
+
                     /**********MY CART**********/
 
 .greeting_msg
@@ -2838,11 +2844,9 @@ input:focus, select:focus
 
                     /**********PRODUCT OVERVIEW**********/
 
-#product_overview_html section:first-of-type > div
+#product_overview_html section:first-of-type > div img
 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: left;
+    justify-self: right !important;
 }
 
 #product_overview_html section:first-of-type > div .button_class
@@ -2854,13 +2858,18 @@ input:focus, select:focus
 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    justify-items: left;
+    justify-content: center;
 }
 
 #product_overview_html section:first-of-type > div form 
 {
     display: grid;
     justify-content: left;
+}
+
+.product_overview
+{
+    margin-left: 64px;
 }
 
 .product_overview h2
@@ -3149,3 +3158,5 @@ p.product_names
     padding-top: 16px;
     font-size: 1.2rem;
 }
+
+                    /**********MY ORDER CHECKOUT**********/

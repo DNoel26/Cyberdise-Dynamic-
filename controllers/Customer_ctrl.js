@@ -1,4 +1,5 @@
 const express = require("express");
+const User_Product_model = require("../models/MYSQL_models/User_Product_mdl");
 const router = express.Router();
 
 //*****MY CUSTOMER ACCOUNT CONTROLS
@@ -40,25 +41,50 @@ router.get("/edit-account",function(req,res){
 
 router.get("/my-cart",function(req,res){
 
-    res.render("customer/my_cart",{
+    console.log("REQ SESSION USER ON CART LOAD",req.session.user_info);
 
-        title: "View and edit items in your cart",
-        html_id: "my_cart_html",
-        body_id: "my_cart_body",
-        main_id: "my_cart_main",
-        my_cart_active_link: "active_link",
-    });
+    User_Product_model.get_all_cart_products(req.session.user_info.user_id)
+    .then((cart_products)=>{
+
+        console.log("CART ITEMS FROM DB",cart_products);
+        res.locals.cart_products = cart_products;
+
+        res.render("customer/my_cart",{
+
+            title: "View and edit items in your cart",
+            html_id: "my_cart_html",
+            body_id: "my_cart_body",
+            main_id: "my_cart_main",
+            my_cart_active_link: "active_link",
+        });
+    })
+    .catch(err=>console.log(`Error in Customer_ctrl: GET /customer/my-cart: ${err}`));   
 });
 
 router.post("/my-cart",function(req,res){
-    
-    res.render("customer/my_cart",{
 
-        title: "View and edit items in your cart",
-        html_id: "my_cart_html",
-        body_id: "my_cart_body",
-        main_id: "my_cart_main",
-        my_cart_active_link: "active_link",
+    res.redirect("/customer/my-cart"); 
+});
+
+router.delete("/my-cart/delete/:id",function(req,res){
+
+    User_Product_model.delete_cart_storage(req.session.user_info.user_id, req.params.id)
+    .then(()=>{
+
+        res.redirect("/customer/my-cart");
+    })
+    .catch(err=>console.log(`Error in Customer_ctrl: DELETE /customer/my-cart/delete/:id: ${err}`));   
+});
+
+router.post("/confirm-order",function(req,res){
+
+    res.render("customer/confirm_order",{
+
+        title: "View and confirm orders for purchase",
+        html_id: "my_order_html",
+        body_id: "my_order_body",
+        main_id: "my_order_main",
+        //my_cart_active_link: "active_link",
     });
 });
 

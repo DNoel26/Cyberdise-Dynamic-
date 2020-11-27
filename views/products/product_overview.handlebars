@@ -2,33 +2,76 @@
     {{#if product}}
         <div>
             <div class="product_hero_overview">
-                <img src="{{product.image_path}}" alt="">
+                <img src="{{product.image_path}}" alt="" height="300">
             </div>
             <div class="product_overview">
                 <div>
-                    <h2>{{product.title}} This Item Name</h2>
+                    <h2>{{product.title}}</h2>
                 </div>
                 <div>
-                    <p>{{product.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur ad maxime culpa accusantium, voluptate temporibus!</p>
+                    <p>{{product.description}}</p>
                 </div>
                 <div>
-                    <h3>{{product.selling_price}} $10.00</h3>
+                    <h3>${{product.selling_price}}</h3>
                 </div>
                 <div>
-                    <p>{{product.title}} In Stock</p>
+                    {{#if product.current_quantity}}<h4> In Stock</h4>{{else}}<h4> Out of Stock</h4>{{/if}}
                 </div>
-                <div class="product_quantity">
-                    <button type="button"><i class="fas fa-minus"></i></button>
-                    <p>Qty</p>
-                    <button type="button"><i class="fas fa-plus"></i></button>
-                </div>
+
+                {{#if user_info}}
+                    <div class="product_quantity">
+                        <button id="decr_product_qty" type="button"><i class="fas fa-minus"></i></button>
+                        <p>Qty</p>
+                        <p id="product_qty">1{{!--{{cart.order_quantity}}--}}</p>
+                        <button id="incr_product_qty" type="button"><i class="fas fa-plus"></i></button>
+                        <br><br>
+                        {{#if cart}}
+                            <h4>({{cart.cart_quantity}} Currently in Cart)</h4>
+                        {{/if}}
+                    </div>
+                {{/if}}
+
                 <div>
-                    <form action="/customer/my-cart" method="POST">
-                        <button type="submit" class="button_class product_button">Add to Cart</button>
-                    </form>
-                    <form action="/customer/confirm-purchase" method="POST">
-                        <button type="submit" class="button_class product_button">Buy Now</button>
-                    </form>    
+
+                    {{#if cart}}
+
+                            <form action="/products/product-overview/add{{product.product_code}}?method=patch" method="POST">
+                                <input type="hidden" id="product_cart_quantity_add" name="product_cart_quantity_add" value="">
+                                <button type="submit" class="button_class product_button">Add More Item(s)</button>
+                            </form>
+
+                            <form action="/products/product-overview/return{{product.product_code}}?method=patch" method="POST">
+                                <input type="hidden" id="product_cart_quantity_ret" name="product_cart_quantity_ret" value="">
+                                <button type="submit" class="button_class product_button">Return Item(s)</button>
+                            </form>
+
+                    {{else}}
+
+                        {{#if user_info}}
+
+                            <form action="/products/product-overview/{{product.product_code}}" method="POST">
+                                <input type="hidden" id="product_cart_quantity_add" name="product_cart_quantity_add" value="1">
+                                <button type="submit" class="button_class product_button">Add to Cart</button>
+                            </form>
+
+                        {{else}}
+                            
+                            <form id="product_form_login" action="">
+                                <button id="product_header_login" type="button" class="button_class product_button">Login to Buy</button> 
+                            </form>
+
+                        {{/if}}
+
+                    {{/if}}
+                    
+                    {{#if user_info}}
+
+                        <form action="/customer/confirm-purchase/{{order.order_id}}" method="POST">
+                            <button type="submit" class="button_class product_button">Buy Now</button>
+                        </form>
+
+                    {{/if}}
+                                            
                 </div>  
             </div>
         </div>
