@@ -7,8 +7,12 @@
         <div class="centre_items">
             <div>
                 <div>
-                    <h2>Your Items</h2>
-                    <p id="product_cart_msg">You have 10 products in your shopping cart</p>
+                    <h2 >Your Items</h2>
+                    {{#if cart_item_total}}
+                        <p id="product_cart_msg">You have {{cart_item_total}} products in your shopping cart</p>
+                    {{else}}
+                        <p id="product_cart_msg">You have no products in your shopping cart</p>
+                    {{/if}}
                 </div>
                 <div>
                     <a class="button_class product_button" href="/customer/my-cart">View Shopping Cart</a>  

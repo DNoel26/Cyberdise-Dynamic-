@@ -142,7 +142,7 @@ router.get("/edit-stock/restock/data",function(req,res){
 
     Product_model.get_all_products()
     .then((data)=>{
-
+        
         res.json(data);
     })
 });
@@ -150,7 +150,7 @@ router.get("/edit-stock/restock/data",function(req,res){
 router.post("/edit-stock/restock",function(req,res){ 
 
     const created_shipment = new Shipment;
-    created_shipment.
+    //created_shipment.
 
     console.trace("REQ SESSION USER INFO",req.session.user_info);
     //created_shipment.employee_id = req.session.user_info.

@@ -19,6 +19,7 @@ const Category_model = require("../models/MYSQL_models/Category_mdl.js");
 router.get("/",function(req,res){
 
     console.log("SESSION TEST ON HOME",req.session,"SESSION USER ON HOME",req.session.user_info);
+    console.log("1",req.header,"2",req.headers,"3",req.method)
 
     Category_model.get_all_categories()
     .then(()=>{

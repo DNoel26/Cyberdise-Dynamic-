@@ -41,6 +41,8 @@
         }(document, new Date(), "script", "rating-widget.com/"));
     </script>
     <!--RATING WIDGET SCRIPT ABOVE-->
+    <script class="chatbot" src="//code.tidio.co/nvl5dsf8agyrqk3uwejz8wmnbx3jrplx.js" async></script>
+    <!--TIDIO CHATBOT-->
     <body id="{{body_id}}">
         <!--HEADER BELOW-->
         {{#if_eq html_id "signup_page_html"}}
@@ -80,10 +82,24 @@
         <!--FOOTER BELOW-->
         {{> home_above_footer}}
         <footer id="page_end">
-            <div>
-                FOOTER
-                <a href="#page_start"><i class="fas fa-angle-up" style="font-size: 6rem;"></i></a>
-            </div>
+            {{!--<div>
+                <a href="#page_start"><i class="fas fa-angle-up" style="font-size: 1rem;"></i></a>
+            </div>--}}
+            <nav id="footer_nav">
+                <div class="container">
+                    <div>
+                        <a href="#page_start">Back to Top</a>
+                    </div> 
+                    <ul class="container">
+                        <li><h2>Copyright &copy; 2020 Cyberdise E-Commerce Limited. All Rights Reserved</h2></li>
+                        <li><a href="/products/all-products">Our Products</a></li>
+                        <li><a href="#top_of_page">Sitemap</a></li>
+                        <li><a href="#main_section_2">Privacy Policy</a></li>
+                        <li><a href="#main_section_4">Terms of Use</a></li>
+                        <li><a href="#main_section_5">Advertising</a></li>
+                    </ul> 
+                </div>  
+            </nav>
         </footer>
         <!--FOOTER ABOVE-->
         <script src="/js/client_app.js"<!--type="module"-->></script>

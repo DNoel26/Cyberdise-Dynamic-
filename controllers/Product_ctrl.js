@@ -132,6 +132,13 @@ router.post("/product-overview/:id",function(req,res){
     .catch(err=>console.log(`Error in Product_ctrl: POST /product/product-overview/:id: ${err}`));
 });
 
+router.post("/products/product-overview/:id/buy-now",function(req,res){
+
+    console.log("BUY PRODUCT NOW");
+
+    res.redirect("/customer/my-cart");
+});
+
 router.patch("/product-overview/add:id",function(req,res){
 
     console.log("BODYYY PATCH ADD",req.body.product_cart_quantity_add);

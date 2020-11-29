@@ -28,7 +28,7 @@ const Product_Shipment_model =
                 inventory_arr[i] = inventory_arr_sub;
             };
 
-            this.SQL = `INSERT INTO inventory (product_code_fk,shipment_id_fk,supplier,
+            this.SQL = `INSERT INTO product_shipment (product_code_fk,shipment_id_fk,supplier,
                 restock_quantity,restock_order_date) VALUES ?;`;
             db.connection.query(this.SQL, [inventory_arr])
             .then(()=>{
@@ -37,7 +37,7 @@ const Product_Shipment_model =
             })
             .catch((err)=>{
 
-                reject(`Error in Inventory_mdl.js: product_restock(): ${err}`);
+                reject(`Error in Product_Shipment_mdl.js: product_restock(): ${err}`);
             });
         });
     },

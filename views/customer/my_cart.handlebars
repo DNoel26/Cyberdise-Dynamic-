@@ -40,7 +40,7 @@
             </div>--}}
 
         {{#each cart_products}}
-
+    
             <div class="my_cart_items_container">
                 <div>
                     <div>
@@ -69,9 +69,10 @@
                         <form action="/customer/my-cart/delete/{{this.product.product_code}}?method=delete" method="POST">
                             <button id="remove_order_{{this.product_code}}" class="button_class product_button remove_button" type="submit"><i class="far fa-times-circle"></i> Remove this Order</button>
                         </form>
-                        <form action="" method="POST">
+                        {{!--<form action="" method="POST">
                             <button id="place_order_{{this.product_code}}" class="button_class product_button" type="submit">Place this Order</button>    
-                        </form>
+                            <input type="hidden" name="item_subtotal" value="{{this.product.selling_price}}">
+                        </form>--}}
                     </div>
                 </div> 
             </div>
@@ -89,16 +90,20 @@
 
         {{#if cart_products}}
 
-            <div>
+            <div class="cart_order_total">
                 <h2>Order Total:</h2>
-                <p>
-
-                    ${{calc_cart_total cart_products}}
-
-                </p>
-                <form action="/customer/confirm-order" method="POST">
+                <p>${{calc_cart_total cart_products}}</p>
+                <form action="/customer/my-cart" method="POST">
                     <button class="button_class product_button" type="submit">Order All Items</button>
+                    <input type="hidden" name="all_items_total" value="{{calc_cart_total cart_products}}">
+                    <input type="hidden" name="cart_products" value="{{cart_products_str}}">
                 </form>
+                {{#if order_id}}
+                    <form action="/customer/confirm-order" method="GET">
+                        <button class="button_class product_button" type="submit">Pending Orders</button>
+                        {{!--<input type="hidden" name="all_items_total" value="{{calc_cart_total cart_products}}">--}}
+                    </form>
+                {{/if}}         
             </div>
 
         {{/if}}

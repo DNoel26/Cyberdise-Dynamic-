@@ -67,11 +67,11 @@ const User_Product_model =
         });
     },
 
-    delete_cart_storage(customer_id_fk, product_code_fk)
+    clear_cart_item(customer_id_fk, product_code_fk)
     {
         return new Promise((resolve,reject)=>{
 
-            this.SQL = `DELETE FROM user_product WHERE customer_id_fk = ? AND product_code_fk = ?;`;
+            this.SQL = `DELETE FROM user_product WHERE customer_id_fk = ? AND product_code_fk IN (?);`;
             db.connection.query(this.SQL, [customer_id_fk, product_code_fk])
             .then(()=>{
                 

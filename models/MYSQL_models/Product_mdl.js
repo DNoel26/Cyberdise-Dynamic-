@@ -286,6 +286,39 @@ const Product_model =
         });
     },
 
+    decrease_quantity(subtract_quantities, product_codes)
+    {
+        return new Promise((resolve,reject)=>{
+
+            const product_arr = [];
+            let queries = "";
+                
+            for(let i=0; i < product_codes.length; i++)
+            {
+                const product_arr_sub = [];
+                product_arr_sub[0] = subtract_quantities[i].order_quantity;
+                product_arr_sub[1] = product_codes[i];
+
+                product_arr[i] = product_arr_sub;
+
+                queries += mysql.format(`UPDATE product
+                                SET quantity = (quantity - ?)
+                                WHERE product_code = ?; `, product_arr[i]);
+            };
+            this.SQL = queries;
+            db.connection.query(this.SQL)
+            .then(()=>{
+                
+                console.log(`Resolved`);
+                resolve();
+            })
+            .catch((err)=>{
+                
+                reject(`Error in Product_mdl.js: decrease_quantity(): ${err}`);
+            });
+        });
+    },
+
     edit_update_product(min,max,selling_price,cost_price,quantity,
         title,description,image_path,is_best_seller,category_title,product_code)
     {

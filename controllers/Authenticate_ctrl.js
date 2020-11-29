@@ -8,6 +8,7 @@ const User_model = require("../models/MYSQL_models/User_mdl.js");
 const General_model = require("../models/MYSQL_models/General_mdl.js");
 const is_auth = require("../middleware/Authenticate_mw.js");
 const {is_already_logged_in} = require("../middleware/Authorize_mw.js");
+const { default: fetch, Body } = require("node-fetch");
 
 //*****AUTHENTICATION CONTROLS
 
@@ -87,5 +88,15 @@ router.get("/logout",is_auth,function(req,res){//
 
     res.redirect("/"); 
 });
+
+router.get("/payments",function(req,res){
+
+    res.send("PAYMENT MADE!");
+
+    /*fetch("http://localhost:3000/employee/edit-stock/restock/data")
+    .then(resp=>resp.text())
+    .then(data=>{console.log(data.body);res.send(data)})
+    .catch(err=>{console.log(err);res.send("HI")});*/
+})
 
 module.exports = router;

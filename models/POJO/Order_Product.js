@@ -6,8 +6,8 @@ class Order_Product
     is_processing = 1;
     is_shipped = 0;;
     is_delivered = 0;
-    date_shipped;
-    date_delivered; 
+    product_date_shipped;
+    product_date_delivered; 
     date_created;
     last_modified;
 };

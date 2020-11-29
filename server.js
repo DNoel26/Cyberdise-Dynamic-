@@ -10,6 +10,7 @@ const file_upload = require("express-fileupload");
 const MySQLStore = require("express-mysql-session")(session);
 const request_ip = require("request-ip");
 require("dotenv").config({path: "config/keys.env"});
+const fetch = require("node-fetch");
 
 const helper = require("./config/helpers.js");
 
@@ -30,6 +31,8 @@ const is_auth = require("./middleware/Authenticate_mw.js");
 const User_model = require("./models/MYSQL_models/User_mdl.js");
 const http_req = require("./middleware/Http_method_handler_mw.js");
 const Category_model = require("./models/MYSQL_models/Category_mdl.js");
+
+//const paypal = require('@paypal/checkout-server-sdk');
 
 const app = express();
 
@@ -54,6 +57,7 @@ app.use(body_parser.urlencoded({extended: true}));
 app.use(body_parser.json({extended: true}));//{limit: '50mb', extended: true}));
 
 app.use(http_req);
+//app.use(fetch);
 
 app.use(session({
     secret: process.env.SECRET,
@@ -68,6 +72,10 @@ app.use((req,res,next)=>{
 
     res.locals.user_info = req.session.user_info;
     res.locals.message = req.flash("message");
+    res.locals.cart_info = req.session.cart_info;
+    res.locals.cart_item_total = req.session.cart_item_total;
+    res.locals.order_id = req.session.order_id;
+    res.locals.order_info = req.session.order_info;
     //res.locals.categories_info = req.session.categories_info;
     //res.locals.categories_info =
 

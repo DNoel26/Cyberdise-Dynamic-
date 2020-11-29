@@ -7,58 +7,173 @@
 <section class="width_container">
     <div class="my_order_container">
 
-            <div class="my_order_items_container">
+        <div>
+            <form id="order_payment_form" action="" method="GET">
                 <div>
-                    <div>
-                        <img src="" width="500px" alt="">
-                    </div>
-                    <div>
-                        <h2>Name</h2>
-                        <p></p>
-                        <a class="button_class product_button" href="/products/product-overview/" target="_blank"><i class="fas fa-link"></i> View Item</a>
-                    </div>
-                    <div>
-                        <h2>Quantity</h2>
-                        <div class="product_quantity">
-                        {{!--<button id="decr_product_qty" type="button"><i class="fas fa-minus"></i></button>--}}
-                        <p id="product_qty"></p>
-                        {{!--<button id="incr_product_qty" type="button"><i class="fas fa-plus"></i></button>--}}  
+                    <div id="address_details">   
+                        <div class="order_heading">
+                            <h2>Delivery Address:</h2>
                         </div>
-                        
+                        <div>
+                            <div class="inline_text">
+                                <h3>Name:</h3>
+                                <p>{{user_info.first_name}} {{user_info.last_name}}</p>
+                            </div>
+                            <div class="inline_text">
+                                <h3>Address Line 1:</h3>
+                                <p>{{#if user_info.address_line_1}}{{user_info.address_line_1}}{{else}}---{{/if}}</p>   
+                            </div>
+                            <div class="inline_text">
+                                <h3>Address Line 2:</h3>
+                                <p>{{#if user_info.address_line_2}}{{user_info.address_line_2}}{{else}}---{{/if}}</p>
+                            </div>
+                            <div class="inline_text">
+                                <h3>Town/City:</h3>
+                                <p>{{#if user_info.town_city}}{{user_info.town_city}}{{else}}---{{/if}}</p>
+                            </div>
+                            <div class="inline_text">
+                                <h3>State:</h3>
+                                <p>{{#if user_info.state}}{{user_info.state}}{{else}}---{{/if}}</p>
+                            </div>
+                            <div class="inline_text">
+                                <h3>Country:</h3>
+                                <p>{{user_info.country}}</p>
+                            </div>
+                        </div>
                     </div>
+                    <div id="payment_details">
+                        <div class="order_heading">
+                            <h2>Payment Method</h2>
+                        </div>
+                        <div>
+                            <h3>Visa/Mastercard</h3>
+                            <div class="cc_info_input">
+                                <label for="cc_num">Credit Card Number:</label>
+                                <input type="text" name="cc_num" id="cc_num">
+                            </div>
+                            <div class="cc_info_input">
+                                <label for="cc_exp_date">Expiry Date:</label>
+                                <input type="month" name="cc_exp_date" id="cc_exp_date">    
+                            </div>
+                            <div class="cc_info_input">
+                                <label for="cc_security_num">Security Number:</label>
+                                <input type="password" name="cc_security_num" id="cc_security_num">  
+                            </div>
+                        </div>
+                    </div>
+                    <div id="product_details">
+                        <div class="order_heading">
+                            <h2>Review Items and Delivery</h2>
+                        </div>
+                        <div>
+
+                            {{#each order_products}}
+
+                                <div class="my_cart_items_container">
+                                    <div>
+                                        <div>
+                                            <img src="{{this.product.image_path}}" width="500px" alt="">
+                                        </div>
+                                        <div>
+                                            <h2>Name</h2>
+                                            <p>{{this.product.title}}</p>
+                                        </div>
+                                        <div>
+                                            <h2>Quantity</h2>
+                                            <div class="product_quantity">
+                                            <p id="product_qty">{{this.order_quantity}}</p>
+                                            </div>
+                                            
+                                        </div>
+                                        <div>
+                                            <h2>Price</h2>
+                                            <p>${{calc_cart_sub_total this.order_quantity this.product.selling_price}}</p>
+                                            <p>(${{this.product.selling_price}} per item)</p>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                            {{/each}}
+
+                        </div>
+                    </div>
+                </div>
+                <div id="order_summary">
                     <div>
-                        <h2>Price</h2>
+                        <div>
+                            <h2>Order Summary</h2>
+                        </div>
+                        <div>
+                            <h3>Total</h3>
+                            <p>${{order_total}}</p>
+                            <input type="hidden" id="order_product_codes" name="order_product_codes" value="{{order_product_codes}}">
+                        </div>
+                        <div>
+                            <button id="place_order_{{order_id}}" class="button_class product_button" type="submit">Pay for Order</button>    
+                        </div>
+                        <br><br>
+                        <div>
+                            <script src="https://www.paypal.com/sdk/js?client-id=AcHUUCOsrnnWRxeeBS_w-eD3K5A5OJEk0ynBzjIzdmnqvTKA4QTX5FXm8dfVe9D7s3la1yVQzLk6XG5D"></script>
+                            <div id="paypal-button-container"></div>
+                            {{!--<script>
+                                paypal.Buttons().render('#paypal-button-container');
+                            </script>--}}
+                            <script>
+                                paypal.Buttons({
+                                    createOrder: function(data, actions) {
+                                    // This function sets up the details of the transaction, including the amount and line item details.
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: {
+                                                value: {{order_total}} //{{cart_products.product.selling_price}}
+                                            }
+                                        }]
+                                    });
+                                    },
+                                    onApprove: function(data, actions) {
+                                    // This function captures the funds from the transaction.
+                                    return actions.order.capture().then(function(details) {
+                                        // This function shows a transaction success message to your buyer.
+                                        alert('Transaction completed by ' + details.payer.name.given_name);
 
-                    </div>
-                    <div>
-                        <form action="/customer/my-cart/delete/{{this.product.product_code}}?method=delete" method="POST">
-                            <button id="remove_order_{{this.product_code}}" class="button_class product_button remove_button" type="submit"><i class="far fa-times-circle"></i> Remove this Order</button>
-                        </form>
-                        <form action="" method="POST">
-                            <button id="place_order_{{this.product_code}}" class="button_class product_button" type="submit">Place this Order</button>    
-                        </form>
-                    </div>
-                </div> 
-            </div>
+                                        const product_codes = document.querySelector("#order_product_codes");
+                                        const product_codes_parse = JSON.parse(product_codes.value);
+                                        console.log(product_codes_parse);
+                                        const order_product_codes = [];
+                                        for(let i=0; i<product_codes_parse.length; i++)
+                                        {
+                                            order_product_codes.push(product_codes_parse[i]);
+                                        }
+                                        console.log(order_product_codes);
+                                        const order_product_codes_str = JSON.stringify(order_product_codes);
+                                        //window.location.replace("http://localhost:3000/products/all-products");
+                                        let url = "http://localhost:3000/customer/purchase-complete"
+                                        fetch(url,{
 
-            <div class="no_product_msg">
-                <h2>No Products in Cart</h2>
-            </div>
-            <form action="/products/all-products">
-                <button type="submit" class="button_class product_button no_product_btn">Go to Products Section</button>
-            </form>  
-
-            <div>
-                <h2>Order Total:</h2>
-                <p>
-
-                    
-
-                </p>
-                <form action="/customer/confirm-order" method="POST">
-                    <button class="button_class product_button" type="submit">Order All Items</button>
-                </form>
-            </div>
+                                            method: "POST",
+                                            headers : {'Content-Type': 'application/json',
+                                                        'Accept': 'application/json'},
+                                            body: order_product_codes_str
+                                            //credentials: "same-origin" 
+                                        })
+                                        .then(resp=>{
+                                            
+                                            //resp.json()
+                                            if(resp.redirected)
+                                            {
+                                                window.location.replace("http://localhost:3000/products/all-products");
+                                            }
+                                        })
+                                        .catch(err=>console.log(`Error in PayPal Purchase: ${err}`));
+                                    });
+                                    }
+                                }).render('#paypal-button-container');
+                            </script>
+                        </div>
+                    </div>  
+                </div>
+            </form>
+        </div>
 
     </div>
 </section>

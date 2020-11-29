@@ -615,7 +615,7 @@ const App =
 
                 for(let i = ((curr_page - 1) * items_per_page); i < (curr_page * items_per_page); i++)
                 {
-                    if(i >= products_display.length && (products_display.length < items_per_page))
+                    if(i >= products_display.length && (products_display.length < curr_page * items_per_page))
                     {
                         break;
                     }
@@ -840,7 +840,14 @@ const App =
 
                     for(let i = ((curr_page - 1) * items_per_page); i < (curr_page * items_per_page); i++)
                     {
+                        if(i >= products_display.length && (products_display.length < curr_page * items_per_page))
+                        {
+                            break;
+                        }
+                        
+                        console.log("products display length", products_display.length);
                         //console.log("product index", i);
+                        //console.log("products section", products_section);
                         products_section.appendChild(products_display[i]);
                     }
 
@@ -1411,7 +1418,7 @@ const App =
                     
                     update_product_names();
                 });
-                new_product_list.addEventListener("change",update_product_names);
+                new_product_list.addEventListener("input",update_product_names);
                 
                 console.log(category_name_dropdown);   
                 console.log(category_name_dropdown[0].children);
@@ -1457,7 +1464,7 @@ const App =
                     hidden_counter_products.value = form_i - 1;
                     console.log(hidden_counter_products.value);
 
-                    new_product_list.dispatchEvent(new Event('change'));
+                    new_product_list.dispatchEvent(new Event('input'));
                 })
     
                 add_product_btn.addEventListener("click",()=>{
@@ -1791,7 +1798,7 @@ const App =
                     update_product_names();
                     //alert("YES")
                 });
-                new_order_list.addEventListener("change",update_product_names);
+                new_order_list.addEventListener("input",update_product_names);
                 
                 console.log(product_code_dropdown);   
                 console.log(product_code_dropdown[0].children);
@@ -1833,7 +1840,7 @@ const App =
                     console.log("REMOVE FORM AFTER INDEX",form_i);
                     console.log(new_order_list.children.length,"children");
 
-                    new_order_list.dispatchEvent(new Event('change'));
+                    new_order_list.dispatchEvent(new Event('input'));
                 });
 
                 add_order_btn.addEventListener("click",()=>{
