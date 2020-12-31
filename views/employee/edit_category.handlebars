@@ -67,9 +67,7 @@
                         <p>{{category.last_modified}}</p>
                     </div>
 
-                    <div>
-                        <button type="button" id="delete_category_btn" class="button_class product_button event_button remove_button"><i class="fas fa-minus"></i> Delete Category</button>
-                    </div>
+                    
 
                 </div>
 
@@ -80,5 +78,9 @@
             <button type="submit" class="button_class product_button">Accept Changes <i class="fas fa-arrow-right"></i></button>
             <a href="/employee/edit-stock/categories" class="button_class product_button"><i class="fas fa-arrow-left"></i> Go Back</a>
         </div>
+    </form>
+    <form id="delete_category" action="/employee/edit-stock/delete-category/{{category.category_id}}?method=delete" method="POST">
+        <input type="hidden" name="category_name" value="{{category.title}}">
+        <button form="delete_category" type="submit" id="delete_category_btn" class="button_class product_button event_button remove_button"><i class="fas fa-minus"></i> Delete Category</button>
     </form>
 </section>

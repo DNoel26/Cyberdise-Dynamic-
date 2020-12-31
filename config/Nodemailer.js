@@ -8,15 +8,15 @@ async function test_email()
 
         let transporter = nodemailer.createTransport({
 
-            host: "smtp-mail.outlook.com", //"smtp.ethereal.email",
+            host: "",
             secureConnection: false,
-            port: 587,
+            port: '',
             tls: {ciphers: "SSLv3"},
             //secure: false,
             auth: {
 
-                user: 'kiera.roberts45@ethereal.email', //test_acc.user,
-                pass: '3d5UM8VgE2mE5R8fch', //test_acc.pass, 
+                user: "",
+                pass: ''
             },
             debug: true,
             logger: true,
@@ -50,13 +50,13 @@ async function signup_email()
         
         let transporter = nodemailer.createTransport({
 
-            host: "smtp.mailtrap.io",
-            port: 2525,
+            host: process.env.NODEMAILER_HOST,
+            port: process.env.NODEMAILER_PORT,
             //secure: false,
             auth: {
 
-                user: 'f2f8f4259fa351', //test_acc.user,
-                pass: '0486006aeafb3f', //test_acc.pass, 
+                user: process.env.NODEMAILER_USERNAME,
+                pass: process.env.NODEMAILER_PASSWORD 
             },
         });
 
@@ -89,26 +89,26 @@ const Nodemail_send =
 
             let transporter = nodemailer.createTransport({
 
-                /*host: "smtp-mail.outlook.com", //"smtp.ethereal.email",
+                /*host: "",
                 secureConnection: false,
-                port: 587,
+                port: ,
                 tls: {ciphers: "SSLv3"},
                 //secure: false,
                 auth: {
 
-                    user: //'kiera.roberts45@ethereal.email',
-                    pass: //'3d5UM8VgE2mE5R8fch', 
+                    user: //'',
+                    pass: //'', 
                 },
                 debug: true,
                 logger: true,*/
 
-                host: "smtp.mailtrap.io",
-                port: 2525,
+                host: process.env.NODEMAILER_HOST,
+                port: process.env.NODEMAILER_PORT,
                 //secure: false,
                 auth: {
 
-                    user: 'f2f8f4259fa351', //test_acc.user,
-                    pass: '0486006aeafb3f', //test_acc.pass, 
+                    user: process.env.NODEMAILER_USERNAME,
+                    pass: process.env.NODEMAILER_PASSWORD 
                 },
             });
 

@@ -706,6 +706,15 @@ form, input, select, button /*Font Family Inheritance*/
     font-size: 0.7rem;
 }
 
+button[disabled]
+{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 1rem;
+    color: darkgrey;
+    background-color: lightgrey;
+}
+
 nav .header_form_class
 {
     /*background-color: red;*/
@@ -982,6 +991,11 @@ nav a:hover, #top_nav .button_class:hover
 
                     /* HEADER GENERAL DATA ABOVE */
                     /* FOOTER GENERAL DATA BELOW */
+
+main
+{
+    min-height: 100vh;
+}
 
 #footer_nav > div > div a:hover, #footer_nav > div > div a
 {
@@ -3309,3 +3323,9 @@ p.product_names
     margin-bottom: 16px;
 }
 
+#delete_category
+{
+    margin-bottom: 144px;
+    display: grid;
+    justify-content: right;
+}

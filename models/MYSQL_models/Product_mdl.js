@@ -26,7 +26,7 @@ const Product_model =
                 product_arr_sub[5] = products.title[i];
                 product_arr_sub[6] = products.description[i];
                 product_arr_sub[7] = products.image_path[i];
-                product_arr_sub[8] = categories[i].category_id;
+                product_arr_sub[8] = categories[i]; //.category_id;
                 product_arr_sub[9] = products.is_best_seller[i];
 
                 //console.log("length",product.title.length);
@@ -37,7 +37,7 @@ const Product_model =
             //console.log(product_arr);
             //product_arr = [product]
 
-            this.SQL = `INSERT IGNORE INTO product (min,max,selling_price,cost_price,quantity,title,
+            this.SQL = `INSERT INTO product (min,max,selling_price,cost_price,quantity,title,
                 description,image_path,category_id_fk,is_best_seller) VALUES ?;`;
             db.connection.query(this.SQL, [product_arr])
             .then(()=>{
@@ -346,6 +346,8 @@ const Product_model =
             });
         });
     },
+
+    
 }
 
 module.exports = Product_model;

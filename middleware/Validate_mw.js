@@ -622,7 +622,7 @@ exports.add_product_form = (req,res,next)=>{
     created_product.category = queried_category;
 
     created_product.title = req.body.product_name;
-    queried_category.title = req.body.product_category;
+    queried_category.category_id = req.body.product_category_id;
     created_product.current_quantity = req.body.product_quantity;
     created_product.min_qty = req.body.product_min_quantity;
     created_product.max_qty = req.body.product_max_quantity;
@@ -669,7 +669,7 @@ exports.add_product_form = (req,res,next)=>{
         };
     });
 
-    created_product.category.title.forEach((element,index) => {
+    queried_category.category_id.forEach((element,index) => {
         
         if(element == "" || element == "none")
         {
@@ -697,7 +697,7 @@ exports.add_product_form = (req,res,next)=>{
             errors.min_qty[index] = "You must enter a minimum quantity";
         };
 
-        if(element > created_product.max_qty[index])
+        if(element > parseInt(created_product.max_qty[index]))
         {
             is_error = true;
             errors.min_qty[index] = "Minimum quantity cannot be greater than maximum quantity";
@@ -712,7 +712,7 @@ exports.add_product_form = (req,res,next)=>{
             errors.max_qty[index] = "You must enter a maximum quantity";
         };
 
-        if(element < created_product.min_qty[index])
+        if(element < parseInt(created_product.min_qty[index]))
         {
             is_error = true;
             errors.max_qty[index] = "Maximum quantity cannot be less than minimum quantity";

@@ -31,6 +31,8 @@
                     </div>
                 {{/if}}
 
+                {{{log user_info}}}
+
                 <div>
 
                     {{#if cart}}
@@ -49,13 +51,23 @@
 
                         {{#if user_info}}
 
-                            <form action="/products/product-overview/{{product.product_code}}" method="POST">
-                                <input type="hidden" id="product_cart_quantity_add" name="product_cart_quantity_add" value="1">
-                                <button type="submit" class="button_class product_button">Add to Cart</button>
-                            </form>
+                            {{#if_eq user_info.role customer}}
+
+                                <form action="/products/product-overview/{{product.product_code}}" method="POST">
+                                    <input type="hidden" id="product_cart_quantity_add" name="product_cart_quantity_add" value="1">
+                                    <button type="submit" class="button_class product_button">Add to Cart</button>
+                                </form>
+
+                            {{else}}
+                                    
+                                <form id="product_form_login" action="">
+                                    <button class="button_class" disabled="disabled">Login as Customer</button> 
+                                </form>
+
+                            {{/if_eq}}   
 
                         {{else}}
-                            
+
                             <form id="product_form_login" action="">
                                 <button id="product_header_login" type="button" class="button_class product_button">Login to Buy</button> 
                             </form>
@@ -63,14 +75,13 @@
                         {{/if}}
 
                     {{/if}}
-                    
-                    {{#if user_info}}
 
-                        <form action="/products/product-overview/{{product.product_code}}/buy-now" method="POST">
+                        {{!-- <form action="/products/product-overview/{{product.product_code}}/buy-now" method="POST">
                             <button type="submit" class="button_class product_button">Buy Now</button>
-                        </form>
-
-                    {{/if}}
+                        </form> --}}
+                        <form action="/products/all-products">
+                            <button type="submit" class="button_class product_button no_product_btn">Back to Products</button>
+                        </form> 
                                             
                 </div>  
             </div>

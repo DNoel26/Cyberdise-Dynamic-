@@ -24,14 +24,14 @@
                 </div>
     
                 <div class="form_input_container">
-                    <label for="product_category[0]">Product Category</label>
-                    <select class="product_categories" name="product_category[0]" id="product_category[0]">
+                    <label for="product_category_id[0]">Product Category</label>
+                    <select class="product_categories" name="product_category_id[0]" id="product_category_id[0]">
 
                         {{#if categories}}
                             <option value="">Please Select a Category</option> 
 
                             {{#each categories}}
-                                <option value="{{this.title}}">{{this.title}}</option>   
+                                <option value="{{this.category_id}}">{{this.title}}</option>   
                             {{/each}}
 
                         {{else}}

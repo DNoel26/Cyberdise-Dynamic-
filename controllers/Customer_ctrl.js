@@ -47,10 +47,10 @@ router.get("/edit-account",function(req,res){
 
 router.get("/my-cart",function(req,res){
 
-
     req.session.cart_item_total;
     let cart_item_calc = 0;
 
+    console.log("REQ SESSION CART ITEM TOTAL - BEFORE DB PULL",req.session.cart_item_total)
     console.log("REQ SESSION USER ON CART LOAD",req.session.user_info);
     console.log("ORDER ID",req.session.order_id);
 
@@ -71,6 +71,7 @@ router.get("/my-cart",function(req,res){
         };
 
         req.session.cart_item_total = cart_item_calc;
+        res.locals.cart_item_total = req.session.cart_item_total;
         
         res.render("customer/my_cart",{
 

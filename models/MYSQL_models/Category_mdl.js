@@ -255,6 +255,24 @@ const Category_model =
             });
         });
     },
+
+    delete_category(category_id)
+    {
+        return new Promise((resolve,reject)=>{
+
+            this.SQL = `DELETE FROM category WHERE category_id = ?;`;
+            db.connection.query(this.SQL, [category_id])
+            .then(()=>{
+                
+                console.log(`CATEGORY DELETED IN Category_mdl - TO BE RESOLVED`);
+                resolve();
+            })
+            .catch((err)=>{
+                
+                reject(`Error in Category_mdl.js: delete_category(): ${err}`);
+            });
+        });
+    },
 }
 
 module.exports = Category_model;

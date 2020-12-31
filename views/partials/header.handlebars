@@ -81,14 +81,16 @@
     </div>
 </div>
 
-<div class="floating_icons shopping_cart_icons">
-    <div>
-        <h3>
-            {{cart_item_total}}
-        </h3>
-        <a href="/customer/my-cart"><img src="/img/icons/cart_solid.png" alt="Shopping Cart Icon"></a>    
+{{#if cart_item_total}}
+    <div class="floating_icons shopping_cart_icons">
+        <div>
+            <h3>
+                {{cart_item_total}}
+            </h3>
+            <a href="/customer/my-cart"><img src="/img/icons/cart_solid.png" alt="Shopping Cart Icon"></a>    
+        </div>
     </div>
-</div>
+{{/if}}
 
 <!--
 <form id="login_form" action="/auth/fast-login" method="POST" novalidate="novalidate" autocomplete="off">

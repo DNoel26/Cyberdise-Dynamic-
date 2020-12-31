@@ -72,19 +72,22 @@ router.get("/edit-stock/products",function(req,res){
     .then((products)=>{
 
         //console.log("FROM GET ALL PRODUCTS",products);
-        for(let i=0; i<products.length; i++)
+        if(products)
         {
-            if(products[i].is_best_seller == 1)
+            for(let i=0; i<products.length; i++)
             {
-                products[i].is_best_seller = "Yes";
-            }
+                if(products[i].is_best_seller == 1)
+                {
+                    products[i].is_best_seller = "Yes";
+                }
 
-            else
-            {
-                products[i].is_best_seller = "No";
+                else
+                {
+                    products[i].is_best_seller = "No";
+                };
             };
-        };
-            
+        }
+                
         res.render("employee/edit_stock_products",{
 
             title: "View, add and edit products",
@@ -248,7 +251,11 @@ router.post("/edit-stock/add-categories",add_category_form,function(req,res){
         console.log(req.body);
         res.redirect("/employee/edit-stock/categories");
     })
-    .catch(err=>console.log(`Error in Employee_ctrl: POST /edit-stock/add-categories: ${err}`));
+    .catch(err=>{
+        console.log(`Error in Employee_ctrl: POST /edit-stock/add-categories: ${err}`);
+        console.trace(err);
+        err.stack;
+    });
 });
 
 //*****ADD PRODUCTS
@@ -284,7 +291,7 @@ router.get("/edit-stock/add-products/data",function(req,res){
 router.post("/edit-stock/add-products",add_product_form,function(req,res){ 
 
     //Product_model.create_product();
-    console.log("VALIDATED CREATE PRODUCT");
+    console.log("VALIDATED CREATE PRODUCT",req.body);
     
     image_uploader(req.uploaded_image, req.created_product.image_path);
     /*const uuid = [];
@@ -329,11 +336,13 @@ router.post("/edit-stock/add-products",add_product_form,function(req,res){
         });
     };*/
     
-    Category_model.get_categories_by_names_check(req.created_product.category.title) //body.product_category)
-    .then((selected_categories)=>{
+    // Category_model.get_categories_by_names_check(req.created_product.category.title) //body.product_category)
+    // .then((selected_categories)=>{
         
-        return Product_model.create_products(req.created_product,selected_categories);
-    })
+        // console.log("SELECTED CATEGORIES ON CREATION",selected_categories);
+        // return
+    //}) 
+    Product_model.create_products(req.created_product,req.body.product_category_id) //selected_categories)
     .then(()=>{
 
         if(req.created_product.title.length > 1) 
@@ -351,7 +360,12 @@ router.post("/edit-stock/add-products",add_product_form,function(req,res){
         //console.log("CREATED PRODUCT REQ BODY",req.body);
         res.redirect("/employee/edit-stock/products");
     })
-    .catch(err=>console.log(`Error in Employee_ctrl: POST /edit-stock/add-products: ${err}`));
+    .catch(err=>{
+        
+        console.log(`Error in Employee_ctrl: POST /edit-stock/add-products: ${err}`);
+        console.trace(err);
+        err.stack;
+    });
 });
 
 //*****EDIT CATEGORY
@@ -389,7 +403,23 @@ router.put("/edit-stock/edit-category/:id",edit_update_category_form,function(re
         res.redirect("/employee/edit-stock/categories");
     })
     .catch(err=>console.log(`Error in Employee_ctrl: PUT /edit-stock/edit-category/:id: ${err}`));
-})
+});
+
+/*router.post("/edit-stock/delete-category/:id",function(req,res){
+
+    res.send("DELETE CATEGORY");
+});*/
+
+router.delete("/edit-stock/delete-category/:id",function(req,res){
+
+    Category_model.delete_category(req.params.id)
+    .then(()=>{
+
+        req.flash("message",`Successfully deleted category '${req.body.category_name}'!`);
+        res.redirect("/employee/edit-stock/categories");
+    })
+    .catch(err=>console.log(`Error in Employee_ctrl: DELETE /edit-stock/delete-category/:id: ${err}`))
+});
 
 //*****EDIT PRODUCT
 

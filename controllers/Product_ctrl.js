@@ -10,7 +10,7 @@ router.get("/all-products",function(req,res){
 
     const test_array = [];
     
-    for(let i = 0; i < 200; i++)
+    /*for(let i = 0; i < 200; i++)
     {
         let test_product = {};
         
@@ -51,7 +51,7 @@ router.get("/all-products",function(req,res){
         }
         
         test_array.push(test_product);
-    }
+    }*/
 
     Product_model.get_all_products()
     .then((products)=>{

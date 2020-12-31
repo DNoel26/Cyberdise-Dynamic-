@@ -1189,16 +1189,16 @@ const App =
                         <textarea name="category_description[${form_i-2}]" id="category_description[${form_i-2}]" cols="30" rows="10"></textarea>
                         <span class="form_error_msg"></span> 
                     </div>
-
-                    <div class="form_input_container">
-                        <label for="category_img_upload[${form_i-2}]">Category Image Upload</label>
-                        <input type="file" name="category_img_upload[${form_i-2}]" id="category_img_upload[${form_i-2}]">
-                        <span class="form_error_msg"></span> 
-                    </div>
     
                     <div class="form_input_container">
                         <label for="category_photo[${form_i-2}]">Category Photo Image Path</label>
                         <input type="text" name="category_photo[${form_i-2}]" id="category_photo[${form_i-2}]" value="/img/Category/default_category.jpg">
+                        <span class="form_error_msg"></span> 
+                    </div>
+
+                    <div class="form_input_container">
+                        <label for="category_img_upload[${form_i-2}]">Category Image Upload</label>
+                        <input type="file" name="category_img_upload[${form_i-2}]" id="category_img_upload[${form_i-2}]">
                         <span class="form_error_msg"></span> 
                     </div>
 
@@ -1241,10 +1241,10 @@ const App =
                 sessionStorage.removeItem("new_product_list");
                 
                 console.log("SUBMITTED!!!");
-                product_input_val_storage = JSON.parse(sessionStorage.getItem("product_input_val_storage"));
-                product_text_area_storage = JSON.parse(sessionStorage.getItem("product_text_area_storage"));
-                product_select_val_storage = JSON.parse(sessionStorage.getItem("product_select_val_storage"));
-                console.log(product_input_val_storage.length,"LENGTH");
+                /*product_input_val_storage = [JSON.parse(sessionStorage.getItem("product_input_val_storage"))];
+                product_text_area_storage = [JSON.parse(sessionStorage.getItem("product_text_area_storage"))];
+                product_select_val_storage = [JSON.parse(sessionStorage.getItem("product_select_val_storage"))];
+                console.log(product_input_val_storage.length,"LENGTH");*/
 
                 for(let i = 0; i < product_input_val_storage.length; i++)
                 {
@@ -1514,8 +1514,8 @@ const App =
                         </div>
             
                         <div class="form_input_container">
-                            <label for="product_category[${form_i-2}]">Product Category</label>
-                            <select class="product_categories" name="product_category[${form_i-2}]" id="product_category[${form_i-2}]">
+                            <label for="product_category_id[${form_i-2}]">Product Category</label>
+                            <select class="product_categories" name="product_category_id[${form_i-2}]" id="product_category_id[${form_i-2}]">
     
                                 <option value="">Please Select a Category</option>    
     
@@ -1597,8 +1597,8 @@ const App =
                     data.forEach((element,index) => {
                         
                         const category_name_option = document.createElement("option");
-                        category_name_option.setAttribute("value",`${element.title}`);
-                        category_name_option.innerHTML = category_name_option.value;
+                        category_name_option.setAttribute("value",`${element.category_id}`);
+                        category_name_option.innerHTML = element.title;
                         console.log(category_name_option);
                         category_name_dropdown[form_i-2].appendChild(category_name_option);
                         console.log("DATA OPTIONS",element,index);

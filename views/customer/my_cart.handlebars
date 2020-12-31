@@ -90,6 +90,9 @@
 
         {{#if cart_products}}
 
+            <form action="/products/all-products">
+                <button class="button_class product_button" type="submit">Add More Products</button>
+            </form>
             <div class="cart_order_total">
                 <h2>Order Total:</h2>
                 <p>${{calc_cart_total cart_products}}</p>
