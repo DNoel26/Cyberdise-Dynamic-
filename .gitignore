@@ -2,3 +2,4 @@
 /config/keys.env
 /*.env
 /.history/
+**/Nodemailer_mw.js

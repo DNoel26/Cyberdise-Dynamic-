@@ -22,6 +22,7 @@ const App =
         const edit_employee_account_html = document.querySelector("#edit_employee_account_html");
         const edit_customer_account_html = document.querySelector("#edit_customer_account_html");
         const special_div = document.querySelector("#spec");
+        const widget_script = document.getElementById("widget_script");
 
         const header_login_btn = document.querySelector("#header_login_btn");
         const header_login_submit_btn = document.querySelector("#header_login_submit_btn");
@@ -130,6 +131,8 @@ const App =
         document.addEventListener("DOMContentLoaded",()=>{
 
             console.log("Client side js working!");
+            console.log(widget_script.innerHTML);
+            
             //home_page_main.innerHTML += `<div><br><br>HELLO YOU {{test}}</div>`;
             //username_email_login.value = "test"; localStorage.setItem("username_email_login", JSON.stringify(username_email_login.value));
             
@@ -892,7 +895,7 @@ const App =
                             product_page_no_top.value = num_of_pages;
                             product_page_no_bot.value = num_of_pages;
                         }
-
+                        
                         if(index == 0 && product_page_no_top.value > 0 && product_page_no_top.value <= num_of_pages)
                         {
                             console.log(product_page_no_top.value);
