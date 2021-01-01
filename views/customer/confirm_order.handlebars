@@ -147,7 +147,11 @@
                                         console.log(order_product_codes);
                                         const order_product_codes_str = JSON.stringify(order_product_codes);
                                         //window.location.replace("http://localhost:3000/products/all-products");
-                                        let url = "http://localhost:3000/customer/purchase-complete"
+                                        
+                                        let url = "/customer/purchase-complete"
+
+                                        alert(`to redirect to: ${url}`)
+
                                         fetch(url,{
 
                                             method: "POST",
@@ -161,7 +165,7 @@
                                             //resp.json()
                                             if(resp.redirected)
                                             {
-                                                window.location.replace("http://localhost:3000/products/all-products");
+                                                window.location.replace("/products/all-products");
                                             }
                                         })
                                         .catch(err=>console.log(`Error in PayPal Purchase: ${err}`));

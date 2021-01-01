@@ -237,6 +237,7 @@ router.post("/purchase-complete",(req,res)=>{
         req.session.order_total = null;
         req.session.order_info = null;
         
+        console.log("ORDER HAS BEEN COMPLETED - AWAITING REDIRECT")
         res.redirect("/");
     })
     .catch(err=>{
