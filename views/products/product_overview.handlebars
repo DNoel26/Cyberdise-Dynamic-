@@ -51,7 +51,7 @@
 
                         {{#if user_info}}
 
-                            {{#if_eq user_info.role customer}}
+                            {{#if_eq user_info.role "customer"}}
 
                                 <form action="/products/product-overview/{{product.product_code}}" method="POST">
                                     <input type="hidden" id="product_cart_quantity_add" name="product_cart_quantity_add" value="1">

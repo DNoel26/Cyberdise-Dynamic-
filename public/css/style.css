@@ -715,6 +715,14 @@ button[disabled]
     background-color: lightgrey;
 }
 
+button[disabled]:hover, button[disabled]:focus
+{
+    padding: 8px 16px;
+    font-size: 1rem;
+    color: darkgrey;
+    background-color: lightgrey;
+}
+
 nav .header_form_class
 {
     /*background-color: red;*/
